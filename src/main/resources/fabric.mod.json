@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "flying_machines",
+	"version": "v0.6 BETA",
+	"name": "Seasonal Adventures",
+	"description": "Мод по сезонам Лололошки |BETA| \n обновление Replenish 'n' Unlock",
+	"icon": "assets/flying_machines/icon.png",
+	"authors": [
+		"Main developer: FlyingMyLife",
+		"Models and Textures: ModernDel"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/seasonal_adventures",
+		"sources": "https://github.com/FlyingMyLife/Seasonal-Adventures-REPO-Fabric-BETA-v0.6-1.20-1.20.1",
+		"issues": "https://github.com/FlyingMyLife/Seasonal-Adventures-REPO-Fabric-BETA-v0.6-1.20-1.20.1/issues"
+	},
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["net.packages.flying_machines.flying_machines"],
+		"client": ["net.packages.flying_machines.flying_machinesClient"]
+	},
+	"mixins": [
+		"flying_machines.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.10",
+		"minecraft": ">=1.20.0 <=1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"geckolib": ">=4.4.6"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

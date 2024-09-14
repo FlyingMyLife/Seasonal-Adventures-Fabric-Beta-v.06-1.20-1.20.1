@@ -1,0 +1,45 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"particle": "flying_machines:block/animated_block",
+		"0": "flying_machines:block/animated_block"
+	},
+	"elements": [
+		{
+			"from": [1, 8, 1],
+			"to": [15, 10, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [3.5, 3.5, 7, 4], "texture": "#0"},
+				"east": {"uv": [0, 3.5, 3.5, 4], "texture": "#0"},
+				"south": {"uv": [10.5, 3.5, 14, 4], "texture": "#0"},
+				"west": {"uv": [7, 3.5, 10.5, 4], "texture": "#0"},
+				"up": {"uv": [7, 3.5, 3.5, 0], "texture": "#0"},
+				"down": {"uv": [10.5, 0, 7, 3.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"gui": {
+			"rotation": [23, -28, 0],
+			"translation": [0, -0.25, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, 0.75]
+		}
+	},
+	"groups": [
+		{
+			"name": "bone",
+			"origin": [8, 9, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

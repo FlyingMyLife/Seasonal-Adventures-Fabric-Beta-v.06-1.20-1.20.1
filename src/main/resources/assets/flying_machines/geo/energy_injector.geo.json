@@ -1,0 +1,153 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "energy_injector",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "pallet",
+					"parent": "energy_injector",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-7, 0, -7],
+							"size": [14, 2, 14],
+							"uv": {
+								"north": {"uv": [40, 40], "uv_size": [14, 2]},
+								"east": {"uv": [40, 42], "uv_size": [14, 2]},
+								"south": {"uv": [44, 0], "uv_size": [14, 2]},
+								"west": {"uv": [44, 2], "uv_size": [14, 2]},
+								"up": {"uv": [0, 0], "uv_size": [14, 14]},
+								"down": {"uv": [0, 28], "uv_size": [14, -14]}
+							}
+						},
+						{
+							"origin": [3.75, 1.9, -6.25],
+							"size": [2.25, 0.425, 1.5],
+							"pivot": [5.5, 2.15, -5.5],
+							"rotation": [31.33144, 34.12398, 47.33883],
+							"uv": {
+								"north": {"uv": [44, 16], "uv_size": [2, 1]},
+								"east": {"uv": [44, 17], "uv_size": [2, 1]},
+								"south": {"uv": [44, 18], "uv_size": [2, 1]},
+								"west": {"uv": [44, 19], "uv_size": [2, 1]},
+								"up": {"uv": [10, 28], "uv_size": [2, 2]},
+								"down": {"uv": [12, 30], "uv_size": [2, -2]}
+							}
+						},
+						{
+							"origin": [-6, 1.9, -6.25],
+							"size": [2.25, 0.425, 1.5],
+							"pivot": [-5.5, 2.15, -5.5],
+							"rotation": [31.33144, -34.12398, -47.33883],
+							"uv": {
+								"north": {"uv": [44, 20], "uv_size": [2, 1]},
+								"east": {"uv": [44, 21], "uv_size": [2, 1]},
+								"south": {"uv": [44, 22], "uv_size": [2, 1]},
+								"west": {"uv": [44, 23], "uv_size": [2, 1]},
+								"up": {"uv": [44, 4], "uv_size": [2, 2]},
+								"down": {"uv": [44, 8], "uv_size": [2, -2]}
+							}
+						},
+						{
+							"origin": [-6, 1.9, 4.75],
+							"size": [2.25, 0.425, 1.5],
+							"pivot": [-5.5, 2.15, 5.5],
+							"rotation": [-31.33144, 34.12398, -47.33883],
+							"uv": {
+								"north": {"uv": [44, 24], "uv_size": [2, 1]},
+								"east": {"uv": [44, 25], "uv_size": [2, 1]},
+								"south": {"uv": [44, 26], "uv_size": [2, 1]},
+								"west": {"uv": [44, 27], "uv_size": [2, 1]},
+								"up": {"uv": [44, 8], "uv_size": [2, 2]},
+								"down": {"uv": [44, 12], "uv_size": [2, -2]}
+							}
+						},
+						{
+							"origin": [3.75, 1.9, 4.75],
+							"size": [2.25, 0.425, 1.5],
+							"pivot": [5.5, 2.15, 5.5],
+							"rotation": [-31.33144, -34.12398, 47.33883],
+							"uv": {
+								"north": {"uv": [44, 28], "uv_size": [2, 1]},
+								"east": {"uv": [44, 29], "uv_size": [2, 1]},
+								"south": {"uv": [40, 44], "uv_size": [2, 1]},
+								"west": {"uv": [42, 44], "uv_size": [2, 1]},
+								"up": {"uv": [44, 12], "uv_size": [2, 2]},
+								"down": {"uv": [44, 16], "uv_size": [2, -2]}
+							}
+						}
+					]
+				},
+				{
+					"name": "energy_crystal",
+					"parent": "energy_injector",
+					"pivot": [0, 10.75, 0],
+					"cubes": [
+						{
+							"origin": [-5, 5.5, -5],
+							"size": [10, 10, 10],
+							"pivot": [0, 10.5, 0],
+							"rotation": [90, 45, 90],
+							"uv": {
+								"north": {"uv": [34, 20], "uv_size": [10, 10]},
+								"east": {"uv": [0, 38], "uv_size": [10, 10]},
+								"south": {"uv": [10, 40], "uv_size": [10, 10]},
+								"west": {"uv": [20, 40], "uv_size": [10, 10]},
+								"up": {"uv": [30, 40], "uv_size": [10, 10]},
+								"down": {"uv": [40, 40], "uv_size": [10, -10]}
+							}
+						},
+						{
+							"origin": [-5, 5.5, -5],
+							"size": [10, 10, 10],
+							"pivot": [0, 10.5, 0],
+							"rotation": [0, 0, 45],
+							"uv": {
+								"north": {"uv": [0, 28], "uv_size": [10, 10]},
+								"east": {"uv": [10, 30], "uv_size": [10, 10]},
+								"south": {"uv": [20, 30], "uv_size": [10, 10]},
+								"west": {"uv": [30, 30], "uv_size": [10, 10]},
+								"up": {"uv": [34, 0], "uv_size": [10, 10]},
+								"down": {"uv": [34, 20], "uv_size": [10, -10]}
+							}
+						},
+						{
+							"origin": [-5, 5.5, -5],
+							"size": [10, 10, 10],
+							"pivot": [0, 10.5, 0],
+							"rotation": [0, 45, 0],
+							"uv": {
+								"north": {"uv": [14, 0], "uv_size": [10, 10]},
+								"east": {"uv": [14, 10], "uv_size": [10, 10]},
+								"south": {"uv": [14, 20], "uv_size": [10, 10]},
+								"west": {"uv": [24, 0], "uv_size": [10, 10]},
+								"up": {"uv": [24, 10], "uv_size": [10, 10]},
+								"down": {"uv": [24, 30], "uv_size": [10, -10]}
+							}
+						}
+					]
+				},
+				{
+					"name": "item",
+					"parent": "energy_crystal",
+					"pivot": [0, 10.5, 0],
+					"locators": {
+						"item": [0, 10.75, 0]
+					}
+				}
+			]
+		}
+	]
+}

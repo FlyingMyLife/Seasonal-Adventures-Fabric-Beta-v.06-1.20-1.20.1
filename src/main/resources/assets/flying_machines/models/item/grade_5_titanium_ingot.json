@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "flying_machines:item/grade_5_titanium_ingot"
+  }
+}

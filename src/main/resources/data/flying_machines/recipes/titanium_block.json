@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "flying_machines:titanium_ingot"
+    }
+  },
+  "result": {
+    "item": "flying_machines:titanium_block"
+  }
+}

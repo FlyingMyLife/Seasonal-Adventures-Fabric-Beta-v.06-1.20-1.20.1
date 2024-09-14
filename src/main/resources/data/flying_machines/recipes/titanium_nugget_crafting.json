@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "flying_machines:titanium_ingot"
+    }
+  ],
+  "result": {
+    "item": "flying_machines:titanium_nugget",
+    "count": 9
+  }
+}
