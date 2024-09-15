@@ -1,5 +1,4 @@
-## Version BETA 0.6##
-
+## Version BETA 0.6
 
 > ### **Description:** 
 Well, well, well…The brand new update just being realesed. It is happy to announce that this update was probably the **hardest** update so far, and the **highest** **quality** produced. In this update you will see a **masterpiece** work that was multiply times reworked and changed. 
