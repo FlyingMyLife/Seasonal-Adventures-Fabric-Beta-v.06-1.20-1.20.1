@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "flying_machines:deepslate_titanium_ore",
+    "flying_machines:titanium_ore",
+    "flying_machines:deepslate_aluminium_ore",
+    "flying_machines:aluminium_ore",
+    "flying_machines:deepslate_lithium_ore",
+    "flying_machines:lithium_ore"
+  ]
+}

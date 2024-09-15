@@ -1,0 +1,22 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "flying_machines:raw_aluminium"
+    }
+  ],
+  "processingTime": 400,
+  "results": [
+    {
+      "item": "flying_machines:crushed_raw_aluminium"
+    },
+    {
+      "item": "flying_machines:crushed_raw_aluminium",
+      "chance": 0.2
+    },
+    {
+      "chance": 0.65,
+      "item": "create:experience_nugget"
+    }
+  ]
+}

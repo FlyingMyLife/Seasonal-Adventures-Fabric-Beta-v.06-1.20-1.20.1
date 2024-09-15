@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "ingredient": {
+    "item": "flying_machines:raw_titanium"
+  },
+  "result": "flying_machines:titanium_ingot"
+}

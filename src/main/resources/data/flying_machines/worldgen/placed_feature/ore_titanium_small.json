@@ -1,0 +1,27 @@
+{
+  "feature": "flying_machines:ore_titanium_small",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 4
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:trapezoid",
+        "max_inclusive": {
+          "absolute": 22
+        },
+        "min_inclusive": {
+          "absolute": -45
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

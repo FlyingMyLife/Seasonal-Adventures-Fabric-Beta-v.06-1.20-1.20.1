@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "flying_machines:grade_5_titanium_ingot"
+    }
+  ],
+  "results": [
+    {
+      "item": "flying_machines:grade_5_titanium_sheet"
+    }
+  ]
+}

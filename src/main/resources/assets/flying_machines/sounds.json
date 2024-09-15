@@ -1,0 +1,13 @@
+{
+  "dylan_hurt_sound": {
+    "subtitle": "sounds.flying_machines.dylan_hurt_sound",
+    "sounds": [
+      "flying_machines:dylan_hurt_sound_0"
+    ],
+    "pick_pin": {
+      "sounds": [
+        "flying_machines:pick_pin"
+      ]
+    }
+  }
+}

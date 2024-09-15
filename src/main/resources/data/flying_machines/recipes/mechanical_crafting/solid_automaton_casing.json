@@ -1,0 +1,27 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "S": {
+      "item": "flying_machines:grade_5_titanium_sheet"
+    },
+    "I": {
+      "item": "flying_machines:grade_5_titanium_ingot"
+    },
+    "T": {
+      "item": "flying_machines:titanium_ingot"
+    }
+  },
+    "pattern": [
+      " S ",
+      "STS",
+      "ISI",
+      "ISI",
+      " S ",
+      "ITI",
+      "I I"
+    ],
+    "result": {
+      "item": "flying_machines:solid_automaton_casing"
+    }
+  }

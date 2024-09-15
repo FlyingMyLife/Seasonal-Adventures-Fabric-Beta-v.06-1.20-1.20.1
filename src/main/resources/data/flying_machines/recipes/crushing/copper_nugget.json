@@ -1,0 +1,20 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot"
+    }
+  ],
+  "processingTime": 100,
+  "results": [
+    {
+      "item": "create:copper_nugget",
+      "count": 9
+    },
+
+    {
+      "chance": 0.07,
+      "item": "create:experience_nugget"
+    }
+  ]
+}
