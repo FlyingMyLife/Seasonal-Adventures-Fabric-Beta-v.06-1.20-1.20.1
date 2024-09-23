@@ -13,7 +13,6 @@ import net.minecraft.util.Identifier;
 import net.packages.flying_machines.gui.widgets.RotatingLockpick;
 import net.packages.flying_machines.item.Items;
 import net.packages.flying_machines.network.SpecificItemRemovalPacket;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Random;
 
@@ -30,8 +29,8 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
 
     private RotatingLockpick lockpick;
     private static final Identifier LOCKPICK_TEXTURE = new Identifier("flying_machines", "textures/gui/lockpick.png");
-    private static final Identifier LOCK_AVAILABLE = new Identifier("flying_machines", "textures/gui/lock_unavailable.png");
-    private static final Identifier LOCK_UNAVAILABLE = new Identifier("flying_machines", "textures/gui/lock_available.png");
+    private static final Identifier LOCK_UNACTIVATED = new Identifier("flying_machines", "textures/gui/lock_unactivated.png");
+    private static final Identifier LOCK_AVAILABLE = new Identifier("flying_machines", "textures/gui/lock_activated.png");
     private static final Identifier BACKGROUND_TEXTURE = new Identifier("flying_machines", "textures/gui/lockpick_background.png");
 
     public LockpickScreen(LockpickScreenHandler handler, PlayerInventory inventory, Text title, int lockLevel) {
@@ -367,31 +366,31 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
             this.close();
         }
         renderBackground(context);
-        if (!locks[1]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[1]);
-        if (!locks[2]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[2]);
-        if (!locks[3]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[3]);
-        if (!locks[4]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[4]);
-        if (!locks[5]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[5]);
-        if (!locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[6]);
-        if (!locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[7]);
-        if (!locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[8]);
-        if (!locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[9]);
-        if (!locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[10]);
-        if (!locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[11]);
-        if (!locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[12]);
+        if (!locks[1]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[1]);
+        if (!locks[2]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[2]);
+        if (!locks[3]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[3]);
+        if (!locks[4]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[4]);
+        if (!locks[5]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[5]);
+        if (!locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[6]);
+        if (!locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[7]);
+        if (!locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[8]);
+        if (!locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[9]);
+        if (!locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[10]);
+        if (!locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[11]);
+        if (!locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[12]);
 
-        if (locks[1]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[1]);
-        if (locks[2]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[2]);
-        if (locks[3]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[3]);
-        if (locks[4]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[4]);
-        if (locks[5]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[5]);
-        if (locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[6]);
-        if (locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[7]);
-        if (locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[8]);
-        if (locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[9]);
-        if (locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[10]);
-        if (locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[11]);
-        if (locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[12]);
+        if (locks[1]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[1]);
+        if (locks[2]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[2]);
+        if (locks[3]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[3]);
+        if (locks[4]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[4]);
+        if (locks[5]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[5]);
+        if (locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[6]);
+        if (locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[7]);
+        if (locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[8]);
+        if (locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[9]);
+        if (locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[10]);
+        if (locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[11]);
+        if (locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[12]);
 
         super.render(context, mouseX, mouseY, delta);
     }
