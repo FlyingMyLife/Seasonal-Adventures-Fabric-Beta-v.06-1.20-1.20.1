@@ -17,8 +17,11 @@ import net.packages.flying_machines.network.SpecificItemRemovalPacket;
 import java.util.Random;
 
 public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
+
     private int lockLevel;
+
     private int lockCount;
+
     private int [] lockAngles = new int[13];
 
     private boolean [] locks = new boolean[13];
@@ -28,6 +31,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
     private boolean methodCalled = false;
 
     private RotatingLockpick lockpick;
+    
     private static final Identifier LOCKPICK_TEXTURE = new Identifier("flying_machines", "textures/gui/lockpick.png");
     private static final Identifier LOCK_UNACTIVATED = new Identifier("flying_machines", "textures/gui/lock_unactivated.png");
     private static final Identifier LOCK_AVAILABLE = new Identifier("flying_machines", "textures/gui/lock_activated.png");
@@ -60,6 +64,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         this.onScreenOpen();
         this.addDrawableChild(this.lockpick);
     }
+
     private void onScreenOpen() {
         if (!methodCalled) {
             generateLockDegrees();
@@ -72,67 +77,32 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         }
     }
 
+    private void onLockClick (int lock) {
+        this.locks[lock] = true;
+        this.lockpick.toggleRotationDirection();
+        this.lockCount--;
+        if (lockCount <= 0) {
+            this.close();
+            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+        }
+    }
+
     private void onClick() {
         int currentAngle = (int) this.lockpick.getRotationAngle();
         if (currentAngle <= lockAngles[1]+10 && currentAngle >= lockAngles[1]-10 && !locks[1] && lockLevel <= 2) {
-            this.locks[1] = true;
-            this.lockpick.toggleRotationDirection();
-            this.lockCount--;
-            if (lockCount <= 0) {
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-            }
-        }
-        else if (currentAngle <= 10 && currentAngle >= 0 && !locks[1] && lockLevel >= 3) {
-            this.locks[1] = true;
-            this.lockpick.toggleRotationDirection();
-            this.lockCount--;
-            if (lockCount <= 0) {
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-            }
-        }
-        else if (currentAngle <= 360 && currentAngle >= 350 && !locks[1] && lockLevel >= 3) {
-            this.locks[1] = true;
-            this.lockpick.toggleRotationDirection();
-            this.lockCount--;
-            if (lockCount <= 0) {
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-            }
-        }
-        else if (currentAngle <= lockAngles[2]+10 && currentAngle >= lockAngles[2]-10 && !locks[2]) {
-            this.locks[2] = true;
-            this.lockpick.toggleRotationDirection();
-            this.lockCount--;
-            if (lockCount <= 0) {
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-            }
+            onLockClick(1);
+        } else if (currentAngle <= 10 && currentAngle >= 0 && !locks[1] && lockLevel >= 3) {
+            onLockClick(1);
+        } else if (currentAngle <= 360 && currentAngle >= 350 && !locks[1] && lockLevel >= 3) {
+            onLockClick(1);
+        } else if (currentAngle <= lockAngles[2]+10 && currentAngle >= lockAngles[2]-10 && !locks[2]) {
+            onLockClick(2);
         } else if (currentAngle <= lockAngles[3]+10 && currentAngle >= lockAngles[3]-10 && !locks[3]) {
-            this.locks[3] = true;
-            this.lockpick.toggleRotationDirection();
-            this.lockCount--;
-            if (lockCount <= 0) {
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-            }
+            onLockClick(3);
         } else if (currentAngle <= lockAngles[4]+10 && currentAngle >= lockAngles[4]-10 && !locks[4]) {
-            this.locks[4] = true;
-            this.lockpick.toggleRotationDirection();
-            this.lockCount--;
-            if (lockCount <= 0) {
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-            }
+            onLockClick(4);
         } else if (currentAngle <= lockAngles[5]+10 && currentAngle >= lockAngles[5]-10 && !locks[5]) {
-            this.locks[5] = true;
-            this.lockpick.toggleRotationDirection();
-            this.lockCount--;
-            if (lockCount <= 0) {
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-            }
+            onLockClick(5);
         } else if (currentAngle <= lockAngles[6]+10 && currentAngle >= lockAngles[6]-10 && !locks[6]) {
             if (lockLevel >= 1) {
                 this.locks[6] = true;
@@ -221,6 +191,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
             SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
         }
     }
+
     public void generateLockDegrees() {
         Random random = new Random();
         int[] locks = new int[12];
@@ -308,8 +279,6 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         if (lockCount > 11) lockAngles[12] = locks[11];
     }
 
-
-
         @Override
     public void renderBackground(DrawContext context) {
         super.renderBackground(context);
@@ -323,13 +292,11 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         MatrixStack matrixStack = context.getMatrices();
         matrixStack.push();
 
-
         int screenWidth = MinecraftClient.getInstance().getWindow().getScaledWidth();
         int screenHeight = MinecraftClient.getInstance().getWindow().getScaledHeight();
 
         float centerX = screenWidth / 2.0f;
         float centerY = screenHeight / 2.0f;
-
 
         matrixStack.translate(centerX, centerY, 0.0f);
 
@@ -361,11 +328,13 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        if (!this.client.player.getInventory().contains(new ItemStack(Items.LOCKPICK))){
+        if (!this.client.player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
             this.client.player.sendMessage(Text.translatable("message.lock.fail").formatted(Formatting.DARK_RED), true);
             this.close();
         }
+
         renderBackground(context);
+
         if (!locks[1]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[1]);
         if (!locks[2]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[2]);
         if (!locks[3]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[3]);
