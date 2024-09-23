@@ -20,31 +20,9 @@ import java.util.Random;
 public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
     private int lockLevel;
     private int lockCount;
-    private int lock1a = 0;
-    private int lock2a = 0;
-    private int lock3a = 0;
-    private int lock4a = 0;
-    private int lock5a = 0;
-    private int lock6a = 0;
-    private int lock7a = 0;
-    private int lock8a = 0;
-    private int lock9a = 0;
-    private int lock10a = 0;
-    private int lock11a = 0;
-    private int lock12a = 0;
+    private int [] lockAngles = new int[13];
 
-    private boolean lock1s;
-    private boolean lock2s;
-    private boolean lock3s;
-    private boolean lock4s;
-    private boolean lock5s;
-    private boolean lock6s;
-    private boolean lock7s;
-    private boolean lock8s;
-    private boolean lock9s;
-    private boolean lock10s;
-    private boolean lock11s;
-    private boolean lock12s;
+    private boolean [] locks = new boolean[13];
 
     private float lockpickspeed = 1.0f;
 
@@ -77,155 +55,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
                 x, y, buttonSize, buttonSize,
                 0, 0, 0, LOCKPICK_TEXTURE, 192, 192,
                 lockpickspeed,
-                button -> {
-                    int currentAngle = (int) this.lockpick.getRotationAngle();
-                    if (currentAngle <= lock1a+10 && currentAngle >= lock1a-10 && !lock1s && lockLevel <= 2) {
-                        this.lock1s = true;
-                        this.lockpick.toggleRotationDirection();
-                        this.lockCount--;
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    }
-                    else if (currentAngle <= 10 && currentAngle >= 0 && !lock1s && lockLevel >= 3) {
-                        this.lock1s = true;
-                        this.lockpick.toggleRotationDirection();
-                        this.lockCount--;
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    }
-                    else if (currentAngle <= 360 && currentAngle >= 350 && !lock1s && lockLevel >= 3) {
-                        this.lock1s = true;
-                        this.lockpick.toggleRotationDirection();
-                        this.lockCount--;
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    }
-                    else if (currentAngle <= lock2a+10 && currentAngle >= lock2a-10 && !lock2s) {
-                        this.lock2s = true;
-                        this.lockpick.toggleRotationDirection();
-                        this.lockCount--;
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock3a+10 && currentAngle >= lock3a-10 && !lock3s) {
-                        this.lock3s = true;
-                        this.lockpick.toggleRotationDirection();
-                        this.lockCount--;
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock4a+10 && currentAngle >= lock4a-10 && !lock4s) {
-                        this.lock4s = true;
-                        this.lockpick.toggleRotationDirection();
-                        this.lockCount--;
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock5a+10 && currentAngle >= lock5a-10 && !lock5s) {
-                        this.lock5s = true;
-                        this.lockpick.toggleRotationDirection();
-                        this.lockCount--;
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock6a+10 && currentAngle >= lock6a-10 && !lock6s) {
-                        if (lockLevel >= 1) {
-                            this.lock6s = true;
-                            this.lockpick.toggleRotationDirection();
-                            this.lockCount--;
-                        } else {
-                            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-                        }
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock7a+10 && currentAngle >= lock7a-10 && !lock7s) {
-                        if (lockLevel >= 1) {
-                            this.lock7s = true;
-                            this.lockpick.toggleRotationDirection();
-                            this.lockCount--;
-                        } else {
-                            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-                        }
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock8a+10 && currentAngle >= lock8a-10 && !lock8s) {
-                        if (lockLevel >= 2) {
-                            this.lock8s = true;
-                            this.lockpick.toggleRotationDirection();
-                            this.lockCount--;
-                        } else {
-                            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-                        }
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock9a+10 && currentAngle >= lock9a-10 && !lock9s) {
-                        if (lockLevel >= 3) {
-                            this.lock9s = true;
-                            this.lockpick.toggleRotationDirection();
-                            this.lockCount--;
-                        } else {
-                            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-                        }
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock10a+10 && currentAngle >= lock10a-10 && !lock10s) {
-                        if (lockLevel >= 3) {
-                            this.lock10s = true;
-                            this.lockpick.toggleRotationDirection();
-                            this.lockCount--;
-                        } else {
-                            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-                        }
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock11a+10 && currentAngle >= lock11a-10 && !lock11s) {
-                        if (lockLevel == 4) {
-                            this.lock11s = true;
-                            this.lockpick.toggleRotationDirection();
-                            this.lockCount--;
-                        } else {
-                            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-                        }
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else if (currentAngle <= lock12a+10 && currentAngle >= lock12a-10 && !lock12s) {
-                        if (lockLevel == 4) {
-                            this.lock12s = true;
-                            this.lockpick.toggleRotationDirection();
-                            this.lockCount--;
-                        } else {
-                            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-                        }
-                        if (lockCount <= 0) {
-                            this.close();
-                            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-                        }
-                    } else {
-                        SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-                    }
-                }
+                button -> onClick()
         );
 
         this.onScreenOpen();
@@ -243,6 +73,155 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         }
     }
 
+    private void onClick() {
+        int currentAngle = (int) this.lockpick.getRotationAngle();
+        if (currentAngle <= lockAngles[1]+10 && currentAngle >= lockAngles[1]-10 && !locks[1] && lockLevel <= 2) {
+            this.locks[1] = true;
+            this.lockpick.toggleRotationDirection();
+            this.lockCount--;
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        }
+        else if (currentAngle <= 10 && currentAngle >= 0 && !locks[1] && lockLevel >= 3) {
+            this.locks[1] = true;
+            this.lockpick.toggleRotationDirection();
+            this.lockCount--;
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        }
+        else if (currentAngle <= 360 && currentAngle >= 350 && !locks[1] && lockLevel >= 3) {
+            this.locks[1] = true;
+            this.lockpick.toggleRotationDirection();
+            this.lockCount--;
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        }
+        else if (currentAngle <= lockAngles[2]+10 && currentAngle >= lockAngles[2]-10 && !locks[2]) {
+            this.locks[2] = true;
+            this.lockpick.toggleRotationDirection();
+            this.lockCount--;
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[3]+10 && currentAngle >= lockAngles[3]-10 && !locks[3]) {
+            this.locks[3] = true;
+            this.lockpick.toggleRotationDirection();
+            this.lockCount--;
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[4]+10 && currentAngle >= lockAngles[4]-10 && !locks[4]) {
+            this.locks[4] = true;
+            this.lockpick.toggleRotationDirection();
+            this.lockCount--;
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[5]+10 && currentAngle >= lockAngles[5]-10 && !locks[5]) {
+            this.locks[5] = true;
+            this.lockpick.toggleRotationDirection();
+            this.lockCount--;
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[6]+10 && currentAngle >= lockAngles[6]-10 && !locks[6]) {
+            if (lockLevel >= 1) {
+                this.locks[6] = true;
+                this.lockpick.toggleRotationDirection();
+                this.lockCount--;
+            } else {
+                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            }
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[7]+10 && currentAngle >= lockAngles[7]-10 && !locks[7]) {
+            if (lockLevel >= 1) {
+                this.locks[7] = true;
+                this.lockpick.toggleRotationDirection();
+                this.lockCount--;
+            } else {
+                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            }
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[8]+10 && currentAngle >= lockAngles[8]-10 && !locks[8]) {
+            if (lockLevel >= 2) {
+                this.locks[8] = true;
+                this.lockpick.toggleRotationDirection();
+                this.lockCount--;
+            } else {
+                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            }
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[9]+10 && currentAngle >= lockAngles[9]-10 && !locks[9]) {
+            if (lockLevel >= 3) {
+                this.locks[9] = true;
+                this.lockpick.toggleRotationDirection();
+                this.lockCount--;
+            } else {
+                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            }
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[9]+10 && currentAngle >= lockAngles[9]-10 && !locks[10]) {
+            if (lockLevel >= 3) {
+                this.locks[10] = true;
+                this.lockpick.toggleRotationDirection();
+                this.lockCount--;
+            } else {
+                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            }
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[11]+10 && currentAngle >= lockAngles[11]-10 && !locks[11]) {
+            if (lockLevel == 4) {
+                this.locks[11] = true;
+                this.lockpick.toggleRotationDirection();
+                this.lockCount--;
+            } else {
+                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            }
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else if (currentAngle <= lockAngles[12]+10 && currentAngle >= lockAngles[12]-10 && !locks[12]) {
+            if (lockLevel == 4) {
+                this.locks[12] = true;
+                this.lockpick.toggleRotationDirection();
+                this.lockCount--;
+            } else {
+                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            }
+            if (lockCount <= 0) {
+                this.close();
+                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            }
+        } else {
+            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+        }
+    }
     public void generateLockDegrees() {
         Random random = new Random();
         int[] locks = new int[12];
@@ -316,18 +295,18 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
     }
 
     private void assignLocks(int[] locks, int lockCount) {
-        if (lockCount > 0) lock1a = locks[0];
-        if (lockCount > 1) lock2a = locks[1];
-        if (lockCount > 2) lock3a = locks[2];
-        if (lockCount > 3) lock4a = locks[3];
-        if (lockCount > 4) lock5a = locks[4];
-        if (lockCount > 5) lock6a = locks[5];
-        if (lockCount > 6) lock7a = locks[6];
-        if (lockCount > 7) lock8a = locks[7];
-        if (lockCount > 8) lock9a = locks[8];
-        if (lockCount > 9) lock10a = locks[9];
-        if (lockCount > 10) lock11a = locks[10];
-        if (lockCount > 11) lock12a = locks[11];
+        if (lockCount > 0) lockAngles[1] = locks[0];
+        if (lockCount > 1) lockAngles[2] = locks[1];
+        if (lockCount > 2) lockAngles[3] = locks[2];
+        if (lockCount > 3) lockAngles[4] = locks[3];
+        if (lockCount > 4) lockAngles[5] = locks[4];
+        if (lockCount > 5) lockAngles[6] = locks[5];
+        if (lockCount > 6) lockAngles[7] = locks[6];
+        if (lockCount > 7) lockAngles[8] = locks[7];
+        if (lockCount > 8) lockAngles[9] = locks[8];
+        if (lockCount > 9) lockAngles[10] = locks[9];
+        if (lockCount > 10) lockAngles[11] = locks[10];
+        if (lockCount > 11) lockAngles[12] = locks[11];
     }
 
 
@@ -388,31 +367,31 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
             this.close();
         }
         renderBackground(context);
-        if (!lock1s) renderRotatedLocks(context, LOCK_AVAILABLE, lock1a);
-        if (!lock2s) renderRotatedLocks(context, LOCK_AVAILABLE, lock2a);
-        if (!lock3s) renderRotatedLocks(context, LOCK_AVAILABLE, lock3a);
-        if (!lock4s) renderRotatedLocks(context, LOCK_AVAILABLE, lock4a);
-        if (!lock5s) renderRotatedLocks(context, LOCK_AVAILABLE, lock5a);
-        if (!lock6s) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_AVAILABLE, lock6a);
-        if (!lock7s) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_AVAILABLE, lock7a);
-        if (!lock8s) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_AVAILABLE, lock8a);
-        if (!lock9s) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_AVAILABLE, lock9a);
-        if (!lock10s) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_AVAILABLE, lock10a);
-        if (!lock11s) if (lockLevel == 4) renderRotatedLocks(context, LOCK_AVAILABLE, lock11a);
-        if (!lock12s) if (lockLevel == 4) renderRotatedLocks(context, LOCK_AVAILABLE, lock12a);
+        if (!locks[1]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[1]);
+        if (!locks[2]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[2]);
+        if (!locks[3]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[3]);
+        if (!locks[4]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[4]);
+        if (!locks[5]) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[5]);
+        if (!locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[6]);
+        if (!locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[7]);
+        if (!locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[8]);
+        if (!locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[9]);
+        if (!locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[10]);
+        if (!locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[11]);
+        if (!locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_AVAILABLE, lockAngles[12]);
 
-        if (lock1s) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock1a);
-        if (lock2s) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock2a);
-        if (lock3s) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock3a);
-        if (lock4s) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock4a);
-        if (lock5s) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock5a);
-        if (lock6s) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock6a);
-        if (lock7s) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock7a);
-        if (lock8s) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock8a);
-        if (lock9s) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock9a);
-        if (lock10s) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock10a);
-        if (lock11s) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock11a);
-        if (lock12s) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNAVAILABLE, lock12a);
+        if (locks[1]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[1]);
+        if (locks[2]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[2]);
+        if (locks[3]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[3]);
+        if (locks[4]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[4]);
+        if (locks[5]) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[5]);
+        if (locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[6]);
+        if (locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[7]);
+        if (locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[8]);
+        if (locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[9]);
+        if (locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[10]);
+        if (locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[11]);
+        if (locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNAVAILABLE, lockAngles[12]);
 
         super.render(context, mouseX, mouseY, delta);
     }
