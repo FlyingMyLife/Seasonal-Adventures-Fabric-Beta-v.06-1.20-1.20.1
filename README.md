@@ -5,10 +5,6 @@
 
 > ### Changelog
 
--  [+] ATM
- 
--  [+] V currency
- 
--  [+] Lockpicking system
+-  **[/] Critical-bug fixed**
 
-- [+] Lockpicks
+-  **[/] Massive JDH Structure update**
