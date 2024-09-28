@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=north,upper=false": {
+      "model": "seasonal_adventures:block/advanced_automaton_body_bottom" },
+    "facing=east,upper=false": {
+      "model": "seasonal_adventures:block/advanced_automaton_body_bottom",
+      "y": 90 },
+    "facing=south,upper=false": {
+      "model": "seasonal_adventures:block/advanced_automaton_body_bottom",
+      "y": 180 },
+    "facing=west,upper=false": {
+      "model": "seasonal_adventures:block/advanced_automaton_body_bottom",
+      "y": 270 },
+    "facing=north,upper=true": {
+      "model": "seasonal_adventures:block/advanced_automaton_body_top" },
+    "facing=east,upper=true": {
+      "model": "seasonal_adventures:block/advanced_automaton_body_top",
+      "y": 90 },
+    "facing=south,upper=true": {
+      "model": "seasonal_adventures:block/advanced_automaton_body_top",
+      "y": 180 },
+    "facing=west,upper=true": {
+      "model": "seasonal_adventures:block/advanced_automaton_body_top",
+      "y": 270 }
+  }
+}

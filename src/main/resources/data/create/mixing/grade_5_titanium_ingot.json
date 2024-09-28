@@ -1,0 +1,18 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "superheated",
+  "ingredients": [
+    {
+      "item": "seasonal_adventures:titanium_ingot"
+    },
+    {
+      "item": "seasonal_adventures:aluminium_ingot"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "item": "seasonal_adventures:grade_5_titanium_ingot"
+    }
+  ]
+}

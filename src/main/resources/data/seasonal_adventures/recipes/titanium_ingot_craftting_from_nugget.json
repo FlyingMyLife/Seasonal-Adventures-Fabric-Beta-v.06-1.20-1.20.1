@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "seasonal_adventures:titanium_nugget"
+    }
+  },
+  "result": {
+    "item": "seasonal_adventures:titanium_ingot"
+  }
+}

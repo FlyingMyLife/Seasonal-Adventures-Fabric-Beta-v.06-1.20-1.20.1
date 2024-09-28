@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "flying_machines:deepslate_titanium_ore",
-    "flying_machines:titanium_ore",
-    "flying_machines:deepslate_aluminium_ore",
-    "flying_machines:aluminium_ore",
-    "flying_machines:deepslate_lithium_ore",
-    "flying_machines:lithium_ore"
+    "seasonal_adventures:deepslate_titanium_ore",
+    "seasonal_adventures:titanium_ore",
+    "seasonal_adventures:deepslate_aluminium_ore",
+    "seasonal_adventures:aluminium_ore",
+    "seasonal_adventures:deepslate_lithium_ore",
+    "seasonal_adventures:lithium_ore"
   ]
 }

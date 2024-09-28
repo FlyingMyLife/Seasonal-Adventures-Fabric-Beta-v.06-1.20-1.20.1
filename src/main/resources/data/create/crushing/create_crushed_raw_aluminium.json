@@ -1,0 +1,22 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "seasonal_adventures:raw_aluminium"
+    }
+  ],
+  "processingTime": 400,
+  "results": [
+    {
+      "item": "seasonal_adventures:crushed_raw_aluminium"
+    },
+    {
+      "item": "seasonal_adventures:crushed_raw_aluminium",
+      "chance": 0.2
+    },
+    {
+      "chance": 0.65,
+      "item": "create:experience_nugget"
+    }
+  ]
+}

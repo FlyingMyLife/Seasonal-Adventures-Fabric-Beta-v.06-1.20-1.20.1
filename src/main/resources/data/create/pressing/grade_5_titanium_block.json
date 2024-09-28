@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "seasonal_adventures:grade_5_titanium_ingot"
+    }
+  },
+  "result": {
+    "item": "seasonal_adventures:grade_5_titanium_block"
+  }
+}

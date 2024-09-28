@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "flying_machines:titanium_block",
-    "flying_machines:grade_5_titanium_block"
+    "seasonal_adventures:titanium_block",
+    "seasonal_adventures:grade_5_titanium_block"
   ]
 }

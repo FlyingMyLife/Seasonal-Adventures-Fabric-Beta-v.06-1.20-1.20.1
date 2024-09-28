@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "seasonal_adventures:1v",
+    "seasonal_adventures:10v",
+    "seasonal_adventures:50v",
+    "seasonal_adventures:100v",
+    "seasonal_adventures:500v",
+    "seasonal_adventures:1000v",
+    "seasonal_adventures:10000v"
+
+  ]
+}

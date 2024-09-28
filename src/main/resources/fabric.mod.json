@@ -1,10 +1,10 @@
 {
 	"schemaVersion": 1,
-	"id": "flying_machines",
-	"version": "v0.6 BETA",
+	"id": "seasonal_adventures",
+	"version": "v0.6.2",
 	"name": "Seasonal Adventures",
 	"description": "Мод по сезонам Лололошки |BETA|\nобновление Replenish 'n' Unlock",
-	"icon": "assets/flying_machines/icon.png",
+	"icon": "assets/seasonal_adventures/icon.png",
 	"authors": [
 		"Main developer: FlyingMyLife",
 		"Models and Textures: ModernDel"
@@ -16,11 +16,15 @@
 	"license": "MIT",
 	"environment": "*",
 	"entrypoints": {
-		"main": ["net.packages.flying_machines.flying_machines"],
-		"client": ["net.packages.flying_machines.flying_machinesClient"]
+		"main": [
+			"net.packages.seasonal_adventures.SeasonalAdventures"
+		],
+		"client": [
+			"net.packages.seasonal_adventures.SeasonalAdventuresClient"
+		]
 	},
 	"mixins": [
-		"flying_machines.mixins.json"
+		"seasonal_adventures.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.10",

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "seasonal_adventures:block/energy_injector"
+    }
+  }
+}

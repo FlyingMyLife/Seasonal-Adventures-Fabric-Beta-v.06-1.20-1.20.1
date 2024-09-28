@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "seasonal_adventures:block/animated_block"
+    }
+  }
+}

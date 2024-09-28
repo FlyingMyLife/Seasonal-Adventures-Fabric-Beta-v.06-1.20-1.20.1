@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "bb",
+    "B "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bowl"
+    },
+    "b": {
+      "item": "minecraft:beef"
+    }
+  },
+  "result": {
+    "item": "seasonal_adventures:beef_tartare",
+    "count": 2
+  },
+  "conditions": [
+    {
+      "condition": "seasonal_adventures:custom_condition",
+      "value": false
+    }
+  ]
+}
