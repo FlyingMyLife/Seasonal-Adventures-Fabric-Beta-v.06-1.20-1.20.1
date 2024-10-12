@@ -3,9 +3,12 @@ package net.packages.seasonal_adventures.gui.widgets;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.sound.SoundInstance;
+import net.minecraft.client.sound.SoundManager;
 import net.minecraft.util.Identifier;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.util.math.MatrixStack;
+import net.packages.seasonal_adventures.sound.Sounds;
 
 public class RotatingLockpick extends TexturedButtonWidget {
     private float rotationAngle = 0.0f;
@@ -19,6 +22,10 @@ public class RotatingLockpick extends TexturedButtonWidget {
     }
     public void toggleRotationDirection() {
         this.isCounterClockwise = !this.isCounterClockwise;
+    }
+
+    @Override
+    public void playDownSound(SoundManager soundManager) {
     }
 
     public float getRotationAngle() {

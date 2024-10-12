@@ -3,11 +3,16 @@
     "subtitle": "sounds.seasonal_adventures.dylan_hurt_sound",
     "sounds": [
       "seasonal_adventures:dylan_hurt_sound_0"
-    ],
-    "pick_pin": {
-      "sounds": [
-        "seasonal_adventures:pick_pin"
-      ]
-    }
-  }
+    ]
+  },
+  "pick_pin": {
+    "sounds": [
+      "seasonal_adventures:pick_pin_0"
+    ]
+  },
+  "lockpick_unlock": {
+  "sounds": [
+    "seasonal_adventures:lockpick_unlock_0"
+  ]
+}
 }

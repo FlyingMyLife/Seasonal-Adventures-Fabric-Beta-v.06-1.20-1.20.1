@@ -88,7 +88,7 @@ public class PlayerCardHandler {
         }
     }
 
-    private static JsonObject getPlayerObject(JsonArray playersArray, ServerPlayerEntity player) {
+    private static JsonObject getPlayerObject(JsonArray playersArray, PlayerEntity player) {
         for (JsonElement element : playersArray) {
             JsonObject playerObject = element.getAsJsonObject();
             if (playerObject.get("uuid").getAsString().equals(player.getUuidAsString())) {
@@ -183,16 +183,12 @@ public class PlayerCardHandler {
 
     public static boolean playerHasCard(PlayerEntity player) {
         JsonObject json = loadJsonFromFile();
-
         JsonArray playersArray = json.getAsJsonArray("players");
-        Boolean hasCard = isPlayerAlreadyHasCard(playersArray, (ClientPlayerEntity) player);
-
-        if (hasCard == null) {
-            hasCard = false;
+        JsonObject existingPlayerObject = getPlayerObject(playersArray, player);
+        if (existingPlayerObject != null) {
+            return true;
         }
-
-        LOGGER.log(Level.INFO, "Player " + player.getName().getString() + " has card: " + hasCard);
-        return hasCard;
+        return false;
     }
 
     public static File getPlayerCardsFile() {

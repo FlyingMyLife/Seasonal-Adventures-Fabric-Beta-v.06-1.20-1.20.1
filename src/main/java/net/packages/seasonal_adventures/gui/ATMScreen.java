@@ -21,9 +21,15 @@ import net.packages.seasonal_adventures.network.CardGivenPacket;
 import net.packages.seasonal_adventures.network.ItemGivenPacket;
 import net.packages.seasonal_adventures.network.SpecificItemRemovalPacket;
 
+import javax.swing.text.Style;
+
 import static net.packages.seasonal_adventures.util.InventoryUtils.getItemAmount;
 
 public class ATMScreen extends HandledScreen<ATMScreenHandler> {
+    private int BackgroundWidth;
+    private int BackgroundHeight;
+    private int BackgroundX;
+    private int BackgroundY;
     private static final Identifier BACKGROUND_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/atm_background.png");
     private static final Identifier REPLENISH_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/replenish_button.png");
     private static final Identifier WITHDRAW_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/withdraw_button.png");
@@ -43,7 +49,6 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private CustomTexturedButtonWidget minus_50_button;
     private CustomTexturedButtonWidget enter_button;
     private TextWidget textB;
-    private String final_text = "";
     public ATMScreen(ATMScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }
@@ -51,6 +56,18 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     @Override
     protected void init() {
         super.init();
+        BackgroundWidth = (this.width/4)*2;
+        BackgroundHeight = (this.height/6)*4;
+        BackgroundX = (this.width - BackgroundWidth) / 2;
+        BackgroundY = (this.height - BackgroundHeight) / 2;
+
+        int topButtonsWidth = (int) (BackgroundWidth / 3.7101f);
+        int topButtonsHeight = BackgroundHeight / 8;
+
+        int replenishButtonX = (int) (BackgroundX + (BackgroundWidth / 4.7f));
+        int replenishButtonY = (int) (BackgroundY + (BackgroundHeight / 8.7f));
+
+
         ClientPlayerEntity player = this.client.player;
         numericTextFieldWidget = new NumericTextFieldWidget(textRenderer, 209, 118, 62, 17, Text.literal("Amount"));
         numericTextFieldWidget.setText("50");
@@ -60,17 +77,17 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
 
         replenish_button = addDrawableChild(
                 new CustomTexturedButtonWidget(
-                        165,
-                        60,
-                        69,
-                        24,
+                        replenishButtonX,
+                        replenishButtonY,
+                        topButtonsWidth,
+                        topButtonsHeight,
                         0,
                         0,
                         20,
                         REPLENISH_BUTTON,
                         UN_REPLENISH_BUTTON,
-                        69,
-                        24,
+                        topButtonsWidth,
+                        topButtonsHeight,
                         button -> handle_replenish(),
                         Text.translatable("gui.button.replenish")
                 ));
@@ -94,15 +111,15 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                 new CustomTexturedButtonWidget(
                         246,
                         60,
-                        69,
-                        24,
+                        topButtonsWidth,
+                        topButtonsHeight,
                         0,
                         0,
                         24,
                         WITHDRAW_BUTTON,
                         UN_WITHDRAW_BUTTON,
-                        69,
-                        24,
+                        topButtonsWidth,
+                        topButtonsHeight,
                         button -> handle_withdraw(),
                         Text.translatable("gui.button.withdraw")
                 ));
@@ -234,7 +251,6 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
 
                     if (enteredValue == 0)
                     {
-                        if (fcount <= 8) {
                         int oldValue = (int) getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack());
                         Text currentT = Text.translatable("message.atm.success.current_balance").formatted(Formatting.AQUA);
                         Text balanceT = Text.literal("" + (oldValue + valueToEnter)).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE);
@@ -248,8 +264,6 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V500, used500);
                         SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V1000, used1000);
                         SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V10000, used10000);
-                        }
-                        fcount++;
                         this.close();
                     } else
                     {
@@ -420,9 +434,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     public void renderBackground(DrawContext context) {
         super.renderBackground(context);
         RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-        int x = (this.width - 256) / 2;
-        int y = (this.height - 192) / 2;
-        context.drawTexture(BACKGROUND_TEXTURE, x, y, 0, 0, 256, 192, 256, 192);
+        context.drawTexture(BACKGROUND_TEXTURE, BackgroundX, BackgroundY, 0, 0, BackgroundWidth, BackgroundHeight, BackgroundWidth, BackgroundHeight);
     }
 
     @Override

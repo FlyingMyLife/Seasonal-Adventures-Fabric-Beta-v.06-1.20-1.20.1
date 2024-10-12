@@ -9,6 +9,7 @@ import net.packages.seasonal_adventures.SeasonalAdventures;
 public class Sounds {
     public static final SoundEvent DYLAN_HURT_SOUND = registerSoundEvent("dylan_hurt_sound");
     public static final SoundEvent PICK_PIN_SOUND = registerSoundEvent("pick_pin");
+    public static final SoundEvent LOCKPICK_UNLOCK_SOUND = registerSoundEvent("lockpick_unlock");
 
     private static SoundEvent registerSoundEvent(String name) {
         Identifier id = new Identifier(SeasonalAdventures.MOD_ID, name);

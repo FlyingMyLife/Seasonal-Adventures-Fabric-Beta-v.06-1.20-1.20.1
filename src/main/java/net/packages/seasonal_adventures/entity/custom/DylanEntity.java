@@ -34,7 +34,6 @@ import static java.lang.Boolean.TRUE;
 public class DylanEntity extends AnimalEntity {
 
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(DylanEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Integer> RELATIONSHIP_LEVEL = DataTracker.registerData(DylanEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> IMMUNE_TO_DAMAGE = DataTracker.registerData(DylanEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> BROKEN_TEXTURE = DataTracker.registerData(DylanEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     public final AnimationState attackAnimationState = new AnimationState();
@@ -44,7 +43,6 @@ public class DylanEntity extends AnimalEntity {
     public int relationship_level;
     public DylanEntity(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
-        this.relationship_level = 45;
     }
     private void setupAnimationStates() {
         if (this.idleAnimationTimeout <= 0) {
@@ -99,7 +97,6 @@ public class DylanEntity extends AnimalEntity {
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(ATTACKING, false);
-        this.dataTracker.startTracking(RELATIONSHIP_LEVEL, 0);
         this.dataTracker.startTracking(BROKEN_TEXTURE, false);
         this.dataTracker.startTracking(IMMUNE_TO_DAMAGE, false);
     }
@@ -127,18 +124,6 @@ public class DylanEntity extends AnimalEntity {
     public void setAttacking(boolean attacking) {
         this.dataTracker.set(ATTACKING, attacking);
     }
-    public int getRelationship_level() {
-        return this.dataTracker.get(RELATIONSHIP_LEVEL);
-    }
-    public int setRelationshipLevel(int relationshipLevel) {
-        if (relationshipLevel < 0) {
-            relationship_level = 0;
-            this.dataTracker.set(RELATIONSHIP_LEVEL, relationshipLevel);
-        } else if (relationshipLevel > 100) {relationshipLevel = 100;
-            this.dataTracker.set(RELATIONSHIP_LEVEL, relationshipLevel);
-        } else {this.dataTracker.set(RELATIONSHIP_LEVEL, relationshipLevel);}
-        return relationshipLevel;
-    }
     public boolean getBrokenTexture;
     @Override
     public boolean isAttacking() {
@@ -148,13 +133,7 @@ public class DylanEntity extends AnimalEntity {
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return Entities.DYLAN.create(world);
-    }
-
-    @Nullable
-    @Override
-    protected SoundEvent getDeathSound() {
-        return super.getDeathSound();
+        return null;
     }
 
     @Nullable
@@ -166,7 +145,6 @@ public class DylanEntity extends AnimalEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putInt("relationship_level", this.getRelationship_level());
         nbt.putBoolean("ImmuneToDamage", this.isImmuneToDamage());
         nbt.putBoolean("isBroken", this.dataTracker.get(BROKEN_TEXTURE));
     }
@@ -174,7 +152,6 @@ public class DylanEntity extends AnimalEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.setRelationshipLevel(nbt.getInt("relationship_level"));
         this.setImmuneToDamage(nbt.getBoolean("ImmuneToDamage"));
         this.dataTracker.set(BROKEN_TEXTURE, nbt.getBoolean("isBroken"));
     }
