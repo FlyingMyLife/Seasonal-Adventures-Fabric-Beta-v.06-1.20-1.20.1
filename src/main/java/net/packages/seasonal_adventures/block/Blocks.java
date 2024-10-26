@@ -8,10 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import net.packages.seasonal_adventures.block.custom.AdvancedAutomatonBodyBlock;
-import net.packages.seasonal_adventures.block.custom.AnimatedBlock;
-import net.packages.seasonal_adventures.block.custom.EnergyInjector;
-import net.packages.seasonal_adventures.block.custom.LaptopBlock;
+import net.packages.seasonal_adventures.block.custom.*;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.minecraft.block.Block;
 import net.minecraft.block.ExperienceDroppingBlock;
@@ -28,9 +25,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Blocks {
-    private static final List<String> itemsWithNoFunctional = Arrays.asList("laptop",
-            "photolithography_machine"
-    );
+    //Locked Chests
+    public static final Block LOCKED_CHEST_LVL_COPPER = registerBlock("locked_chest_lvl_copper",
+            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 0));
+
 
     public static final Block TITANIUM_BLOCK = registerBlock("titanium_block",
             new Block(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.NETHERITE_BLOCK).sounds(BlockSoundGroup.NETHERITE)));
@@ -65,16 +63,6 @@ public class Blocks {
     private static Item registerBlockItem(String name, Block block) {
             return Registry.register(Registries.ITEM, new Identifier(SeasonalAdventures.MOD_ID, name),
                     new BlockItem(block, new FabricItemSettings()) {
-                        @Override
-                        public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-                            if (itemsWithNoFunctional.contains(name)) {
-                                if (Screen.hasShiftDown()) {
-                                    tooltip.add(Text.translatable("tooltip.seasonal_adventures.without_functional.detailed").formatted(Formatting.GRAY));
-                                } else {
-                                    tooltip.add(Text.translatable("tooltip.seasonal_adventures.without_functional.hint").formatted(Formatting.RED));
-                                }
-                            }
-                        }
             });
     }
 

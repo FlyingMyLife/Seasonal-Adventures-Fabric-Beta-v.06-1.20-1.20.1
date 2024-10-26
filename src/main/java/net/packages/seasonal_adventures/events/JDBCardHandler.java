@@ -11,6 +11,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.WorldSavePath;
+import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.item.custom.CardItem;
 
 import java.io.*;
@@ -18,14 +19,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class PlayerCardHandler {
+public class JDBCardHandler {
+
     private static final Gson gson = new Gson();
     private static boolean initialized = false;
     private static File playerCardsFile;
-    private static final Logger LOGGER = Logger.getLogger("PlayerCardHandler");
 
     public static void initialize(MinecraftServer server, ServerWorld world) {
         ensureInitialized(server);
@@ -62,9 +61,9 @@ public class PlayerCardHandler {
 
         try (FileWriter writer = new FileWriter(playerCardsFile)) {
             gson.toJson(defaultJson, writer);
-            LOGGER.log(Level.INFO, "Player cards file created with default structure: " + playerCardsFile.getAbsolutePath());
+            SeasonalAdventures.LOGGER.info("Cards file created with default structure: " + playerCardsFile.getAbsolutePath());
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error creating default player cards file", e);
+            SeasonalAdventures.LOGGER.error("Error creating default player cards file", e);
         }
     }
 
@@ -77,7 +76,7 @@ public class PlayerCardHandler {
                 createDefaultFile();
             }
         } catch (IOException | JsonSyntaxException e) {
-            LOGGER.log(Level.SEVERE, "Error reading or parsing player cards file", e);
+            SeasonalAdventures.LOGGER.error( "Error reading or parsing player cards file", e);
             createDefaultFile();
         }
     }
@@ -102,22 +101,22 @@ public class PlayerCardHandler {
         File file = getPlayerCardsFile();
 
         if (file == null) {
-            System.err.println("Player cards file is null.");
+            SeasonalAdventures.LOGGER.error("Player cards file is null.");
             return new JsonObject();
         }
 
         if (!file.exists()) {
-            System.err.println("Player cards file does not exist at: " + file.getAbsolutePath());
+            SeasonalAdventures.LOGGER.error("Player cards file does not exist at: " + file.getAbsolutePath());
             return new JsonObject();
         }
 
         try (FileReader reader = new FileReader(file)) {
             return JsonParser.parseReader(reader).getAsJsonObject();
         } catch (FileNotFoundException e) {
-            System.err.println("Error reading player cards file: " + e.getMessage());
+            SeasonalAdventures.LOGGER.error("Error reading player cards file: " + e.getMessage());
             return new JsonObject();
         } catch (IOException e) {
-            System.err.println("IO Error: " + e.getMessage());
+            SeasonalAdventures.LOGGER.error("IO Error: " + e.getMessage());
             return new JsonObject();
         }
     }
@@ -129,7 +128,7 @@ public class PlayerCardHandler {
         try (FileWriter writer = new FileWriter(playerCardsFile)) {
             gson.toJson(json, writer);
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error writing to player cards file", e);
+            SeasonalAdventures.LOGGER.error( "Error writing to player cards file", e);
             createFileIfNotExists();
         }
     }
@@ -200,7 +199,7 @@ public class PlayerCardHandler {
             String content = new String(Files.readAllBytes(Paths.get(getPlayerCardsFile().getPath())));
             return JsonParser.parseString(content).getAsJsonObject();
         } catch (IOException e) {
-            LOGGER.severe("Failed to read player_cards file");
+            SeasonalAdventures.LOGGER.error("Failed to read player_cards file");
             return new JsonObject();
         }
     }

@@ -3,23 +3,22 @@ package net.packages.seasonal_adventures.gui.widgets;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.util.Identifier;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.util.math.MatrixStack;
-import net.packages.seasonal_adventures.sound.Sounds;
 
-public class RotatingLockpick extends TexturedButtonWidget {
+public class RotatableLockpick extends TexturedButtonWidget {
     private float rotationAngle = 0.0f;
-    private float speedMultiplier;
+    private final float speedMultiplier;
     private boolean isCounterClockwise;
+    private float accumulatedTime = 0.0f;
 
-    public RotatingLockpick(int x, int y, int width, int height, int u, int v, int hoverV, Identifier texture, int textureWidth, int textureHeight, float speedMultiplier, PressAction onPress) {
+    public RotatableLockpick(int x, int y, int width, int height, int u, int v, int hoverV, Identifier texture, int textureWidth, int textureHeight, float speedMultiplier, PressAction onPress) {
         super(x, y, width, height, u, v, hoverV, texture, textureWidth, textureHeight, onPress);
         this.speedMultiplier = speedMultiplier;
-        this.isCounterClockwise = isCounterClockwise;
     }
+
     public void toggleRotationDirection() {
         this.isCounterClockwise = !this.isCounterClockwise;
     }
@@ -28,19 +27,37 @@ public class RotatingLockpick extends TexturedButtonWidget {
     public void playDownSound(SoundManager soundManager) {
     }
 
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        updateRotation(delta);
+        super.render(context, mouseX, mouseY, delta);
+    }
+
+    private void updateRotation(float delta) {
+        accumulatedTime += delta;
+
+        while (accumulatedTime >= 1.0f / 60.0f) {
+            float rotationAmount = speedMultiplier / 60.0f;
+            if (!isCounterClockwise) {
+                rotationAngle += rotationAmount;
+            } else {
+                rotationAngle -= rotationAmount;
+            }
+
+            rotationAngle %= 360.0f;
+            if (rotationAngle < 0) {
+                rotationAngle += 360.0f;
+            }
+            accumulatedTime -= 1.0f / 60.0f;
+        }
+    }
+
     public float getRotationAngle() {
         return this.rotationAngle;
     }
+
     @Override
     public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
-        if(!isCounterClockwise) rotationAngle += 0.7f * speedMultiplier;
-        if(isCounterClockwise) rotationAngle -= 0.7f * speedMultiplier;
-
-        rotationAngle %= 360.0f;
-        if (rotationAngle < 0) {
-            rotationAngle += 360.0f;
-        }
-
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
@@ -60,5 +77,4 @@ public class RotatingLockpick extends TexturedButtonWidget {
         matrixStack.pop();
         RenderSystem.disableBlend();
     }
-
 }

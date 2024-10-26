@@ -11,6 +11,7 @@ import net.packages.seasonal_adventures.block.Blocks;
 
 public class ModBlockEntities {
     public static BlockEntityType<AnimatedBlockEntity> ANIMATED_BLOCK_ENTITY;
+    public static BlockEntityType<LockedChestLvLCopperBlockEntity> LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY;
     public static BlockEntityType<EnergyInjectorBlockEntity>ENERGY_INJECTOR_BLOCK_ENTITY;
 
     public static void registerBlockEntities() {
@@ -18,6 +19,8 @@ public class ModBlockEntities {
               FabricBlockEntityTypeBuilder.create(AnimatedBlockEntity::new, Blocks.ANIMATED_BLOCK).build());
         ENERGY_INJECTOR_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SeasonalAdventures.MOD_ID,"energy_injector_block_entity"),
                 FabricBlockEntityTypeBuilder.create(EnergyInjectorBlockEntity::new, Blocks.ENERGY_INJECTOR_BLOCK).build());
+        LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SeasonalAdventures.MOD_ID,"locked_block_lvl_copper_block_entity"),
+                FabricBlockEntityTypeBuilder.create(LockedChestLvLCopperBlockEntity::new, Blocks.LOCKED_CHEST_LVL_COPPER).build());
     }
 
 }

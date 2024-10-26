@@ -15,7 +15,6 @@ public class NumericTextFieldWidget extends TextFieldWidget {
     @Override
     public boolean charTyped(char chr, int keyCode) {
         if (chr == '\n') {
-            this.setFocused(false);
             return true;
         }
 

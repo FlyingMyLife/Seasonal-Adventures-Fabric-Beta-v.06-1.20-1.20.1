@@ -6,7 +6,7 @@ public class EventHandler {
     public static void initialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             for (ServerWorld world : server.getWorlds()) {
-                PlayerCardHandler.initialize(server, world);
+                JDBCardHandler.initialize(server, world);
             }
         });
     }

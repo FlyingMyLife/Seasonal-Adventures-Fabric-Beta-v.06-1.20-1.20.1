@@ -15,12 +15,17 @@ import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.item.custom.*;
 
 public class Items {
+
+    //Замки
+    public static final Item COPPER_LOCK = registerItem("copper_lock", new LockItem(new FabricItemSettings(), 0));
+
+    //Броня ABPS
     public static final Item ABP_HELMET = registerItem("abp_helmet", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.HELMET, new FabricItemSettings()));
     public static final Item ABP_CHESTPLATE = registerItem("abp_chestplate", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.CHESTPLATE, new FabricItemSettings()));
     public static final Item ABP_LEGGINGS = registerItem("abp_leggings", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.LEGGINGS, new FabricItemSettings()));
     public static final Item ABP_BOOTS = registerItem("abp_boots", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.BOOTS, new FabricItemSettings()));
 
-    public static final Item AUTOMATON_SKIN = registerItem("automaton_skin", new Item(new FabricItemSettings()));
+    //V предметы
     public static final Item V1 = registerItem("1v", new VItems(new FabricItemSettings(), 1));
     public static final Item V5 = registerItem("5v", new VItems(new FabricItemSettings(), 5));
     public static final Item V10 = registerItem("10v", new VItems(new FabricItemSettings().rarity(Rarity.UNCOMMON), 10));
@@ -29,6 +34,8 @@ public class Items {
     public static final Item V500 = registerItem("500v", new VItems(new FabricItemSettings().rarity(Rarity.RARE), 500));
     public static final Item V1000 = registerItem("1000v", new VItems(new FabricItemSettings().rarity(Rarity.EPIC), 1000));
     public static final Item V10000 = registerItem("10000v", new VItems(new FabricItemSettings().rarity(Rarity.EPIC), 10000));
+
+    public static final Item AUTOMATON_SKIN = registerItem("automaton_skin", new Item(new FabricItemSettings()));
     public static final Item SYS_CABLE = registerItem("sys_cable", new Item(new FabricItemSettings()));
     public static final Item DYLAN_MK1_SCHEME = registerItem("dylan_mk1_scheme", new Item(new FabricItemSettings().maxCount(1).rarity(Rarity.UNCOMMON)));
     public static final Item CENTRAL_AI_PROCESSOR = registerItem("central_ai_processor", new Item(new FabricItemSettings().maxCount(1).rarity(Rarity.RARE).fireproof()));

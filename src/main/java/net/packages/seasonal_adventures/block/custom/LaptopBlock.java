@@ -1,11 +1,16 @@
 package net.packages.seasonal_adventures.block.custom;
 
 import net.minecraft.block.*;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -15,6 +20,9 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LaptopBlock extends HorizontalFacingBlock {
     public static final BooleanProperty OPEN = BooleanProperty.of("open");
@@ -27,18 +35,21 @@ public class LaptopBlock extends HorizontalFacingBlock {
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(OPEN, OFF, FACING);
+    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+        if (Screen.hasShiftDown()) {
+            tooltip.add(Text.translatable("tooltip.seasonal_adventures.without_functional.detailed").formatted(Formatting.GRAY));
+        } else {
+            tooltip.add(Text.translatable("tooltip.seasonal_adventures.without_functional.hint").formatted(Formatting.RED));
+        }
     }
 
     @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(OPEN, OFF, FACING);
+    }
+    @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        Direction playerFacing = ctx.getPlayerLookDirection().getOpposite();
-        if (playerFacing.getAxis().isHorizontal()) {
-            return this.getDefaultState().with(FACING, playerFacing);
-        } else {
-            return this.getDefaultState().with(FACING, Direction.NORTH);
-        }
+        return (BlockState)this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Override
@@ -62,9 +73,6 @@ public class LaptopBlock extends HorizontalFacingBlock {
         return BlockRenderType.MODEL;
     }
 
-    public static VoxelShape getCollisionShape() {
-        return COLLISION_SHAPE;
-    }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {

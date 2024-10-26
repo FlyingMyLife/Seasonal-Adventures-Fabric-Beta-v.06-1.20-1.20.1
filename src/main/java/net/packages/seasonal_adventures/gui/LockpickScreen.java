@@ -1,29 +1,37 @@
 package net.packages.seasonal_adventures.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.packages.seasonal_adventures.SeasonalAdventures;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.RaycastContext;
+import net.packages.seasonal_adventures.block.entity.LockedChestLvLCopperBlockEntity;
 import net.packages.seasonal_adventures.gui.handlers.LockpickScreenHandler;
-import net.packages.seasonal_adventures.gui.widgets.RotatingLockpick;
+import net.packages.seasonal_adventures.gui.widgets.RotatableLockpick;
 import net.packages.seasonal_adventures.item.Items;
+import net.packages.seasonal_adventures.network.RestoreChestPacket;
 import net.packages.seasonal_adventures.network.SpecificItemRemovalPacket;
 import net.packages.seasonal_adventures.sound.Sounds;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
-public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
+public class LockpickScreen extends HandledScreen<LockpickScreenHandler> implements NamedScreenHandlerFactory {
 
-    int tick = 0;
     private int lockLevel;
 
     private int lockCount;
@@ -32,11 +40,11 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
 
     private boolean [] locks = new boolean[13];
 
-    private float lockpickspeed = 1.0f;
+    private float lockpickSpeed = 1.0f;
 
     private boolean methodCalled = false;
 
-    private RotatingLockpick lockpick;
+    private RotatableLockpick lockpick;
     
     private static final Identifier LOCKPICK_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick.png");
     private static final Identifier LOCK_UNACTIVATED = new Identifier("seasonal_adventures", "textures/gui/lock_unactivated.png");
@@ -46,11 +54,11 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
     public LockpickScreen(LockpickScreenHandler handler, PlayerInventory inventory, Text title, int lockLevel) {
         super(handler, inventory, title);
         this.lockLevel = lockLevel;
-        if (lockLevel == 0) this.lockpickspeed = 1.4f;
-        if (lockLevel == 1) this.lockpickspeed = 2.2f;
-        if (lockLevel == 2) this.lockpickspeed = 3.5f;
-        if (lockLevel == 3) this.lockpickspeed = 4.6f;
-        if (lockLevel == 4) this.lockpickspeed = 5.2f;
+        if (lockLevel == 0) this.lockpickSpeed = 5.0f;
+        if (lockLevel == 1) this.lockpickSpeed = 12.2f;
+        if (lockLevel == 2) this.lockpickSpeed = 18.4f;
+        if (lockLevel == 3) this.lockpickSpeed = 26.6f;
+        if (lockLevel == 4) this.lockpickSpeed = 35.8f;
     }
 
     @Override
@@ -60,10 +68,10 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         int x = this.width / 2 - buttonSize / 2;
         int y = this.height / 2 - buttonSize / 2;
 
-        this.lockpick = new RotatingLockpick(
+        this.lockpick = new RotatableLockpick(
                 x, y, buttonSize, buttonSize,
                 0, 0, 0, LOCKPICK_TEXTURE, 192, 192,
-                lockpickspeed,
+                lockpickSpeed,
                 button -> onClick()
         );
 
@@ -87,11 +95,6 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         this.locks[lock] = true;
         this.lockpick.toggleRotationDirection();
         this.lockCount--;
-        if (lockCount <= 0) {
-            playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-            this.close();
-            this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-        }
     }
     private void playSound(SoundEvent sound, float pitch) {
         assert this.client != null;
@@ -108,6 +111,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         );
     }
     private void onClick() {
+        assert this.client.player != null;
         int currentAngle = (int) this.lockpick.getRotationAngle();
         if (currentAngle <= lockAngles[1]+10 && currentAngle >= lockAngles[1]-10 && !locks[1] && lockLevel <= 2) {
             onLockClick(1);
@@ -125,101 +129,45 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
             onLockClick(5);
         } else if (currentAngle <= lockAngles[6]+10 && currentAngle >= lockAngles[6]-10 && !locks[6]) {
             if (lockLevel >= 1) {
-                playSound(Sounds.PICK_PIN_SOUND, 0.9f);
-                this.locks[6] = true;
-                this.lockpick.toggleRotationDirection();
-                this.lockCount--;
+                onLockClick(6);
             } else {
                 SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-            if (lockCount <= 0) {
-                playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
             }
         } else if (currentAngle <= lockAngles[7]+10 && currentAngle >= lockAngles[7]-10 && !locks[7]) {
             if (lockLevel >= 1) {
-                playSound(Sounds.PICK_PIN_SOUND, 0.9f);
-                this.locks[7] = true;
-                this.lockpick.toggleRotationDirection();
-                this.lockCount--;
+                onLockClick(7);
             } else {
                 SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-            if (lockCount <= 0) {
-                playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
             }
         } else if (currentAngle <= lockAngles[8]+10 && currentAngle >= lockAngles[8]-10 && !locks[8]) {
             if (lockLevel >= 2) {
-                playSound(Sounds.PICK_PIN_SOUND, 0.9f);
-                this.locks[8] = true;
-                this.lockpick.toggleRotationDirection();
-                this.lockCount--;
+                onLockClick(8);
             } else {
                 SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-            if (lockCount <= 0) {
-                playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
             }
         } else if (currentAngle <= lockAngles[9]+10 && currentAngle >= lockAngles[9]-10 && !locks[9]) {
             if (lockLevel >= 3) {
-                playSound(Sounds.PICK_PIN_SOUND, 0.9f);
-                this.locks[9] = true;
-                this.lockpick.toggleRotationDirection();
-                this.lockCount--;
+                onLockClick(9);
             } else {
                 SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-            if (lockCount <= 0) {
-                playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
             }
         } else if (currentAngle <= lockAngles[9]+10 && currentAngle >= lockAngles[9]-10 && !locks[10]) {
             if (lockLevel >= 3) {
-                playSound(Sounds.PICK_PIN_SOUND, 0.9f);
-                this.locks[10] = true;
-                this.lockpick.toggleRotationDirection();
-                this.lockCount--;
+                onLockClick(10);
             } else {
                 SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-            if (lockCount <= 0) {
-                playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
             }
         } else if (currentAngle <= lockAngles[11]+10 && currentAngle >= lockAngles[11]-10 && !locks[11]) {
             if (lockLevel == 4) {
-                playSound(Sounds.PICK_PIN_SOUND, 0.9f);
-                this.locks[11] = true;
-                this.lockpick.toggleRotationDirection();
-                this.lockCount--;
+                onLockClick(11);
             } else {
                 SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-            if (lockCount <= 0) {
-                playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
             }
         } else if (currentAngle <= lockAngles[12]+10 && currentAngle >= lockAngles[12]-10 && !locks[12]) {
             if (lockLevel == 4) {
-                playSound(Sounds.PICK_PIN_SOUND, 0.9f);
-                this.locks[12] = true;
-                this.lockpick.toggleRotationDirection();
-                this.lockCount--;
+                onLockClick(12);
             } else {
                 SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-            if (lockCount <= 0) {
-                playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-                this.close();
-                this.client.player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
             }
         } else {
             playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.6f);
@@ -348,14 +296,36 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         return true;
     }
 
+    private static BlockPos playerFacingBlock(PlayerEntity player) {
+        BlockHitResult raycastedBlock = player.getWorld().raycast(new RaycastContext(
+                player.getCameraPosVec(1.0F),
+                player.getCameraPosVec(1.0F).add(player.getRotationVec(1.0F).multiply(4.0f)),
+                RaycastContext.ShapeType.OUTLINE,
+                RaycastContext.FluidHandling.NONE,
+                player
+        ));
+        return raycastedBlock.getBlockPos();
+    }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        if (!this.client.player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
-            this.client.player.sendMessage(Text.translatable("message.lock.fail").formatted(Formatting.DARK_RED), true);
+        assert this.client != null;
+        PlayerEntity player = this.client.player;
+        assert this.client.player != null;
+        if (lockCount <= 0) {
+            playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
+            player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
+            BlockPos pos = playerFacingBlock(player);
+            BlockEntity lockedChestBlockEntity = player.getWorld().getBlockEntity(pos);
+            if (lockedChestBlockEntity instanceof LockedChestLvLCopperBlockEntity) {
+                RestoreChestPacket.sendRestoreChestRequest(pos, 0);
+            }
             this.close();
         }
-
+        if (!player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
+            player.sendMessage(Text.translatable("message.lock.fail").formatted(Formatting.DARK_RED), true);
+            this.close();
+        }
         renderBackground(context);
 
         if (!locks[1]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[1]);
@@ -393,5 +363,16 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
 
     @Override
     protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+    }
+
+    @Override
+    public Text getDisplayName() {
+        return Text.empty();
+    }
+
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        return new LockpickScreenHandler(syncId, playerInventory);
     }
 }

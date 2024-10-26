@@ -54,14 +54,9 @@ public class AdvancedAutomatonBodyBlock extends Block {
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         World world = ctx.getWorld();
         BlockPos pos = ctx.getBlockPos();
-        Direction facing = ctx.getPlayerLookDirection().getOpposite();
 
         if (pos.getY() < world.getHeight() - 1 && world.getBlockState(pos.up()).canReplace(ctx)) {
-            if (!facing.getAxis().isVertical()) {
-                return this.getDefaultState().with(FACING, facing).with(UPPER, false);
-            } else {
-                return this.getDefaultState().with(FACING, Direction.NORTH).with(UPPER, false);
-            }
+            return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite()).with(UPPER, false);
         }
 
         return null;

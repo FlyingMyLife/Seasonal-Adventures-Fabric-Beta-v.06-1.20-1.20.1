@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
-import net.packages.seasonal_adventures.events.PlayerCardHandler;
+import net.packages.seasonal_adventures.events.JDBCardHandler;
 import net.packages.seasonal_adventures.util.WorldUtils;
 
 public class CardGivenPacket {
@@ -21,7 +21,7 @@ public class CardGivenPacket {
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
                 if (player != null) {
-                    PlayerCardHandler.giveCard(player, server, WorldUtils.getOverworld(server));
+                    JDBCardHandler.giveCard(player, server, WorldUtils.getOverworld(server));
                 }
             });
         });

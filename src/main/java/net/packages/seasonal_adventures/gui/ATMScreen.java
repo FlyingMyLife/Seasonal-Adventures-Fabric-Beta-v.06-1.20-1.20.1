@@ -1,11 +1,9 @@
 package net.packages.seasonal_adventures.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -13,15 +11,14 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.packages.seasonal_adventures.events.JDBCardHandler;
 import net.packages.seasonal_adventures.gui.handlers.ATMScreenHandler;
-import net.packages.seasonal_adventures.gui.widgets.CustomTexturedButtonWidget;
+import net.packages.seasonal_adventures.gui.widgets.TexturedButtonWidget;
 import net.packages.seasonal_adventures.gui.widgets.NumericTextFieldWidget;
 import net.packages.seasonal_adventures.item.Items;
 import net.packages.seasonal_adventures.network.CardGivenPacket;
 import net.packages.seasonal_adventures.network.ItemGivenPacket;
 import net.packages.seasonal_adventures.network.SpecificItemRemovalPacket;
-
-import javax.swing.text.Style;
 
 import static net.packages.seasonal_adventures.util.InventoryUtils.getItemAmount;
 
@@ -42,12 +39,12 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private long userInputValue = 0;
     private boolean replenishMode = true;
     private NumericTextFieldWidget numericTextFieldWidget;
-    private CustomTexturedButtonWidget request_card_button;
-    private CustomTexturedButtonWidget replenish_button;
-    private CustomTexturedButtonWidget withdraw_button;
-    private CustomTexturedButtonWidget plus_50_button;
-    private CustomTexturedButtonWidget minus_50_button;
-    private CustomTexturedButtonWidget enter_button;
+    private TexturedButtonWidget request_card_button;
+    private TexturedButtonWidget replenish_button;
+    private TexturedButtonWidget withdraw_button;
+    private TexturedButtonWidget plus_50_button;
+    private TexturedButtonWidget minus_50_button;
+    private TexturedButtonWidget enter_button;
     private TextWidget textB;
     public ATMScreen(ATMScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -64,11 +61,16 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         int topButtonsWidth = (int) (BackgroundWidth / 3.7101f);
         int topButtonsHeight = BackgroundHeight / 8;
 
-        int replenishButtonX = (int) (BackgroundX + (BackgroundWidth / 4.7f));
-        int replenishButtonY = (int) (BackgroundY + (BackgroundHeight / 8.7f));
+        int replenishButtonX = (int) (BackgroundX + (BackgroundWidth / 4.8f));
+        int replenishButtonY = (int) (BackgroundY + (BackgroundHeight / 8.8f));
+
+        int withdrawButtonX = (int) (BackgroundX + (BackgroundWidth / 1.902f));
+        int withdrawButtonY = (int) (BackgroundY + (BackgroundHeight / 8.79f));
 
 
-        ClientPlayerEntity player = this.client.player;
+
+
+
         numericTextFieldWidget = new NumericTextFieldWidget(textRenderer, 209, 118, 62, 17, Text.literal("Amount"));
         numericTextFieldWidget.setText("50");
         addDrawableChild(numericTextFieldWidget);
@@ -76,7 +78,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
 
 
         replenish_button = addDrawableChild(
-                new CustomTexturedButtonWidget(
+                new TexturedButtonWidget(
                         replenishButtonX,
                         replenishButtonY,
                         topButtonsWidth,
@@ -91,31 +93,15 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         button -> handle_replenish(),
                         Text.translatable("gui.button.replenish")
                 ));
-        enter_button = addDrawableChild(
-                new CustomTexturedButtonWidget(
-                        319,
-                        186,
-                        35,
-                        24,
-                        0,
-                        0,
-                        20,
-                        ENTER_BUTTON,
-                        UN_ENTER_BUTTON,
-                        35,
-                        24,
-                        button -> handle_enter(),
-                        Text.literal("")
-                ));
         withdraw_button = addDrawableChild(
-                new CustomTexturedButtonWidget(
-                        246,
-                        60,
+                new TexturedButtonWidget(
+                        withdrawButtonX,
+                        withdrawButtonY,
                         topButtonsWidth,
                         topButtonsHeight,
                         0,
                         0,
-                        24,
+                        20,
                         WITHDRAW_BUTTON,
                         UN_WITHDRAW_BUTTON,
                         topButtonsWidth,
@@ -124,7 +110,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         Text.translatable("gui.button.withdraw")
                 ));
         plus_50_button = addDrawableChild(
-                new CustomTexturedButtonWidget(
+                new TexturedButtonWidget(
                         279,
                         115,
                         35,
@@ -140,7 +126,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         Text.literal("+ 50")
                 ));
         minus_50_button = addDrawableChild(
-                new CustomTexturedButtonWidget(
+                new TexturedButtonWidget(
                         166,
                         115,
                         35,
@@ -156,7 +142,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         Text.literal("- 50")
                 ));
         request_card_button = addDrawableChild(
-                new CustomTexturedButtonWidget(
+                new TexturedButtonWidget(
                         126,
                         186,
                         35,
@@ -171,12 +157,27 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         button -> handle_request_card(),
                         Text.literal("+")
                 ));
+        enter_button = addDrawableChild(
+                new TexturedButtonWidget(
+                        319,
+                        186,
+                        35,
+                        24,
+                        0,
+                        0,
+                        20,
+                        ENTER_BUTTON,
+                        UN_ENTER_BUTTON,
+                        35,
+                        24,
+                        button -> handle_enter(),
+                        Text.literal("")
+                ));
 
         updateButtonState();
     }
 
     private void handle_enter() {
-        int fcount = 0;
         if (replenishMode) {
             if (this.client.player.getInventory().getMainHandStack().isOf(Items.CARD))
             {
@@ -367,7 +368,6 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
 
 
     private void handle_request_card() {
-        ClientPlayerEntity player = this.client.player;
         CardGivenPacket.GiveCard();
         this.close();
     }
@@ -416,16 +416,12 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     }
 
     private void updateButtonState() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null || client.world == null) {
-            return;
-        }
-
+        assert this.client != null;
         long currentValue = getUserInputValue();
         minus_50_button.active = currentValue > 50;
         enter_button.active = currentValue >= 50 && currentValue <= 10000000;
         plus_50_button.active = currentValue < 10000000;
-
+        request_card_button.active = !JDBCardHandler.playerHasCard(this.client.player);
         replenish_button.active = !replenishMode;
         withdraw_button.active = replenishMode;
     }
@@ -436,7 +432,6 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
         context.drawTexture(BACKGROUND_TEXTURE, BackgroundX, BackgroundY, 0, 0, BackgroundWidth, BackgroundHeight, BackgroundWidth, BackgroundHeight);
     }
-
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.textB.render(context, mouseX, mouseY, delta);

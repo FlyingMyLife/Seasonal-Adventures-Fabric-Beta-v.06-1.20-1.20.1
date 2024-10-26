@@ -19,6 +19,5 @@ public class DylanSettingsScreen extends HandledScreen<DylanSettingsScreenHandle
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-
     }
 }

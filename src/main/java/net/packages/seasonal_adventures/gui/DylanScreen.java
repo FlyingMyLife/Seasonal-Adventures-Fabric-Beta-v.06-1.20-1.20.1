@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registries;
 import net.packages.seasonal_adventures.gui.handlers.DylanScreenHandler;
 import net.packages.seasonal_adventures.gui.handlers.DylanSettingsScreenHandler;
-import net.packages.seasonal_adventures.gui.widgets.CustomTexturedButtonWidget;
+import net.packages.seasonal_adventures.gui.widgets.TexturedButtonWidget;
 import net.packages.seasonal_adventures.network.ItemRemovalPacket;
 
 import java.util.Arrays;
@@ -37,9 +37,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
             Registries.ITEM.get(new Identifier("minecraft", "cooked_salmon")),
             Registries.ITEM.get(new Identifier("minecraft", "cake"))
     );
-    private static final List<Item> SCHEME_CUSTOM = Arrays.asList(
-            Registries.ITEM.get(new Identifier("seasonal_adventures", "dylan_mk1_scheme"))
-    );
+    private static final Item SCHEME_CUSTOM = Registries.ITEM.get(new Identifier("seasonal_adventures", "dylan_mk1_scheme"));
     private static final List<Item> NEUTRAL_ITEMS = Arrays.asList(
 
     );
@@ -52,9 +50,9 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
     public Text dylanNameTag = Text.literal("[Дилан] ").styled(style -> style.withColor(0x3e81e0));
     private static final long COOLDOWN_TICKS = 12000;
     private static long lastPressedTime = 0;
-    private CustomTexturedButtonWidget button1;
-    private CustomTexturedButtonWidget button2;
-    private CustomTexturedButtonWidget button3;
+    private TexturedButtonWidget button1;
+    private TexturedButtonWidget button2;
+    private TexturedButtonWidget button3;
     private TextWidget textWidget;
     private static final Identifier BUTTON_TEXTURE_1 = new Identifier("seasonal_adventures", "textures/gui/button_1.png");
     private static final Identifier BUTTON_TEXTURE_2 = new Identifier("seasonal_adventures", "textures/gui/button_2.png");
@@ -91,7 +89,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
 
 
         this.button1 = this.addDrawableChild(
-                new CustomTexturedButtonWidget(
+                new TexturedButtonWidget(
                         buttonX,
                         buttonY1,
                         buttonWidth,
@@ -108,7 +106,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
                 ));
 
         this.button2 = this.addDrawableChild(
-                new CustomTexturedButtonWidget(
+                new TexturedButtonWidget(
                         buttonX,
                         buttonY2,
                         buttonWidth,
@@ -126,7 +124,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
         );
 
         this.button3 = this.addDrawableChild(
-                new CustomTexturedButtonWidget(
+                new TexturedButtonWidget(
                         buttonX,
                         buttonY3,
                         buttonWidth,
@@ -185,7 +183,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
                     player.sendMessage(((MutableText) dylanNameTag).append(normalText), false);
                     ItemRemovalPacket.ItemStackRemove();
                     this.close();
-                } else if (SCHEME_CUSTOM.contains(heldItemStack.getItem())) {
+                } else if (SCHEME_CUSTOM.equals(heldItemStack.getItem())) {
                     Text normalText = Text.literal("Ты нафига мне мою схему подсунул?").styled(style -> style.withColor(0xFFFFFF));
                     player.sendMessage(((MutableText) dylanNameTag).append(normalText), false);
                     ItemRemovalPacket.ItemStackRemove();

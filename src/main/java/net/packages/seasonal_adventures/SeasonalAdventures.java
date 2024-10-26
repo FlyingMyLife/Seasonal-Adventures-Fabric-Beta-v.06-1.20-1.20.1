@@ -9,24 +9,30 @@ import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.fabric.mixin.gamerule.GameRulesAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.packages.seasonal_adventures.block.Blocks;
 import net.packages.seasonal_adventures.block.entity.ModBlockEntities;
+import net.packages.seasonal_adventures.engine.characters.Character;
 import net.packages.seasonal_adventures.entity.Entities;
 import net.packages.seasonal_adventures.entity.custom.ATMEntity;
 import net.packages.seasonal_adventures.entity.custom.DylanEntity;
 import net.packages.seasonal_adventures.events.EventHandler;
-import net.packages.seasonal_adventures.events.PlayerCardHandler;
+import net.packages.seasonal_adventures.events.JDBCardHandler;
 import net.packages.seasonal_adventures.gui.handlers.*;
 import net.packages.seasonal_adventures.item.ItemGroups;
 import net.packages.seasonal_adventures.item.Items;
@@ -38,7 +44,10 @@ import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
 
 public class SeasonalAdventures implements ModInitializer {
+	Character dylan = new Character("Дилан", Entities.DYLAN, true);
+
 	public static final GameRules.Key<GameRules.BooleanRule> IS_ATMS_BREAKABLE = GameRuleRegistry.register("isAtmsBreakable", GameRules.Category.MISC, GameRuleFactory.createBooleanRule(true));
+	public static final GameRules.Key<GameRules.BooleanRule> SaDebug = GameRuleRegistry.register("sa:debug", GameRules.Category.MISC, GameRuleFactory.createBooleanRule(false));
 	public static final Identifier SECOND_FLOOR_LAB_CHEST_LOOT_TABLE_ID = new Identifier("seasonal_adventures", "chests/2nd_floor_laboratory_chest");
 	public static final Identifier TITANIUM_CHEST_LOOT_TABLE = new Identifier("seasonal_adventures", "chests/titanium_chest");
 	public static final Identifier ALUMINIUM_CHEST_LOOT_TABLE = new Identifier("seasonal_adventures", "chests/aluminium_chest");
@@ -56,22 +65,28 @@ public class SeasonalAdventures implements ModInitializer {
 	public static final RegistryKey<PlacedFeature> SMALL_ALUMINIUM_ORE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, new Identifier("seasonal_adventures", "ore_aluminium_small"));
 	public static final RegistryKey<PlacedFeature> LARGE_LITHIUM_ORE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, new Identifier("seasonal_adventures", "ore_lithium_large"));
 	public static final RegistryKey<PlacedFeature> SMALL_LITHIUM_ORE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, new Identifier("seasonal_adventures", "ore_lithium_small"));
-
 	public static final String MOD_ID = "seasonal_adventures";
 	public static final Logger LOGGER = LoggerFactory.getLogger("Seasonal Adventures");
-
+	public static void sendDebugMessage (String log, PlayerEntity player) {
+		if (player.getWorld().getGameRules().getBoolean(SeasonalAdventures.SaDebug)){
+		final Text debug = Text.literal("[DEBUG] ").formatted(Formatting.BOLD, Formatting.GRAY);
+		final Text sa = Text.literal("Seasonal Adventures: ").formatted(Formatting.AQUA);
+		final Text message = Text.literal(log).formatted(Formatting.ITALIC);
+		player.sendMessage(((MutableText) debug).append(sa).append(message));
+		}
+	}
 	@Override
 	public void onInitialize() {
 		ServerWorldEvents.LOAD.register((world, server) -> {
 			MinecraftServer minecraftServer = server.getServer();
-			PlayerCardHandler.initialize(minecraftServer, world.getOverworld());
+			JDBCardHandler.initialize(minecraftServer, world.getOverworld());
 		});
 		GeckoLib.initialize();
 
 		EventHandler.initialize();
 
 		ResourceConditions.register(new Identifier(MOD_ID, "beef_tartare_condition"), BeefTartareRecipeCondition::shouldLoad);
-
+		RestoreChestPacket.register();
 		SpecificItemRemovalPacket.register();
 		ItemGivenPacket.register();
 		ItemRemovalPacket.register();

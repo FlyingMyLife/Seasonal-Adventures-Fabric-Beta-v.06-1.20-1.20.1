@@ -11,8 +11,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class ItemGroups {
-    public static final ItemGroup DYLAN_GROUP = Registry.register(Registries.ITEM_GROUP,
-            new Identifier(SeasonalAdventures.MOD_ID, "dylan_group"),
+    public static final ItemGroup TECHNOLOGY = Registry.register(Registries.ITEM_GROUP,
+            new Identifier(SeasonalAdventures.MOD_ID, "technology"),
             FabricItemGroup.builder().displayName(Text.translatable("itemgroup.dylan_group"))
                     .icon(() -> new ItemStack(Items.DEACTIVATED_DYLAN)).entries((displayContext, entries) -> {
                         entries.add(Items.LOCKPICK);
