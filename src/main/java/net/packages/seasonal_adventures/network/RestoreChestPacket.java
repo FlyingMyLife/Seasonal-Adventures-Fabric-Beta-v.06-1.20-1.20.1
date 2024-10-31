@@ -68,7 +68,7 @@ public class RestoreChestPacket {
                         chestBlockEntity.markDirty();
                     }
 
-                    //Зачем ты это смотришь ?
+                    //Зачем ты на это смотришь ?
 
                 }
             });
