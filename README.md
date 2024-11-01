@@ -1,12 +1,15 @@
 ## Version BETA 0.6.2
 
 > ### **Description:** 
-**The brand new bug-fix, sound and structure update**
+
+**The brand new bug-fix update**
 
 > ### Changelog
 
 -  **[/] Critical-bug fixed**
 
--  **[/] Massive JDH Structure update**
+-  **[-] Lock-picking system disabled for uknown time**
+
+-  **[+] Added locked chest blocks (currently in development)**
 
 -  **[+] Added sounds to unlocking menu**
