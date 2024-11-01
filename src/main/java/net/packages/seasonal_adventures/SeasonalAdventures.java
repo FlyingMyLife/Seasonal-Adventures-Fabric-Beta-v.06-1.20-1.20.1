@@ -69,10 +69,10 @@ public class SeasonalAdventures implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Seasonal Adventures");
 	public static void sendDebugMessage (String log, PlayerEntity player) {
 		if (player.getWorld().getGameRules().getBoolean(SeasonalAdventures.SaDebug)){
-		final Text debug = Text.literal("[DEBUG] ").formatted(Formatting.BOLD, Formatting.GRAY);
+		final MutableText debug = Text.literal("[DEBUG] ").formatted(Formatting.GRAY);
 		final Text sa = Text.literal("Seasonal Adventures: ").formatted(Formatting.AQUA);
 		final Text message = Text.literal(log).formatted(Formatting.ITALIC);
-		player.sendMessage(((MutableText) debug).append(sa).append(message));
+		player.sendMessage(debug.append(sa).append(message));
 		}
 	}
 	@Override

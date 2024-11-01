@@ -37,12 +37,12 @@ public class LockItem extends Item {
             if (!world.isClient) {
 
                 BlockEntity blockEntity = world.getBlockEntity(pos);
-                if (blockEntity instanceof ChestBlockEntity) {
-                    ChestBlockEntity chest = (ChestBlockEntity) blockEntity;
+                if (blockEntity instanceof ChestBlockEntity chest) {
                     Map<Integer, ItemStack> inventory = new HashMap<>();
                     for (int i = 0; i < chest.size(); i++) {
                         inventory.put(i, chest.getStack(i).copy());
                     }
+                    assert player != null;
                     SeasonalAdventures.sendDebugMessage("Chest contains:" + inventory, player);
 
                     for (int i = 0; i < ((ChestBlockEntity) blockEntity).size(); i++) {

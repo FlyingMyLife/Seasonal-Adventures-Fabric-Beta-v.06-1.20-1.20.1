@@ -73,7 +73,6 @@ public class Items {
     public static void registerModItems() {
         SeasonalAdventures.LOGGER.info("Registering Mod Items for " + SeasonalAdventures.MOD_ID);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(Items::addItemsToFoodAndDrinkItemGroup);
-
     }
 }
 
