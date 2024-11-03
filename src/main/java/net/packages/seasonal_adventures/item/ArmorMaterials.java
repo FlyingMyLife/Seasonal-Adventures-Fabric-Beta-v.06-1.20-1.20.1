@@ -9,6 +9,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Lazy;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.Util;
+import net.packages.seasonal_adventures.SeasonalAdventures;
 
 import java.util.EnumMap;
 import java.util.function.Supplier;
@@ -71,7 +72,7 @@ public enum ArmorMaterials implements ArmorMaterial {
     }
 
     public String getName() {
-        return this.name;
+        return SeasonalAdventures.MOD_ID + ":" + this.name;
     }
 
     public float getToughness() {

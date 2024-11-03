@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier;
 public class ItemGroups {
     public static final ItemGroup TECHNOLOGY = Registry.register(Registries.ITEM_GROUP,
             new Identifier(SeasonalAdventures.MOD_ID, "technology"),
-            FabricItemGroup.builder().displayName(Text.translatable("itemgroup.dylan_group"))
+            FabricItemGroup.builder().displayName(Text.translatable("item_group.seasonal_adventures.technology"))
                     .icon(() -> new ItemStack(Items.DEACTIVATED_DYLAN)).entries((displayContext, entries) -> {
                         entries.add(Items.LOCKPICK);
                         entries.add(Items.SANCHEZ_GLASSES);
@@ -28,7 +28,6 @@ public class ItemGroups {
                         entries.add(Items.V1000);
                         entries.add(Items.V10000);
                         entries.add(Items.RAW_TITANIUM);
-                        entries.add(Items.CRUSHED_RAW_TITANIUM);
                         entries.add(Items.TITANIUM_INGOT);
                         entries.add(Items.TITANIUM_NUGGET);
                         entries.add(Items.TITANIUM_SHEET);
@@ -43,7 +42,6 @@ public class ItemGroups {
                         entries.add(Blocks.LITHIUM_ORE);
                         entries.add(Blocks.DEEPSLATE_LITHIUM_ORE);
                         entries.add(Items.RAW_ALUMINIUM);
-                        entries.add(Items.CRUSHED_RAW_ALUMINIUM);
                         entries.add(Items.ALUMINIUM_INGOT);
                         entries.add(Items.ALUMINIUM_NUGGET);
                         entries.add(Blocks.ALUMINIUM_ORE);

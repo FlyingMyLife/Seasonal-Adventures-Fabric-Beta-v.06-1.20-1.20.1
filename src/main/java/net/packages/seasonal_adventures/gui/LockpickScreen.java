@@ -20,7 +20,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.RaycastContext;
-import net.packages.seasonal_adventures.block.entity.LockedChestLvLCopperBlockEntity;
+import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import net.packages.seasonal_adventures.gui.handlers.LockpickScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.RotatableLockpick;
 import net.packages.seasonal_adventures.item.Items;
@@ -47,8 +47,8 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     private RotatableLockpick lockpick;
     
     private static final Identifier LOCKPICK_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick.png");
-    private static final Identifier PIN_UNACTIVATED = new Identifier("seasonal_adventures", "textures/gui/pin_unactivated.png");
-    private static final Identifier PIN_ACTIVATED = new Identifier("seasonal_adventures", "textures/gui/pin_activated.png");
+    private static final Identifier LOCK_UNACTIVATED = new Identifier("seasonal_adventures", "textures/gui/lock_unactivated.png");
+    private static final Identifier LOCK_ACTIVATED = new Identifier("seasonal_adventures", "textures/gui/lock_activated.png");
     private static final Identifier BACKGROUND_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick_background.png");
 
     public LockpickScreen(LockpickScreenHandler handler, PlayerInventory inventory, Text title, int lockLevel) {
@@ -246,9 +246,18 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     }
 
     private void assignLocks(int[] locks, int lockCount) {
-        for (int i = 0; i < 12; i++) {
-            if (lockCount > i) lockAngles[i+1] = locks[i];
-        }
+        if (lockCount > 0) lockAngles[1] = locks[0];
+        if (lockCount > 1) lockAngles[2] = locks[1];
+        if (lockCount > 2) lockAngles[3] = locks[2];
+        if (lockCount > 3) lockAngles[4] = locks[3];
+        if (lockCount > 4) lockAngles[5] = locks[4];
+        if (lockCount > 5) lockAngles[6] = locks[5];
+        if (lockCount > 6) lockAngles[7] = locks[6];
+        if (lockCount > 7) lockAngles[8] = locks[7];
+        if (lockCount > 8) lockAngles[9] = locks[8];
+        if (lockCount > 9) lockAngles[10] = locks[9];
+        if (lockCount > 10) lockAngles[11] = locks[10];
+        if (lockCount > 11) lockAngles[12] = locks[11];
     }
 
         @Override
@@ -318,7 +327,33 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
             this.close();
         }
         renderBackground(context);
-        renderLocks(context);
+
+        if (!locks[1]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[1]);
+        if (!locks[2]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[2]);
+        if (!locks[3]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[3]);
+        if (!locks[4]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[4]);
+        if (!locks[5]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[5]);
+        if (!locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[6]);
+        if (!locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[7]);
+        if (!locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[8]);
+        if (!locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[9]);
+        if (!locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[10]);
+        if (!locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[11]);
+        if (!locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[12]);
+
+        if (locks[1]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[1]);
+        if (locks[2]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[2]);
+        if (locks[3]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[3]);
+        if (locks[4]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[4]);
+        if (locks[5]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[5]);
+        if (locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[6]);
+        if (locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[7]);
+        if (locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[8]);
+        if (locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[9]);
+        if (locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[10]);
+        if (locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[11]);
+        if (locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[12]);
+
         super.render(context, mouseX, mouseY, delta);
     }
 
@@ -339,32 +374,5 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new LockpickScreenHandler(syncId, playerInventory);
-    }
-    private void renderLocks(DrawContext context) {
-        if (!locks[1]) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[1]);
-        if (!locks[2]) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[2]);
-        if (!locks[3]) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[3]);
-        if (!locks[4]) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[4]);
-        if (!locks[5]) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[5]);
-        if (!locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[6]);
-        if (!locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[7]);
-        if (!locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[8]);
-        if (!locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[9]);
-        if (!locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[10]);
-        if (!locks[11]) if (lockLevel == 4) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[11]);
-        if (!locks[12]) if (lockLevel == 4) renderRotatedLocks(context, PIN_UNACTIVATED, lockAngles[12]);
-
-        if (locks[1]) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[1]);
-        if (locks[2]) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[2]);
-        if (locks[3]) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[3]);
-        if (locks[4]) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[4]);
-        if (locks[5]) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[5]);
-        if (locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[6]);
-        if (locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[7]);
-        if (locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[8]);
-        if (locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[9]);
-        if (locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[10]);
-        if (locks[11]) if (lockLevel == 4) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[11]);
-        if (locks[12]) if (lockLevel == 4) renderRotatedLocks(context, PIN_ACTIVATED, lockAngles[12]);
     }
 }

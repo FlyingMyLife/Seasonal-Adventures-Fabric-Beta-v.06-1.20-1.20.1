@@ -30,7 +30,7 @@ public class AtmItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.translatable("tooltip.seasonal_adventures.atmtooltip").formatted(Formatting.DARK_RED));
+        tooltip.add(Text.translatable("tooltip.seasonal_adventures.atm_tooltip").formatted(Formatting.DARK_RED));
     }
 
     @Override

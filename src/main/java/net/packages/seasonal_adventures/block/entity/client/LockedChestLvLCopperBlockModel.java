@@ -2,7 +2,7 @@ package net.packages.seasonal_adventures.block.entity.client;
 
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.block.entity.LockedChestLvLCopperBlockEntity;
+import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import software.bernie.geckolib.model.GeoModel;
 
 public class LockedChestLvLCopperBlockModel extends GeoModel<LockedChestLvLCopperBlockEntity> {

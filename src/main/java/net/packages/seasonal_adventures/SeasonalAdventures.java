@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.fabricmc.fabric.mixin.gamerule.GameRulesAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -27,7 +26,7 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.packages.seasonal_adventures.block.Blocks;
 import net.packages.seasonal_adventures.block.entity.ModBlockEntities;
-import net.packages.seasonal_adventures.engine.characters.Character;
+import net.packages.engine.characters.Character;
 import net.packages.seasonal_adventures.entity.Entities;
 import net.packages.seasonal_adventures.entity.custom.ATMEntity;
 import net.packages.seasonal_adventures.entity.custom.DylanEntity;
@@ -48,7 +47,7 @@ public class SeasonalAdventures implements ModInitializer {
 
 	public static final GameRules.Key<GameRules.BooleanRule> IS_ATMS_BREAKABLE = GameRuleRegistry.register("isAtmsBreakable", GameRules.Category.MISC, GameRuleFactory.createBooleanRule(true));
 	public static final GameRules.Key<GameRules.BooleanRule> SaDebug = GameRuleRegistry.register("sa:debug", GameRules.Category.MISC, GameRuleFactory.createBooleanRule(false));
-	public static final Identifier SECOND_FLOOR_LAB_CHEST_LOOT_TABLE_ID = new Identifier("seasonal_adventures", "chests/2nd_floor_laboratory_chest");
+	public static final Identifier MAIN_LAB_CHEST = new Identifier("seasonal_adventures", "chests/main_lab_chest");
 	public static final Identifier TITANIUM_CHEST_LOOT_TABLE = new Identifier("seasonal_adventures", "chests/titanium_chest");
 	public static final Identifier ALUMINIUM_CHEST_LOOT_TABLE = new Identifier("seasonal_adventures", "chests/aluminium_chest");
 
@@ -69,10 +68,10 @@ public class SeasonalAdventures implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Seasonal Adventures");
 	public static void sendDebugMessage (String log, PlayerEntity player) {
 		if (player.getWorld().getGameRules().getBoolean(SeasonalAdventures.SaDebug)){
-		final MutableText debug = Text.literal("[DEBUG] ").formatted(Formatting.GRAY);
+		final Text debug = Text.literal("[DEBUG] ").formatted(Formatting.BOLD, Formatting.GRAY);
 		final Text sa = Text.literal("Seasonal Adventures: ").formatted(Formatting.AQUA);
 		final Text message = Text.literal(log).formatted(Formatting.ITALIC);
-		player.sendMessage(debug.append(sa).append(message));
+		player.sendMessage(((MutableText) debug).append(sa).append(message));
 		}
 	}
 	@Override

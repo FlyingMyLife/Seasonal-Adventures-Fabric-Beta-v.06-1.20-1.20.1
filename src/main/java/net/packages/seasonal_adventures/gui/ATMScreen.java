@@ -67,10 +67,6 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         int withdrawButtonX = (int) (BackgroundX + (BackgroundWidth / 1.902f));
         int withdrawButtonY = (int) (BackgroundY + (BackgroundHeight / 8.79f));
 
-
-
-
-
         numericTextFieldWidget = new NumericTextFieldWidget(textRenderer, 209, 118, 62, 17, Text.literal("Amount"));
         numericTextFieldWidget.setText("50");
         addDrawableChild(numericTextFieldWidget);
@@ -91,7 +87,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         topButtonsWidth,
                         topButtonsHeight,
                         button -> handle_replenish(),
-                        Text.translatable("gui.button.replenish")
+                        Text.translatable("gui.seasonal_adventures.button.replenish")
                 ));
         withdraw_button = addDrawableChild(
                 new TexturedButtonWidget(
@@ -107,7 +103,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         topButtonsWidth,
                         topButtonsHeight,
                         button -> handle_withdraw(),
-                        Text.translatable("gui.button.withdraw")
+                        Text.translatable("gui.seasonal_adventures.button.withdraw")
                 ));
         plus_50_button = addDrawableChild(
                 new TexturedButtonWidget(
@@ -253,7 +249,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                     if (enteredValue == 0)
                     {
                         int oldValue = (int) getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack());
-                        Text currentT = Text.translatable("message.atm.success.current_balance").formatted(Formatting.AQUA);
+                        Text currentT = Text.translatable("message.seasonal_adventures.atm.success.current_balance").formatted(Formatting.AQUA);
                         Text balanceT = Text.literal("" + (oldValue + valueToEnter)).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE);
                         this.client.player.sendMessage(((MutableText) currentT).append(balanceT), true);
                         setCurrencyAmountToItem(this.client.player.getInventory().getMainHandStack(), oldValue + valueToEnter);
@@ -268,18 +264,18 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         this.close();
                     } else
                     {
-                        this.client.player.sendMessage(Text.translatable("message.atm.fail.changing_fail").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
+                        this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.changing_fail").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
                         this.close();
                     }
                 } else
                 {
-                    this.client.player.sendMessage(Text.translatable("message.atm.fail.insufficient_funds.replenish").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
+                    this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.replenish").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
                     this.close();
                 }
                 
             } else
             {
-                this.client.player.sendMessage(Text.translatable("message.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
+                this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
                 this.close();
             }
 
@@ -329,7 +325,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         }
 
                         setCurrencyAmountToItem(this.client.player.getInventory().getMainHandStack(), (getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack()) - getUserInputValue()));
-                        Text currentT = Text.translatable("message.atm.success.current_balance").formatted(Formatting.AQUA);
+                        Text currentT = Text.translatable("message.seasonal_adventures.atm.success.current_balance").formatted(Formatting.AQUA);
                         Text balanceT = Text.literal("" + (getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack()))).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE);
                         this.client.player.sendMessage(((MutableText) currentT).append(balanceT), true);
                         ItemGivenPacket.sendItemGivenRequest(Items.V1, need1v);
@@ -342,11 +338,11 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         ItemGivenPacket.sendItemGivenRequest(Items.V10000, need10000v);
                         this.close();
                 } else {
-                    this.client.player.sendMessage(Text.translatable("message.atm.fail.insufficient_funds.withdrawal").formatted(Formatting.RED, Formatting.BOLD), true);
+                    this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.withdrawal").formatted(Formatting.RED, Formatting.BOLD), true);
                     this.close();
                 }
             } else {
-                this.client.player.sendMessage(Text.translatable("message.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
+                this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
                 this.close();
             }
         }

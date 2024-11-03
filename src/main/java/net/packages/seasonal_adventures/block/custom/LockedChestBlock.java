@@ -2,14 +2,12 @@ package net.packages.seasonal_adventures.block.custom;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.LecternBlockEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -24,8 +22,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.packages.seasonal_adventures.block.entity.AnimatedBlockEntity;
-import net.packages.seasonal_adventures.block.entity.LockedChestLvLCopperBlockEntity;
+import net.packages.seasonal_adventures.SeasonalAdventures;
+import net.packages.seasonal_adventures.block.Blocks;
+import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
+import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
 import net.packages.seasonal_adventures.gui.LockpickScreen;
 import net.packages.seasonal_adventures.gui.handlers.LockpickScreenHandler;
 import net.packages.seasonal_adventures.item.Items;
@@ -38,8 +38,8 @@ public class LockedChestBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public LockedChestBlock(Settings settings, int lockLevel) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
         this.lockLevel = lockLevel;
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
     public static final VoxelShape CHEST_SHAPE = VoxelShapes.cuboid(
             0.0625f,
@@ -52,13 +52,19 @@ public class LockedChestBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
-            PlayerInventory inventory = player.getInventory();
-            Text title = Text.literal("Lockpick Screen");
-            player.openHandledScreen(new LockpickScreen(new LockpickScreenHandler(0, new PlayerInventory(player)), inventory, title, lockLevel));
-            return ActionResult.SUCCESS;
+        if (player.getWorld().getGameRules().getBoolean(SeasonalAdventures.SaDebug)) {
+            if (player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
+                PlayerInventory inventory = player.getInventory();
+                Text title = Text.literal("Lockpick Screen");
+                SeasonalAdventures.sendDebugMessage("Opening new lockpick screen with level: " + lockLevel + ", on pos: " + pos, player);
+                player.openHandledScreen(new LockpickScreen(new LockpickScreenHandler(0, new PlayerInventory(player)), inventory, title, 0));
+                return ActionResult.SUCCESS;
+            } else {
+                player.sendMessage(Text.translatable("message.seasonal_adventures.lock.fail.lockpick_required").formatted(Formatting.DARK_RED), true);
+                return ActionResult.FAIL;
+            }
         } else {
-            player.sendMessage(Text.translatable("message.lock.fail.not_enough_lockpicks").formatted(Formatting.DARK_RED), true);
+            player.sendMessage(Text.literal("Данные действия недоступны!").formatted(Formatting.DARK_RED), true);
             return ActionResult.FAIL;
         }
     }
@@ -76,7 +82,9 @@ public class LockedChestBlock extends BlockWithEntity {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new LockedChestLvLCopperBlockEntity(pos, state);
+        if (state.getBlock().equals(Blocks.LOCKED_CHEST_LVL_COPPER)) return new LockedChestLvLCopperBlockEntity(pos, state);
+        if (state.getBlock().equals(Blocks.LOCKED_CHEST_LVL_IRON)) return new LockedChestLvLIronBlockEntity(pos, state);
+        else return null;
     }
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {

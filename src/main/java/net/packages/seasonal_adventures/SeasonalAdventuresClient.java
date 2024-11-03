@@ -11,15 +11,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.packages.seasonal_adventures.block.entity.ModBlockEntities;
 import net.packages.seasonal_adventures.block.entity.client.AnimatedBlockRenderer;
-import net.packages.seasonal_adventures.block.entity.client.EnergyInjectorBlockModel;
 import net.packages.seasonal_adventures.block.entity.client.EnergyInjectorBlockRenderer;
 import net.packages.seasonal_adventures.block.entity.client.LockedChestLvLCopperBlockRenderer;
-import net.packages.seasonal_adventures.command.DebugLockCommand;
+import net.packages.seasonal_adventures.block.entity.client.LockedChestLvLIronBlockRenderer;
 import net.packages.seasonal_adventures.entity.Entities;
 import net.packages.seasonal_adventures.entity.client.*;
 import net.packages.seasonal_adventures.gui.*;
 import net.packages.seasonal_adventures.gui.handlers.LockpickScreenHandler;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 import static net.packages.seasonal_adventures.SeasonalAdventures.*;
 
@@ -27,9 +25,6 @@ import static net.packages.seasonal_adventures.SeasonalAdventures.*;
 public class SeasonalAdventuresClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-            DebugLockCommand.register(dispatcher);
-        });
         ScreenRegistry.register(LOCKPICK_SCREEN_HANDLER, (LockpickScreenHandler handler, PlayerInventory inventory, Text title) -> new LockpickScreen(handler, inventory, title, 0));
         ScreenRegistry.register(DYLAN_SCREEN_HANDLER, DylanScreen::new);
         ScreenRegistry.register(ATM_SCREEN_HANDLER, ATMScreen::new);
@@ -41,7 +36,7 @@ public class SeasonalAdventuresClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ModBlockEntities.ANIMATED_BLOCK_ENTITY, AnimatedBlockRenderer::new);
         BlockEntityRendererFactories.register(ModBlockEntities.ENERGY_INJECTOR_BLOCK_ENTITY, EnergyInjectorBlockRenderer::new);
         BlockEntityRendererFactories.register(ModBlockEntities.LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY, LockedChestLvLCopperBlockRenderer::new);
-
+        BlockEntityRendererFactories.register(ModBlockEntities.LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY, LockedChestLvLIronBlockRenderer::new);
     }
 
 }

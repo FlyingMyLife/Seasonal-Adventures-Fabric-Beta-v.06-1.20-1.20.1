@@ -28,6 +28,14 @@ public class Blocks {
     //Locked Chests
     public static final Block LOCKED_CHEST_LVL_COPPER = registerBlock("locked_chest_lvl_copper",
             new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 0));
+    public static final Block LOCKED_CHEST_LVL_IRON = registerBlock("locked_chest_lvl_iron",
+            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 1));
+    public static final Block LOCKED_CHEST_LVL_GOLD = registerBlock("locked_chest_lvl_gold",
+            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 2));
+    public static final Block LOCKED_CHEST_LVL_DIAMOND = registerBlock("locked_chest_lvl_diamond",
+            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 3));
+    public static final Block LOCKED_CHEST_LVL_NETHERITE = registerBlock("locked_chest_lvl_netherite",
+            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 4));
 
 
     public static final Block TITANIUM_BLOCK = registerBlock("titanium_block",

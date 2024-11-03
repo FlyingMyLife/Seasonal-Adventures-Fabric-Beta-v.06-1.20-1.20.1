@@ -175,7 +175,7 @@ public class JDBCardHandler {
     private static void giveCardItemToPlayer(ServerPlayerEntity player, String cardId) {
         ItemStack cardItem = CardItem.createCardItem(cardId, 0L);
         player.getInventory().insertStack(cardItem);
-        Text thanksT = Text.translatable("message.atm.success.card_received").formatted(Formatting.ITALIC, Formatting.WHITE);
+        Text thanksT = Text.translatable("message.seasonal_adventures.atm.success.card_received").formatted(Formatting.ITALIC, Formatting.WHITE);
         Text JdbT = Text.literal("JDB Team").formatted(Formatting.ITALIC, Formatting.GOLD, Formatting.BOLD);
         player.sendMessage(((MutableText) thanksT).append(JdbT), false);
     }

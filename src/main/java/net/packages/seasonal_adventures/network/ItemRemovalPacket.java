@@ -16,7 +16,7 @@ public class ItemRemovalPacket {
 
     public static void register() {
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) -> {
-            server.execute(() -> {
+            server.execute( () -> {
                 player.getInventory().removeStack(player.getInventory().selectedSlot, 1);
             });
         });

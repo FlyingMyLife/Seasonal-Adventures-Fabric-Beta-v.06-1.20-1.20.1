@@ -40,7 +40,7 @@ public class SpecificItemRemovalPacket {
             Identifier itemId = buf.readIdentifier();
             int countToRemove = buf.readInt();
 
-            server.execute(() -> {
+            server.execute( () -> {
                 Item itemToRemove = Registries.ITEM.get(itemId);
                 removeItemStack(player, itemToRemove, countToRemove);
             });

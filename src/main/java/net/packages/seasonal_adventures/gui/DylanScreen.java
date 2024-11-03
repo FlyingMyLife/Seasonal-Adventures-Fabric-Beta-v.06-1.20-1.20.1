@@ -84,7 +84,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
 
         int textY = buttonY1 - textSpacing - 25;
 
-        textWidget = new TextWidget(textX, textY, 90, 45, Text.translatable("gui.entity.dylan.text").styled(style -> style.withColor(0x82878c)), this.textRenderer);
+        textWidget = new TextWidget(textX, textY, 90, 45, Text.translatable("gui.seasonal_adventures.entity.dylan.text").styled(style -> style.withColor(0x82878c)), this.textRenderer);
         this.addSelectableChild(textWidget);
 
 
@@ -102,7 +102,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
                         buttonWidth,
                         buttonHeight,
                         button -> handle_make_a_giftPress(),
-                        Text.translatable("gui.button.make_a_gift")
+                        Text.translatable("gui.seasonal_adventures.button.make_a_gift")
                 ));
 
         this.button2 = this.addDrawableChild(
@@ -119,7 +119,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
                         buttonWidth,
                         buttonHeight,
                         button -> handle_repairPress(),
-                        Text.translatable("gui.button.repair")
+                        Text.translatable("gui.seasonal_adventures.button.repair")
                 )
         );
 
@@ -137,7 +137,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
                         buttonWidth,
                         buttonHeight,
                         button -> handle_settings(),
-                        Text.translatable("gui.button.settings")
+                        Text.translatable("gui.seasonal_adventures.button.settings")
                 )
         );
 

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "seasonal_adventures:particle/locked_chest_lvl_netherite"
+    },
+    "facing=east": {
+      "model": "seasonal_adventures:particle/locked_chest_lvl_netherite",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "seasonal_adventures:particle/locked_chest_lvl_netherite",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "seasonal_adventures:particle/locked_chest_lvl_netherite",
+      "y": 270
+    }
+  }
+}

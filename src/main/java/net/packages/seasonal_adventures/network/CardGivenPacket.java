@@ -19,7 +19,7 @@ public class CardGivenPacket {
 
     public static void register() {
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) -> {
-            server.execute(() -> {
+            server.execute( () -> {
                 if (player != null) {
                     JDBCardHandler.giveCard(player, server, WorldUtils.getOverworld(server));
                 }

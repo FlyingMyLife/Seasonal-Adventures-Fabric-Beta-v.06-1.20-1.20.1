@@ -22,7 +22,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.block.entity.LockedChestLvLCopperBlockEntity;
+import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 
 import java.util.Map;
 
@@ -68,7 +68,7 @@ public class RestoreChestPacket {
                         chestBlockEntity.markDirty();
                     }
 
-                    //Зачем ты на это смотришь ?
+                    //Зачем на ты это смотришь ?
 
                 }
             });

@@ -15,7 +15,7 @@ public class BeefTartareRecipeCondition implements ConditionJsonProvider {
 
     @Override
     public Identifier getConditionId() {
-        return new Identifier(SeasonalAdventures.MOD_ID, "beef_tartare_condition");
+        return new Identifier(SeasonalAdventures.MOD_ID, "crafting_table/beef_tartare_condition");
     }
 
     @Override

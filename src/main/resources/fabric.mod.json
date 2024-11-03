@@ -19,13 +19,22 @@
 		"main": [
 			"net.packages.seasonal_adventures.SeasonalAdventures"
 		],
+		"fabric-datagen": [
+			"net.packages.seasonal_adventures.SeasonalAdventuresDataGenerator"
+		],
 		"client": [
 			"net.packages.seasonal_adventures.SeasonalAdventuresClient"
+		],
+		"jade": [
+			"net.packages.seasonal_adventures.jade.JadePlugin"
 		]
 	},
 	"mixins": [
 		"seasonal_adventures.mixins.json"
 	],
+	"suggests": {
+		"jade": "*"
+	},
 	"depends": {
 		"fabricloader": ">=0.15.10",
 		"minecraft": ">=1.20.0 <=1.20.1",

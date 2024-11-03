@@ -12,16 +12,24 @@ base {
 
 repositories {
     maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    maven {
         name = 'GeckoLib'
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         content {
             includeGroupByRegex("software\\.bernie.*")
             includeGroup("com.eliotlash.mclib")
         }
+
     }
 }
 dependencies {
     modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
+    modImplementation "curse.maven:jade-324717:5771000"
     implementation("com.eliotlash.mclib:mclib:20")
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.google.code.gson:gson:2.8.7'
@@ -75,6 +83,8 @@ publishing {
     }
 
     repositories {
-        // Add repositories to publish to here.
     }
+}
+fabricApi {
+    configureDataGeneration()
 }

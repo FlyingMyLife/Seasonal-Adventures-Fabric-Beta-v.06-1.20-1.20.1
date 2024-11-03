@@ -48,7 +48,7 @@ public class ItemGivenPacket {
             countToGive -= toAdd;
         }
     }
-    public static void register() {
+    public static void register () {
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) -> {
             Identifier itemId = buf.readIdentifier();
             int countToGive = buf.readInt();

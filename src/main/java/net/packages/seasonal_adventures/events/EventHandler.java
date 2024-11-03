@@ -1,6 +1,8 @@
 package net.packages.seasonal_adventures.events;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
@@ -12,6 +14,8 @@ public class EventHandler {
                 JDBCardHandler.initialize(server, world);
             }
         });
-        HudRenderCallbackHandler.EVENT.register(new HudRenderCallbackHandler());
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            HudRenderCallback.EVENT.register(new HudRenderCallbackHandler());
+        }
     }
 }

@@ -18,6 +18,7 @@ public class Items {
 
     //Замки
     public static final Item COPPER_LOCK = registerItem("copper_lock", new LockItem(new FabricItemSettings(), 0));
+    public static final Item IRON_LOCK = registerItem("iron_lock", new LockItem(new FabricItemSettings(), 1));
 
     //Броня ABPS
     public static final Item ABP_HELMET = registerItem("abp_helmet", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.HELMET, new FabricItemSettings()));
@@ -50,19 +51,17 @@ public class Items {
     public static final Item TITANIUM_NUGGET = registerItem("titanium_nugget", new Item(new FabricItemSettings()));
     public static final Item TITANIUM_SHEET = registerItem("titanium_sheet", new Item(new FabricItemSettings()));
     public static final Item RAW_LITHIUM = registerItem("raw_lithium", new Item(new FabricItemSettings()));
-    public static final Item RAW_TITANIUM = registerItem("raw_titanium", new Item(new FabricItemSettings()));
-    public static final Item CRUSHED_RAW_TITANIUM = registerItem("crushed_raw_titanium", new Item(new FabricItemSettings()));
-    public static final Item RAW_SILICON = registerItem("raw_silicon", new Item(new FabricItemSettings()));
+    public static final Item RAW_TITANIUM = registerItem("raw_titanium", new Item(new FabricItemSettings()));public static final Item RAW_SILICON = registerItem("raw_silicon", new Item(new FabricItemSettings()));
     public static final Item PURIFIED_SILICON = registerItem("purified_silicon", new Item(new FabricItemSettings()));
     public static final Item ALUMINIUM_INGOT = registerItem("aluminium_ingot", new Item(new FabricItemSettings()));
     public static final Item ALUMINIUM_NUGGET = registerItem("aluminium_nugget", new Item(new FabricItemSettings()));
     public static final Item RAW_ALUMINIUM = registerItem("raw_aluminium", new Item(new FabricItemSettings()));
-    public static final Item CRUSHED_RAW_ALUMINIUM = registerItem("crushed_raw_aluminium", new Item(new FabricItemSettings()));
     public static final Item DEACTIVATED_DYLAN = registerItem("deactivated_dylan", new SpawnEggItem(Entities.DYLAN, 0x86518, 0x3b260f, new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC).fireproof()));
-    public static final Item ATM = registerItem("atm", new AtmItem(new FabricItemSettings(), Entities.ATM));
+    public static final Item ATM = registerItem("atm", new AtmItem(new FabricItemSettings().maxCount(1), Entities.ATM));
     public static final Item BEEF_TARTARE = registerItem("beef_tartare", new Item(new FabricItemSettings().food(FoodComponents.BEEF_TARTARE)));
     public static final Item AUTOMATON_EYE_MATRIX = registerItem("automaton_eye_matrix", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
-    public static final Item LOCKPICK= registerItem("lockpick", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item LOCKPICK= registerItem("lockpick", new Item(new FabricItemSettings().maxCount(16).rarity(Rarity.RARE)));
+
     private static void addItemsToFoodAndDrinkItemGroup(FabricItemGroupEntries entries) {
     }
 

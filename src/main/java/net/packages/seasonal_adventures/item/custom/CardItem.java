@@ -47,7 +47,7 @@ public class CardItem extends Item {
         Text tooltipText = ((MutableText) grayText).append(purpleCardId);
         tooltip.add(tooltipText);
         tooltip.add(Text.empty());
-        tooltip.add(Text.translatable("tooltip.seasonal_adventures.cardtooltip.upper").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
-        tooltip.add(Text.translatable("tooltip.seasonal_adventures.cardtooltip").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
+        tooltip.add(Text.translatable("tooltip.seasonal_adventures.card_tooltip.upper").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
+        tooltip.add(Text.translatable("tooltip.seasonal_adventures.card_tooltip").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
     }
 }
