@@ -1,15 +1,7 @@
-## Version BETA 0.6.2
+## Version BETA 0.6.3
 
 > ### **Description:** 
 
-**The brand new bug-fix update**
+**IN DEVELOPMENT**
 
 > ### Changelog
-
--  **[/] Critical-bug fixed**
-
--  **[-] Lock-picking system disabled for uknown time**
-
--  **[+] Added locked chest blocks (currently in development)**
-
--  **[+] Added sounds to unlocking menu**
