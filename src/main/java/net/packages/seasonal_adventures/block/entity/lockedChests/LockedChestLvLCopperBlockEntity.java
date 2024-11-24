@@ -14,6 +14,8 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.loading.json.raw.Bone;
+import software.bernie.geckolib.network.SerializableDataTicket;
 import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.HashMap;

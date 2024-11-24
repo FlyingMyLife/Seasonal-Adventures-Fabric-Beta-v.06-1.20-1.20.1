@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import net.packages.lumina_lore.LuminaLoreClient;
 import net.packages.seasonal_adventures.block.entity.ModBlockEntities;
 import net.packages.seasonal_adventures.block.entity.client.AnimatedBlockRenderer;
 import net.packages.seasonal_adventures.block.entity.client.EnergyInjectorBlockRenderer;
@@ -25,6 +26,8 @@ import static net.packages.seasonal_adventures.SeasonalAdventures.*;
 public class SeasonalAdventuresClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        LuminaLoreClient.initializeClient();
+
         ScreenRegistry.register(LOCKPICK_SCREEN_HANDLER, (LockpickScreenHandler handler, PlayerInventory inventory, Text title) -> new LockpickScreen(handler, inventory, title, 0));
         ScreenRegistry.register(DYLAN_SCREEN_HANDLER, DylanScreen::new);
         ScreenRegistry.register(ATM_SCREEN_HANDLER, ATMScreen::new);

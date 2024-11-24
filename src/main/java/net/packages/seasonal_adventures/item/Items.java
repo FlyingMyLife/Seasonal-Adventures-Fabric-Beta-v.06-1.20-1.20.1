@@ -59,7 +59,7 @@ public class Items {
     public static final Item DEACTIVATED_DYLAN = registerItem("deactivated_dylan", new SpawnEggItem(Entities.DYLAN, 0x86518, 0x3b260f, new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC).fireproof()));
     public static final Item ATM = registerItem("atm", new AtmItem(new FabricItemSettings().maxCount(1), Entities.ATM));
     public static final Item BEEF_TARTARE = registerItem("beef_tartare", new Item(new FabricItemSettings().food(FoodComponents.BEEF_TARTARE)));
-    public static final Item AUTOMATON_EYE_MATRIX = registerItem("automaton_eye_matrix", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item BIOCOMPONENT_OPTICAL_UNIT = registerItem("biocomponent_optical_unit", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
     public static final Item LOCKPICK= registerItem("lockpick", new Item(new FabricItemSettings().maxCount(16).rarity(Rarity.RARE)));
 
     private static void addItemsToFoodAndDrinkItemGroup(FabricItemGroupEntries entries) {
@@ -71,7 +71,6 @@ public class Items {
 
     public static void registerModItems() {
         SeasonalAdventures.LOGGER.info("Registering Mod Items for " + SeasonalAdventures.MOD_ID);
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(Items::addItemsToFoodAndDrinkItemGroup);
     }
 }
 

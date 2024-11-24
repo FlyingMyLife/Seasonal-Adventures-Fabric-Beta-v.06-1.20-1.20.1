@@ -1,4 +1,4 @@
-package net.packages.engine.characters;
+package net.packages.lumina_lore.characters;
 
 import net.minecraft.entity.EntityType;
 

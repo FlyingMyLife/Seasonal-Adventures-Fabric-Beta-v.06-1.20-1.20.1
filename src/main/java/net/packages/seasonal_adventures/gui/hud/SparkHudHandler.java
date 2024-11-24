@@ -27,6 +27,7 @@ public class SparkHudHandler {
     }
 
     public static void render(DrawContext drawContext) {
+        
         final float sparkTargetPos = drawContext.getScaledWindowHeight() / 385f * 3.2f;
 
         if (!isAnimating) return;

@@ -19,6 +19,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.RaycastContext;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import net.packages.seasonal_adventures.gui.handlers.LockpickScreenHandler;
@@ -27,38 +28,40 @@ import net.packages.seasonal_adventures.item.Items;
 import net.packages.seasonal_adventures.network.RestoreChestPacket;
 import net.packages.seasonal_adventures.network.SpecificItemRemovalPacket;
 import net.packages.seasonal_adventures.sound.Sounds;
+import net.packages.seasonal_adventures.util.PinAngles;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
 public class LockpickScreen extends HandledScreen<LockpickScreenHandler> implements NamedScreenHandlerFactory {
+    
+    private PinAngles pinAngles = new PinAngles();
 
     private int lockLevel;
 
-    private int lockCount;
+    private int pinsLeft;
 
-    private int [] lockAngles = new int[13];
-
-    private boolean [] locks = new boolean[13];
+    private boolean [] pinTriggerState = new boolean[12];
 
     private float lockpickSpeed = 1.0f;
 
-    private boolean methodCalled = false;
+    private static final int[] pinsDefValues = {5, 7, 8, 10, 12};
+
+    private static final  float[] lockpickSpeedValues = {5.0f, 12.2f, 18.4f, 26.6f, 35.8f};
 
     private RotatableLockpick lockpick;
     
     private static final Identifier LOCKPICK_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick.png");
-    private static final Identifier LOCK_UNACTIVATED = new Identifier("seasonal_adventures", "textures/gui/lock_unactivated.png");
-    private static final Identifier LOCK_ACTIVATED = new Identifier("seasonal_adventures", "textures/gui/lock_activated.png");
+    private static final Identifier PIN_DEFAULT = new Identifier("seasonal_adventures", "textures/gui/pin_default.png");
+    private static final Identifier PIN_TRIGGERED = new Identifier("seasonal_adventures", "textures/gui/pin_triggered.png");
     private static final Identifier BACKGROUND_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick_background.png");
 
     public LockpickScreen(LockpickScreenHandler handler, PlayerInventory inventory, Text title, int lockLevel) {
         super(handler, inventory, title);
         this.lockLevel = lockLevel;
-        if (lockLevel == 0) this.lockpickSpeed = 5.0f;
-        if (lockLevel == 1) this.lockpickSpeed = 12.2f;
-        if (lockLevel == 2) this.lockpickSpeed = 18.4f;
-        if (lockLevel == 3) this.lockpickSpeed = 26.6f;
-        if (lockLevel == 4) this.lockpickSpeed = 35.8f;
+        pinAngles.setLockLevel(lockLevel);
+        if (lockLevel >= 0 && lockLevel < pinsDefValues.length) {
+            this.pinsLeft = pinsDefValues[lockLevel];
+            this.lockpickSpeed = lockpickSpeedValues[lockLevel];
+        }
     }
 
     @Override
@@ -75,26 +78,20 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
                 button -> onClick()
         );
 
-        this.onScreenOpen();
         this.addDrawableChild(this.lockpick);
     }
-    private void onScreenOpen() {
-        if (!methodCalled) {
-            generateLockDegrees();
-            if (lockLevel == 0)  this.lockCount = 5;
-            if (lockLevel == 1)  this.lockCount = 7;
-            if (lockLevel == 2)  this.lockCount = 8;
-            if (lockLevel == 3)  this.lockCount = 10;
-            if (lockLevel == 4)  this.lockCount = 12;
-            methodCalled = true;
-        }
-    }
 
-    private void onLockClick (int lock) {
-        playSound(Sounds.PICK_PIN_SOUND, 0.9f);
-        this.locks[lock] = true;
-        this.lockpick.toggleRotationDirection();
-        this.lockCount--;
+    private void onPinAction(int pin) {
+        if (pin <= pinsDefValues[lockLevel]) {
+            playSound(Sounds.PICK_PIN_SOUND, 0.9f);
+            this.pinTriggerState[pin] = true;
+            this.lockpick.toggleRotationDirection();
+            this.pinsLeft--;
+        } else {
+            assert this.client != null;
+            assert this.client.player != null;
+            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+        }
     }
     private void playSound(SoundEvent sound, float pitch) {
         assert this.client != null;
@@ -111,165 +108,36 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
         );
     }
     private void onClick() {
+        assert this.client != null;
         assert this.client.player != null;
         int currentAngle = (int) this.lockpick.getRotationAngle();
-        if (currentAngle <= lockAngles[1]+10 && currentAngle >= lockAngles[1]-10 && !locks[1] && lockLevel <= 2) {
-            onLockClick(1);
-        } else if (currentAngle <= 10 && currentAngle >= 0 && !locks[1] && lockLevel >= 3) {
-            onLockClick(1);
-        } else if (currentAngle <= 360 && currentAngle >= 350 && !locks[1] && lockLevel >= 3) {
-            onLockClick(1);
-        } else if (currentAngle <= lockAngles[2]+10 && currentAngle >= lockAngles[2]-10 && !locks[2]) {
-            onLockClick(2);
-        } else if (currentAngle <= lockAngles[3]+10 && currentAngle >= lockAngles[3]-10 && !locks[3]) {
-            onLockClick(3);
-        } else if (currentAngle <= lockAngles[4]+10 && currentAngle >= lockAngles[4]-10 && !locks[4]) {
-            onLockClick(4);
-        } else if (currentAngle <= lockAngles[5]+10 && currentAngle >= lockAngles[5]-10 && !locks[5]) {
-            onLockClick(5);
-        } else if (currentAngle <= lockAngles[6]+10 && currentAngle >= lockAngles[6]-10 && !locks[6]) {
-            if (lockLevel >= 1) {
-                onLockClick(6);
-            } else {
-                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+
+        for (int i = 0; i < pinsDefValues[lockLevel]; i++) {
+            if (currentAngle <= pinAngles.getPin(i)+10 && currentAngle >= pinAngles.getPin(i)-10 && !pinTriggerState[i]) {
+                onPinAction(i);
             }
-        } else if (currentAngle <= lockAngles[7]+10 && currentAngle >= lockAngles[7]-10 && !locks[7]) {
-            if (lockLevel >= 1) {
-                onLockClick(7);
-            } else {
-                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-        } else if (currentAngle <= lockAngles[8]+10 && currentAngle >= lockAngles[8]-10 && !locks[8]) {
-            if (lockLevel >= 2) {
-                onLockClick(8);
-            } else {
-                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-        } else if (currentAngle <= lockAngles[9]+10 && currentAngle >= lockAngles[9]-10 && !locks[9]) {
-            if (lockLevel >= 3) {
-                onLockClick(9);
-            } else {
-                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-        } else if (currentAngle <= lockAngles[9]+10 && currentAngle >= lockAngles[9]-10 && !locks[10]) {
-            if (lockLevel >= 3) {
-                onLockClick(10);
-            } else {
-                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-        } else if (currentAngle <= lockAngles[11]+10 && currentAngle >= lockAngles[11]-10 && !locks[11]) {
-            if (lockLevel == 4) {
-                onLockClick(11);
-            } else {
-                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-        } else if (currentAngle <= lockAngles[12]+10 && currentAngle >= lockAngles[12]-10 && !locks[12]) {
-            if (lockLevel == 4) {
-                onLockClick(12);
-            } else {
-                SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
-            }
-        } else {
+        }
+        if (currentAngle <= 10 && currentAngle >= 0 && !pinTriggerState[1] && lockLevel >= 3) {
+            onPinAction(1);
+        } else if (currentAngle <= 360 && currentAngle >= 350 && !pinTriggerState[1] && lockLevel >= 3) {
+            onPinAction(1);
+        }  else {
             playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.6f);
             SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
         }
     }
-
-    public void generateLockDegrees() {
-        Random random = new Random();
-        int[] locks = new int[12];
-        int lockCount = 0;
-
-        if (lockLevel <= 2) {
-            int minSpacing = 30;
-
-            locks[lockCount++] = generateFirstLock(random);
-
-            int maxLocks = lockLevel == 0 ? 5 : lockLevel == 1 ? 7 : 8;
-
-            while (lockCount < maxLocks) {
-                locks[lockCount] = generateNextDegree(locks, lockCount, minSpacing, random);
-                lockCount++;
-            }
-
-            assignLocks(locks, lockCount);
-
-        } else if (lockLevel == 3) {
-            int spacing = 36;
-            for (int i = 0; i < 10; i++) {
-                locks[i] = (i * spacing) % 360;
-            }
-            assignLocks(locks, 10);
-
-        } else if (lockLevel == 4) {
-            int spacing = 30;
-            for (int i = 0; i < 12; i++) {
-                locks[i] = (i * spacing) % 360;
-            }
-            assignLocks(locks, 12);
-        }
-    }
-
-    private int generateFirstLock(Random random) {
-        int firstLock;
-        while (true) {
-            firstLock = random.nextInt(360);
-            if (!isNearProhibitedRange(firstLock)) {
-                break;
-            }
-        }
-        return firstLock;
-    }
-
-    private static int generateNextDegree(int[] locks, int lockCount, int minSpacing, Random random) {
-        int newDegree;
-        while (true) {
-            newDegree = random.nextInt(360);
-            boolean isValid = true;
-            for (int i = 0; i < lockCount; i++) {
-                int diff = Math.abs(newDegree - locks[i]);
-                diff = Math.min(diff, 360 - diff);
-                if (diff < minSpacing || isNearProhibitedRange(newDegree)) {
-                    isValid = false;
-                    break;
-                }
-            }
-            if (isValid) {
-                break;
-            }
-        }
-        return newDegree;
-    }
-
-    private static boolean isNearProhibitedRange(int degree) {
-        return (degree <= 5 || degree >= 355);
-    }
-
-    private void assignLocks(int[] locks, int lockCount) {
-        if (lockCount > 0) lockAngles[1] = locks[0];
-        if (lockCount > 1) lockAngles[2] = locks[1];
-        if (lockCount > 2) lockAngles[3] = locks[2];
-        if (lockCount > 3) lockAngles[4] = locks[3];
-        if (lockCount > 4) lockAngles[5] = locks[4];
-        if (lockCount > 5) lockAngles[6] = locks[5];
-        if (lockCount > 6) lockAngles[7] = locks[6];
-        if (lockCount > 7) lockAngles[8] = locks[7];
-        if (lockCount > 8) lockAngles[9] = locks[8];
-        if (lockCount > 9) lockAngles[10] = locks[9];
-        if (lockCount > 10) lockAngles[11] = locks[10];
-        if (lockCount > 11) lockAngles[12] = locks[11];
-    }
-
         @Override
     public void renderBackground(DrawContext context) {
-        super.renderBackground(context);
         RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
         int x = this.width / 2 - 96;
         int y = this.height / 2 - 96;
         context.drawTexture(BACKGROUND_TEXTURE, x, y, 0, 0, 192, 192, 192, 192);
     }
 
-    protected void renderRotatedLocks(DrawContext context, Identifier texture, float rotationAngle) {
+    private void renderRotatedLocks(DrawContext context, boolean triggered, float rotationAngle) {
+        Identifier texture;
+        if (triggered) texture = PIN_TRIGGERED;
+        else texture = PIN_DEFAULT;
         MatrixStack matrixStack = context.getMatrices();
         matrixStack.push();
 
@@ -281,7 +149,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
 
         matrixStack.translate(centerX, centerY, 0.0f);
 
-        matrixStack.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Z.rotationDegrees(rotationAngle));
+        matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotationAngle));
 
         matrixStack.translate(-99.0f, -99.0f, 0.0f);
 
@@ -292,7 +160,6 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
 
     @Override
     public boolean shouldCloseOnEsc() {
-        methodCalled = false;
         return true;
     }
 
@@ -309,50 +176,18 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        assert this.client != null;
-        PlayerEntity player = this.client.player;
-        assert this.client.player != null;
-        if (lockCount <= 0) {
-            playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
-            player.sendMessage(Text.translatable("message.lock.success").formatted(Formatting.GREEN), true);
-            BlockPos pos = playerFacingBlock(player);
-            BlockEntity lockedChestBlockEntity = player.getWorld().getBlockEntity(pos);
-            if (lockedChestBlockEntity instanceof LockedChestLvLCopperBlockEntity) {
-                RestoreChestPacket.sendRestoreChestRequest(pos, 0);
-            }
-            this.close();
-        }
-        if (!player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
-            player.sendMessage(Text.translatable("message.lock.fail").formatted(Formatting.DARK_RED), true);
-            this.close();
-        }
         renderBackground(context);
+        handleClosingActions();
+        int pinsToRender = pinsDefValues[lockLevel];
 
-        if (!locks[1]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[1]);
-        if (!locks[2]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[2]);
-        if (!locks[3]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[3]);
-        if (!locks[4]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[4]);
-        if (!locks[5]) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[5]);
-        if (!locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[6]);
-        if (!locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[7]);
-        if (!locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[8]);
-        if (!locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[9]);
-        if (!locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[10]);
-        if (!locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[11]);
-        if (!locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_UNACTIVATED, lockAngles[12]);
+        for (int i = 0; i < pinsToRender; i++) {
 
-        if (locks[1]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[1]);
-        if (locks[2]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[2]);
-        if (locks[3]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[3]);
-        if (locks[4]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[4]);
-        if (locks[5]) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[5]);
-        if (locks[6]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[6]);
-        if (locks[7]) if (lockLevel >= 1) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[7]);
-        if (locks[8]) if (lockLevel >= 2) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[8]);
-        if (locks[9]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[9]);
-        if (locks[10]) if (lockLevel >= 3) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[10]);
-        if (locks[11]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[11]);
-        if (locks[12]) if (lockLevel == 4) renderRotatedLocks(context, LOCK_ACTIVATED, lockAngles[12]);
+            float rotationAngle = pinAngles.getPin(i);
+
+            boolean triggered = pinTriggerState[i + 1];
+
+            renderRotatedLocks(context, triggered, rotationAngle);
+        }
 
         super.render(context, mouseX, mouseY, delta);
     }
@@ -370,9 +205,30 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
         return Text.empty();
     }
 
+    private void handleClosingActions() {
+        assert this.client != null;
+        PlayerEntity player = this.client.player;
+        assert this.client.player != null;
+        if (pinsLeft <= 0) {
+            playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
+            player.sendMessage(Text.translatable("message.seasonal_adventures.lock.success").formatted(Formatting.GREEN), true);
+            BlockPos pos = playerFacingBlock(player);
+            BlockEntity lockedChestBlockEntity = player.getWorld().getBlockEntity(pos);
+            if (lockedChestBlockEntity instanceof LockedChestLvLCopperBlockEntity) {
+                RestoreChestPacket.sendRestoreChestRequest(pos, 0);
+            }
+            this.close();
+        }
+        if (!player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
+            player.sendMessage(Text.translatable("message.seasonal_adventures.lock.fail").formatted(Formatting.DARK_RED), true);
+            this.close();
+        }
+    }
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        pinAngles.setLockLevel(lockLevel);
+        pinAngles.generate();
         return new LockpickScreenHandler(syncId, playerInventory);
     }
 }

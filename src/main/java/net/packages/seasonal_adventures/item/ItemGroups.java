@@ -54,7 +54,7 @@ public class ItemGroups {
                         entries.add(Items.CENTRAL_AI_PROCESSOR);
                         entries.add(Items.DYLAN_MK1_SCHEME);
                         entries.add(Items.AUTOMATON_SKIN);
-                        entries.add(Items.AUTOMATON_EYE_MATRIX);
+                        entries.add(Items.BIOCOMPONENT_OPTICAL_UNIT);
                         entries.add(Items.LI_ON_BATTERY);
                         entries.add(Items.SYS_CABLE);
                         entries.add(Blocks.LAPTOP);

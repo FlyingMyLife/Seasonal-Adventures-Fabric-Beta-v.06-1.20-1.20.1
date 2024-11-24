@@ -24,9 +24,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
+import net.packages.lumina_lore.LuminaLore;
 import net.packages.seasonal_adventures.block.Blocks;
 import net.packages.seasonal_adventures.block.entity.ModBlockEntities;
-import net.packages.engine.characters.Character;
+import net.packages.lumina_lore.characters.Character;
 import net.packages.seasonal_adventures.entity.Entities;
 import net.packages.seasonal_adventures.entity.custom.ATMEntity;
 import net.packages.seasonal_adventures.entity.custom.DylanEntity;
@@ -76,6 +77,8 @@ public class SeasonalAdventures implements ModInitializer {
 	}
 	@Override
 	public void onInitialize() {
+		LuminaLore.initialize();
+
 		ServerWorldEvents.LOAD.register((world, server) -> {
 			MinecraftServer minecraftServer = server.getServer();
 			JDBCardHandler.initialize(minecraftServer, world.getOverworld());
