@@ -45,7 +45,7 @@ public class RecipeProvider extends FabricRecipeProvider {
                 0.7f, 200, "lithium_ingot");
         offerBlasting(exporter, LITHIUM_SMELTABLES, RecipeCategory.MISC, Items.LITHIUM_INGOT,
                 0.7f, 100, "lithium_ingot");
-
+        offerPressurePlateRecipe(exporter, Items.TITANIUM_SHEET, Items.TITANIUM_INGOT);
         offerReversibleCompactingRecipes(exporter, RecipeCategory.MISC, Items.ALUMINIUM_NUGGET, RecipeCategory.MISC, Items.ALUMINIUM_INGOT);
         offerReversibleCompactingRecipes(exporter, RecipeCategory.BUILDING_BLOCKS, Items.GRADE_5_TITANIUM_INGOT, RecipeCategory.DECORATIONS, Blocks.GRADE_5_TITANIUM_BLOCK);
         offerReversibleCompactingRecipes(exporter, RecipeCategory.BUILDING_BLOCKS, Items.TITANIUM_INGOT, RecipeCategory.DECORATIONS, Blocks.TITANIUM_BLOCK);

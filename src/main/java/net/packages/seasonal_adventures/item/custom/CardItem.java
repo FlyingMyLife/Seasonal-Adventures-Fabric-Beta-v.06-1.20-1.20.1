@@ -42,9 +42,9 @@ public class CardItem extends Item {
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         NbtCompound nbt = stack.getOrCreateNbt();
         String cardId = nbt.getString("CardID");
-        Text grayText = Text.translatable("tooltip.seasonal_adventures.cardId").setStyle(Style.EMPTY.withColor(Formatting.GRAY));
+        MutableText grayText = Text.translatable("tooltip.seasonal_adventures.cardId").setStyle(Style.EMPTY.withColor(Formatting.GRAY));
         Text purpleCardId = Text.literal(cardId).setStyle(Style.EMPTY.withColor(Formatting.LIGHT_PURPLE));
-        Text tooltipText = ((MutableText) grayText).append(purpleCardId);
+        Text tooltipText = grayText.append(purpleCardId);
         tooltip.add(tooltipText);
         tooltip.add(Text.empty());
         tooltip.add(Text.translatable("tooltip.seasonal_adventures.card_tooltip.upper").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));

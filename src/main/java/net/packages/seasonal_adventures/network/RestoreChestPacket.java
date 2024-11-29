@@ -27,7 +27,7 @@ import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvL
 import java.util.Map;
 
 public class RestoreChestPacket {
-    public static final Identifier ID = new Identifier("seasonal_adventures", "restore_chest");
+    public static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "restore_chest");
 
     public static void sendRestoreChestRequest(BlockPos pos, int lockLevel) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -68,7 +68,7 @@ public class RestoreChestPacket {
                         chestBlockEntity.markDirty();
                     }
 
-                    //Зачем на ты это смотришь ?
+                    //Зачем ты на это смотришь ?
 
                 }
             });

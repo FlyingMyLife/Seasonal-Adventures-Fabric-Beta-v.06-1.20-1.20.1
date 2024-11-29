@@ -10,7 +10,7 @@ import net.packages.lumina_lore.LuminaLore;
 import java.util.Random;
 
 public class HighResParticle extends AnimatedParticle {
-
+    @Environment(EnvType.CLIENT)
     HighResParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
         super(world, x, y, z, spriteProvider, 0.0125F);
         Random random = new Random();

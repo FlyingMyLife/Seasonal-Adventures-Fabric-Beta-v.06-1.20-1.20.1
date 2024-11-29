@@ -6,23 +6,20 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.events.JDBCardHandler;
-import net.packages.seasonal_adventures.util.WorldUtils;
 
-public class CardGivenPacket {
-    private static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "card_given");
-    ;
+public class BankingOperationsPacket {
 
-    public static void GiveCard() {
+    public static Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "banking_operations");
+    public void sendPacket(OperationType type, Integer...hello) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        buf.writeEnumConstant(type);
         ClientPlayNetworking.send(ID, buf);
     }
-
-    public static void register() {
+    public void register(){
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) -> {
+            OperationType type = buf.readEnumConstant(OperationType.class);
             server.execute( () -> {
                 if (player != null) {
-                    JDBCardHandler.giveCard(player, server, WorldUtils.getOverworld(server));
                 }
             });
         });

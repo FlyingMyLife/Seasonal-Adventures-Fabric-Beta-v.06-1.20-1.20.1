@@ -9,7 +9,7 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.packages.seasonal_adventures.entity.animation.Animations;
+import net.packages.seasonal_adventures.entity.animation.DylanAnimations;
 import net.packages.seasonal_adventures.entity.custom.DylanEntity;
 
 public class DylanModel<T extends DylanEntity> extends SinglePartEntityModel<T> {
@@ -138,9 +138,9 @@ public class DylanModel<T extends DylanEntity> extends SinglePartEntityModel<T> 
 	public void setAngles(DylanEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
 		this.getPart().traverse().forEach(ModelPart::resetTransform);
 		this.setHeadAngles(headYaw, headPitch);
-		this.animateMovement(Animations.WALK, limbAngle, limbDistance, 2f, 2.5f);
-		this.updateAnimation(entity.attackAnimationState , Animations.ATTACK, entity.age, 1f);
-		this.updateAnimation(entity.idleAnimationState , Animations.IDLE, entity.age, 1f);
+		this.animateMovement(DylanAnimations.WALK, limbAngle, limbDistance, 2f, 2.5f);
+		this.updateAnimation(entity.attackAnimationState , DylanAnimations.ATTACK, entity.age, 1f);
+		this.updateAnimation(entity.idleAnimationState , DylanAnimations.IDLE, entity.age, 1f);
 	}
 	private void setHeadAngles(float headYaw, float headPitch) {
 		headYaw = MathHelper.clamp(headYaw, -30.0F, 30.0F);

@@ -20,9 +20,5 @@ public class ModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         // itemModelGenerator.register(Items.item);
-        itemModelGenerator.registerArmor((ArmorItem) Items.ABP_BOOTS);
-        itemModelGenerator.registerArmor((ArmorItem) Items.ABP_LEGGINGS);
-        itemModelGenerator.registerArmor((ArmorItem) Items.ABP_CHESTPLATE);
-        itemModelGenerator.registerArmor((ArmorItem) Items.ABP_HELMET);
     }
 }

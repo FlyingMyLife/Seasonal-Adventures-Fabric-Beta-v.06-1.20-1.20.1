@@ -5,9 +5,10 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.packages.seasonal_adventures.SeasonalAdventures;
 
 public class ItemRemovalPacket {
-    public static final Identifier ID = new Identifier("seasonal_adventures", "item_removal");
+    public static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "item_removal");
 
     public static void ItemStackRemove() {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

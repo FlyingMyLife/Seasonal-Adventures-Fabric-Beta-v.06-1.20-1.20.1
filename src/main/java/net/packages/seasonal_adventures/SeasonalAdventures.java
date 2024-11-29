@@ -27,7 +27,6 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.packages.lumina_lore.LuminaLore;
 import net.packages.seasonal_adventures.block.Blocks;
 import net.packages.seasonal_adventures.block.entity.ModBlockEntities;
-import net.packages.lumina_lore.characters.Character;
 import net.packages.seasonal_adventures.entity.Entities;
 import net.packages.seasonal_adventures.entity.custom.ATMEntity;
 import net.packages.seasonal_adventures.entity.custom.DylanEntity;
@@ -44,8 +43,6 @@ import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
 
 public class SeasonalAdventures implements ModInitializer {
-	Character dylan = new Character("Дилан", Entities.DYLAN, true);
-
 	public static final GameRules.Key<GameRules.BooleanRule> IS_ATMS_BREAKABLE = GameRuleRegistry.register("isAtmsBreakable", GameRules.Category.MISC, GameRuleFactory.createBooleanRule(true));
 	public static final GameRules.Key<GameRules.BooleanRule> SaDebug = GameRuleRegistry.register("sa:debug", GameRules.Category.MISC, GameRuleFactory.createBooleanRule(false));
 	public static final Identifier MAIN_LAB_CHEST = new Identifier("seasonal_adventures", "chests/main_lab_chest");

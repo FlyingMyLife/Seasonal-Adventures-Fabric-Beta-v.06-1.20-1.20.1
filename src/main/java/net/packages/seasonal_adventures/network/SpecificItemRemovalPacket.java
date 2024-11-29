@@ -9,9 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.packages.seasonal_adventures.SeasonalAdventures;
 
 public class SpecificItemRemovalPacket {
-    public static final Identifier ID = new Identifier("seasonal_adventures", "specific_item_removal");
+    public static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "specific_item_removal");
 
     public static void sendItemRemovalRequest(Item itemToRemove, int countToRemove) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

@@ -22,7 +22,7 @@ public class SanchezGlasses extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
             Style style = Style.EMPTY
-                    .withColor(TextColor.fromFormatting(Formatting.DARK_PURPLE))  // Set text color to gray
+                    .withColor(TextColor.fromFormatting(Formatting.DARK_PURPLE))
                     .withItalic(true);
             tooltip.add(Text.translatable("tooltip.seasonal_adventures.sanchez_glasses.detailed").setStyle(style));
             tooltip.add(Text.translatable("tooltip.seasonal_adventures.sanchez_glasses.detailed_upper").setStyle(style));

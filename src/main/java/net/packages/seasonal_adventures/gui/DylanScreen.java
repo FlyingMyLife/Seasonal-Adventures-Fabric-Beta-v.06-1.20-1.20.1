@@ -58,9 +58,9 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
     private static final Identifier BUTTON_TEXTURE_2 = new Identifier("seasonal_adventures", "textures/gui/button_2.png");
     private static final Identifier BUTTON_TEXTURE_3 = new Identifier("seasonal_adventures", "textures/gui/button_3.png");
 
-    private static final Identifier UNAVAIBLE_BUTTON_TEXTURE_1 = new Identifier("seasonal_adventures", "textures/gui/unavaible_button_1.png");
-    private static final Identifier UNAVAIBLE_BUTTON_TEXTURE_2 = new Identifier("seasonal_adventures", "textures/gui/unavaible_button_2.png");
-    private static final Identifier UNAVAIBLE_BUTTON_TEXTURE_3 = new Identifier("seasonal_adventures", "textures/gui/unavaible_button_3.png");
+    private static final Identifier UNavailable_BUTTON_TEXTURE_1 = new Identifier("seasonal_adventures", "textures/gui/unavailable_button_1.png");
+    private static final Identifier UNavailable_BUTTON_TEXTURE_2 = new Identifier("seasonal_adventures", "textures/gui/unavailable_button_2.png");
+    private static final Identifier UNavailable_BUTTON_TEXTURE_3 = new Identifier("seasonal_adventures", "textures/gui/unavailable_button_3.png");
 
     @Override
     protected void init() {
@@ -98,7 +98,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
                         0,
                         20,
                         BUTTON_TEXTURE_1,
-                        UNAVAIBLE_BUTTON_TEXTURE_1,
+                        UNavailable_BUTTON_TEXTURE_1,
                         buttonWidth,
                         buttonHeight,
                         button -> handle_make_a_giftPress(),
@@ -115,7 +115,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
                         0,
                         20,
                         BUTTON_TEXTURE_2,
-                        UNAVAIBLE_BUTTON_TEXTURE_2,
+                        UNavailable_BUTTON_TEXTURE_2,
                         buttonWidth,
                         buttonHeight,
                         button -> handle_repairPress(),
@@ -133,7 +133,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
                         0,
                         20,
                         BUTTON_TEXTURE_3,
-                        UNAVAIBLE_BUTTON_TEXTURE_3,
+                        UNavailable_BUTTON_TEXTURE_3,
                         buttonWidth,
                         buttonHeight,
                         button -> handle_settings(),

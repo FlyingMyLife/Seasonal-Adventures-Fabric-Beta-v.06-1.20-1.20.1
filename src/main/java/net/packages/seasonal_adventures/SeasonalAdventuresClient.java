@@ -2,10 +2,12 @@ package net.packages.seasonal_adventures;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
@@ -24,10 +26,11 @@ import static net.packages.seasonal_adventures.SeasonalAdventures.*;
 
 @Environment(EnvType.CLIENT)
 public class SeasonalAdventuresClient implements ClientModInitializer {
+
+    public static final KeyBinding OPEN_AVAILABLE_DIALOGUE_MENU = KeyBindingHelper.registerKeyBinding()
     @Override
     public void onInitializeClient() {
         LuminaLoreClient.initializeClient();
-
         ScreenRegistry.register(LOCKPICK_SCREEN_HANDLER, (LockpickScreenHandler handler, PlayerInventory inventory, Text title) -> new LockpickScreen(handler, inventory, title, 0));
         ScreenRegistry.register(DYLAN_SCREEN_HANDLER, DylanScreen::new);
         ScreenRegistry.register(ATM_SCREEN_HANDLER, ATMScreen::new);

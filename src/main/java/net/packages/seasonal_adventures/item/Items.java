@@ -19,22 +19,23 @@ public class Items {
     //Замки
     public static final Item COPPER_LOCK = registerItem("copper_lock", new LockItem(new FabricItemSettings(), 0));
     public static final Item IRON_LOCK = registerItem("iron_lock", new LockItem(new FabricItemSettings(), 1));
+    public static final Item GOLD_LOCK = registerItem("gold_lock", new LockItem(new FabricItemSettings(), 2));
 
-    //Броня ABPS
+    //Броня ABPS [Active biolog]
     public static final Item ABP_HELMET = registerItem("abp_helmet", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.HELMET, new FabricItemSettings()));
     public static final Item ABP_CHESTPLATE = registerItem("abp_chestplate", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.CHESTPLATE, new FabricItemSettings()));
     public static final Item ABP_LEGGINGS = registerItem("abp_leggings", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.LEGGINGS, new FabricItemSettings()));
     public static final Item ABP_BOOTS = registerItem("abp_boots", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.BOOTS, new FabricItemSettings()));
 
     //V предметы
-    public static final Item V1 = registerItem("1v", new VItems(new FabricItemSettings(), 1));
-    public static final Item V5 = registerItem("5v", new VItems(new FabricItemSettings(), 5));
-    public static final Item V10 = registerItem("10v", new VItems(new FabricItemSettings().rarity(Rarity.UNCOMMON), 10));
-    public static final Item V50 = registerItem("50v", new VItems(new FabricItemSettings().rarity(Rarity.UNCOMMON), 50));
-    public static final Item V100 = registerItem("100v", new VItems(new FabricItemSettings().rarity(Rarity.RARE), 100));
-    public static final Item V500 = registerItem("500v", new VItems(new FabricItemSettings().rarity(Rarity.RARE), 500));
-    public static final Item V1000 = registerItem("1000v", new VItems(new FabricItemSettings().rarity(Rarity.EPIC), 1000));
-    public static final Item V10000 = registerItem("10000v", new VItems(new FabricItemSettings().rarity(Rarity.EPIC), 10000));
+    public static final Item V1 = registerItem("1v", new Item(new FabricItemSettings()));
+    public static final Item V5 = registerItem("5v", new Item(new FabricItemSettings()));
+    public static final Item V10 = registerItem("10v", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+    public static final Item V50 = registerItem("50v", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+    public static final Item V100 = registerItem("100v", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item V500 = registerItem("500v", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item V1000 = registerItem("1000v", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
+    public static final Item V10000 = registerItem("10000v", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
 
     public static final Item AUTOMATON_SKIN = registerItem("automaton_skin", new Item(new FabricItemSettings()));
     public static final Item SYS_CABLE = registerItem("sys_cable", new Item(new FabricItemSettings()));

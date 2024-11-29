@@ -7,10 +7,6 @@ import net.minecraft.text.Text;
 import net.packages.seasonal_adventures.gui.handlers.DylanSettingsScreenHandler;
 
 public class DylanSettingsScreen extends HandledScreen<DylanSettingsScreenHandler> {
-
-
-
-
     private final DylanSettingsScreenHandler handler;
     public DylanSettingsScreen(DylanSettingsScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);

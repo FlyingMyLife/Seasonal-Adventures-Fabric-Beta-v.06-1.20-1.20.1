@@ -48,7 +48,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     private static final  float[] lockpickSpeedValues = {5.0f, 12.2f, 18.4f, 26.6f, 35.8f};
 
     private RotatableLockpick lockpick;
-    
+
     private static final Identifier LOCKPICK_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick.png");
     private static final Identifier PIN_DEFAULT = new Identifier("seasonal_adventures", "textures/gui/pin_default.png");
     private static final Identifier PIN_TRIGGERED = new Identifier("seasonal_adventures", "textures/gui/pin_triggered.png");
@@ -121,7 +121,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
             onPinAction(1);
         } else if (currentAngle <= 360 && currentAngle >= 350 && !pinTriggerState[1] && lockLevel >= 3) {
             onPinAction(1);
-        }  else {
+        } else {
             playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.6f);
             SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
         }
