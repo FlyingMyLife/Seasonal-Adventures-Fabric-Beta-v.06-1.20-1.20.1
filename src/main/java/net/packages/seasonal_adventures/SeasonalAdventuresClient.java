@@ -26,8 +26,6 @@ import static net.packages.seasonal_adventures.SeasonalAdventures.*;
 
 @Environment(EnvType.CLIENT)
 public class SeasonalAdventuresClient implements ClientModInitializer {
-
-    public static final KeyBinding OPEN_AVAILABLE_DIALOGUE_MENU = KeyBindingHelper.registerKeyBinding()
     @Override
     public void onInitializeClient() {
         LuminaLoreClient.initializeClient();
