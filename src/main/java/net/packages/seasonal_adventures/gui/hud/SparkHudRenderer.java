@@ -7,7 +7,7 @@ import net.minecraft.util.math.RotationAxis;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 import org.joml.Math;
 
-public class SparkHudHandler {
+public class SparkHudRenderer {
     private static final Identifier SPARK_TEXTURE = new Identifier(SeasonalAdventures.MOD_ID, "textures/gui/hud/spark.png");
     private static final int sparkSize = 12;
     private static float sparkAngle = 0f;
@@ -17,7 +17,7 @@ public class SparkHudHandler {
     private static long startTime;
     private static boolean isAnimating = false;
 
-    public SparkHudHandler() {
+    public SparkHudRenderer() {
         startAnimation();
     }
 
@@ -27,7 +27,7 @@ public class SparkHudHandler {
     }
 
     public static void render(DrawContext drawContext) {
-        
+
         final float sparkTargetPos = drawContext.getScaledWindowHeight() / 385f * 3.2f;
 
         if (!isAnimating) return;

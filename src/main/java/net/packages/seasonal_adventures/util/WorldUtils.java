@@ -10,11 +10,4 @@ public class WorldUtils {
         return server.getWorld(World.OVERWORLD);
     }
 
-    public static ServerWorld getNether(MinecraftServer server) {
-        return server.getWorld(World.NETHER);
-    }
-
-    public static ServerWorld getEnd(MinecraftServer server) {
-        return server.getWorld(World.END);
-    }
 }
