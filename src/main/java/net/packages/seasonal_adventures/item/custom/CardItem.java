@@ -21,27 +21,16 @@ public class CardItem extends Item {
         super(settings);
     }
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (!world.isClient) {
-            NbtCompound nbt = itemStack.getOrCreateNbt();
-            String cardId = nbt.getString("CardID");
-            long currencyAmount = nbt.getLong("CurrencyAmount");
-        }
-        return TypedActionResult.success(itemStack);
-    }
-    public static ItemStack createCardItem(String cardId, long currencyAmount) {
+    public static ItemStack createCardItem(String cardId) {
         ItemStack cardItem = new ItemStack(Items.CARD);
         NbtCompound tag = cardItem.getOrCreateNbt();
-        tag.putString("CardID", cardId);
-        tag.putLong("CurrencyAmount", currencyAmount);
+        tag.putString("cardId", cardId);
         return cardItem;
     }
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         NbtCompound nbt = stack.getOrCreateNbt();
-        String cardId = nbt.getString("CardID");
+        String cardId = nbt.getString("cardId");
         MutableText grayText = Text.translatable("tooltip.seasonal_adventures.cardId").setStyle(Style.EMPTY.withColor(Formatting.GRAY));
         Text purpleCardId = Text.literal(cardId).setStyle(Style.EMPTY.withColor(Formatting.LIGHT_PURPLE));
         Text tooltipText = grayText.append(purpleCardId);

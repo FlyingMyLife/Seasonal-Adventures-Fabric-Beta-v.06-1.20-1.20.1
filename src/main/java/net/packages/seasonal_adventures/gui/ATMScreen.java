@@ -5,6 +5,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.MutableText;
@@ -16,9 +17,11 @@ import net.packages.seasonal_adventures.gui.handlers.ATMScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.TexturedButtonWidget;
 import net.packages.seasonal_adventures.gui.widgets.NumericTextFieldWidget;
 import net.packages.seasonal_adventures.item.Items;
-import net.packages.seasonal_adventures.network.CardGivenPacket;
-import net.packages.seasonal_adventures.network.ItemGivenPacket;
-import net.packages.seasonal_adventures.network.SpecificItemRemovalPacket;
+import net.packages.seasonal_adventures.network.*;
+import net.packages.seasonal_adventures.world.PlayerLinkedData;
+import net.packages.seasonal_adventures.world.data.PlayerDataPersistentState;
+
+import java.util.Objects;
 
 import static net.packages.seasonal_adventures.util.InventoryUtils.getItemAmount;
 
@@ -36,7 +39,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private static final Identifier UN_ENTER_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/un_enter_button.png");
     private static final Identifier ENTER_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/enter_button.png");
 
-    private long userInputValue = 0;
+    private int userInputValue = 0;
     private boolean replenishMode = true;
 
     private NumericTextFieldWidget numericTextFieldWidget;
@@ -195,192 +198,112 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     }
 
     private void handle_enter() {
+        assert this.client != null;
+        assert this.client.player != null;
+        if (!this.client.player.getInventory().getMainHandStack().isOf(Items.CARD)) {
+            this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
+            this.close();
+            return;
+        }
+
+        int enteredValue = getUserInputValue();
+        int[] denominations = {10000, 1000, 500, 100, 50, 10, 5, 1};
+        ItemStack[] items = {new ItemStack(Items.V10000), new ItemStack(Items.V1000), new ItemStack(Items.V500),
+                new ItemStack(Items.V100), new ItemStack(Items.V50), new ItemStack(Items.V10),
+                new ItemStack(Items.V5), new ItemStack(Items.V1)};
+        int[] availableAmounts = replenishMode ? new int[denominations.length] : getDenominationsFromCard(denominations);
+
+        BankingOperationsPacket.executeOperation(replenishMode ? OperationType.REPLENISH : OperationType.WITHDRAW, enteredValue);
+
         if (replenishMode) {
-            if (this.client.player.getInventory().getMainHandStack().isOf(Items.CARD))
-            {
-                ItemStack v1 = new ItemStack(Items.V1);
-                ItemStack v5 = new ItemStack(Items.V5);
-                ItemStack v10 = new ItemStack(Items.V10);
-                ItemStack v50 = new ItemStack(Items.V50);
-                ItemStack v100 = new ItemStack(Items.V100);
-                ItemStack v500 = new ItemStack(Items.V500);
-                ItemStack v1000 = new ItemStack(Items.V1000);
-                ItemStack v10000 = new ItemStack(Items.V10000);
-
-                int av1 = getItemAmount(this.client.player, v1);
-                int av5 = getItemAmount(this.client.player, v5);
-                int av10 = getItemAmount(this.client.player, v10);
-                int av50 = getItemAmount(this.client.player, v50);
-                int av100 = getItemAmount(this.client.player, v100);
-                int av500 = getItemAmount(this.client.player, v500);
-                int av1000 = getItemAmount(this.client.player, v1000);
-                int av10000 = getItemAmount(this.client.player, v10000);
-
-                int enteredValue = (int) getUserInputValue();
-
-                int totalValue = av1 + av5 * 5 + av10 * 10 + av50 * 50
-                        + av100 * 100 + av500 * 500 + av1000 * 1000 + av10000 * 10000;
-                int[] denominations = {10000, 1000, 500, 100, 50, 10, 5, 1};
-                int[] availableAmounts = {av10000, av1000, av500, av100, av50, av10, av5, av1};
-                if (totalValue >= enteredValue) {
-                    int used10000 = 0;
-                    int used1000 = 0;
-                    int used500 = 0;
-                    int used100 = 0;
-                    int used50 = 0;
-                    int used10 = 0;
-                    int used5 = 0;
-                    int used1 = 0;
-                    int valueToEnter = enteredValue;
-                    for (int i = 0; i < denominations.length; i++)
-                    {
-                        if (enteredValue >= denominations[i]) {
-                            int num = Math.min(enteredValue / denominations[i], availableAmounts[i]);
-                            enteredValue -= num * denominations[i];
-
-                            switch (denominations[i]) {
-                                case 10000:
-                                    used10000 = num;
-                                    break;
-                                case 1000:
-                                    used1000 = num;
-                                    break;
-                                case 500:
-                                    used500 = num;
-                                    break;
-                                case 100:
-                                    used100 = num;
-                                    break;
-                                case 50:
-                                    used50 = num;
-                                    break;
-                                case 10:
-                                    used10 = num;
-                                    break;
-                                case 5:
-                                    used5 = num;
-                                    break;
-                                case 1:
-                                    used1 = num;
-                                    break;
-                            }
-                        }
-                    }
-
-                    if (enteredValue == 0)
-                    {
-                        int oldValue = (int) getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack());
-                        Text currentT = Text.translatable("message.seasonal_adventures.atm.success.current_balance").formatted(Formatting.AQUA);
-                        Text balanceT = Text.literal("" + (oldValue + valueToEnter)).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE);
-                        this.client.player.sendMessage(((MutableText) currentT).append(balanceT), true);
-                        setCurrencyAmountToItem(this.client.player.getInventory().getMainHandStack(), oldValue + valueToEnter);
-                        SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V1, used1);
-                        SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V5, used5);
-                        SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V10, used10);
-                        SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V50, used50);
-                        SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V100, used100);
-                        SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V500, used500);
-                        SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V1000, used1000);
-                        SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V10000, used10000);
-                        this.close();
-                    } else
-                    {
-                        this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.changing_fail").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
-                        this.close();
-                    }
-                } else
-                {
-                    this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.replenish").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
-                    this.close();
-                }
-                
-            } else
-            {
-                this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
+            int totalValue = getTotalValue(denominations, availableAmounts);
+            if (totalValue < enteredValue) {
+                this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.replenish").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
                 this.close();
+                return;
             }
-
-        } else
-        {
-            if (this.client.player.getInventory().getMainHandStack().isOf(Items.CARD)) {
-                int enteredValue = (int) getUserInputValue();
-                int onCardValue = (int) getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack());
-
-                if (onCardValue >= enteredValue) {
-
-                        int[] denominations = {10000, 1000, 500, 100, 50, 10, 5, 1};
-
-                        int need1v = 0, need5v = 0, need10v = 0, need50v = 0,
-                                need100v = 0, need500v = 0, need1000v = 0,
-                                need10000v = 0;
-
-                        for (int denomination : denominations) {
-                            int count = enteredValue / denomination;
-                            enteredValue %= denomination;
-                            switch (denomination) {
-                                case 10000:
-                                    need10000v = count;
-                                    break;
-                                case 1000:
-                                    need1000v = count;
-                                    break;
-                                case 500:
-                                    need500v = count;
-                                    break;
-                                case 100:
-                                    need100v = count;
-                                    break;
-                                case 50:
-                                    need50v = count;
-                                    break;
-                                case 10:
-                                    need10v = count;
-                                    break;
-                                case 5:
-                                    need5v = count;
-                                    break;
-                                case 1:
-                                    need1v = count;
-                                    break;
-                            }
-                        }
-
-                        setCurrencyAmountToItem(this.client.player.getInventory().getMainHandStack(), (getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack()) - getUserInputValue()));
-                        Text currentT = Text.translatable("message.seasonal_adventures.atm.success.current_balance").formatted(Formatting.AQUA);
-                        Text balanceT = Text.literal("" + (getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack()))).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE);
-                        this.client.player.sendMessage(((MutableText) currentT).append(balanceT), true);
-                        ItemGivenPacket.sendItemGivenRequest(Items.V1, need1v);
-                        ItemGivenPacket.sendItemGivenRequest(Items.V5, need5v);
-                        ItemGivenPacket.sendItemGivenRequest(Items.V10, need10v);
-                        ItemGivenPacket.sendItemGivenRequest(Items.V50, need50v);
-                        ItemGivenPacket.sendItemGivenRequest(Items.V100, need100v);
-                        ItemGivenPacket.sendItemGivenRequest(Items.V500, need500v);
-                        ItemGivenPacket.sendItemGivenRequest(Items.V1000, need1000v);
-                        ItemGivenPacket.sendItemGivenRequest(Items.V10000, need10000v);
-                        this.close();
-                } else {
-                    this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.withdrawal").formatted(Formatting.RED, Formatting.BOLD), true);
-                    this.close();
-                }
-            } else {
-                this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
+            processReplenish(enteredValue, denominations, availableAmounts, items);
+        } else {
+            int onCardValue = getCurrencyAmount();
+            if (onCardValue < enteredValue) {
+                this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.withdrawal").formatted(Formatting.RED, Formatting.BOLD), true);
                 this.close();
+                return;
             }
+            processWithdrawal(enteredValue, denominations, items);
         }
     }
-    public static void setCurrencyAmountToItem(ItemStack itemStack, long currencyAmount) {
-        NbtCompound tag = itemStack.getOrCreateNbt();
-        tag.putLong("CurrencyAmount", currencyAmount);
-        itemStack.setNbt(tag);
-    }
-    public static long getCurrencyAmountFromItem(ItemStack itemStack) {
-        if (itemStack.hasNbt()) {
-            NbtCompound tag = itemStack.getNbt();
-            if (tag.contains("CurrencyAmount")) {
-                return tag.getLong("CurrencyAmount");
-            }
+
+    private int[] getDenominationsFromCard(int[] denominations) {
+        assert this.client != null;
+        assert this.client.player != null;
+        int[] availableAmounts = new int[denominations.length];
+        ItemStack[] items = {new ItemStack(Items.V1), new ItemStack(Items.V5), new ItemStack(Items.V10),
+                new ItemStack(Items.V50), new ItemStack(Items.V100), new ItemStack(Items.V500),
+                new ItemStack(Items.V1000), new ItemStack(Items.V10000)};
+        for (int i = 0; i < denominations.length; i++) {
+            availableAmounts[i] = getItemAmount(this.client.player, items[i]);
         }
-        return 0L;
+        return availableAmounts;
+    }
+
+    private int getTotalValue(int[] denominations, int[] availableAmounts) {
+        int totalValue = 0;
+        for (int i = 0; i < denominations.length; i++) {
+            totalValue += availableAmounts[i] * denominations[i];
+        }
+        return totalValue;
+    }
+
+    private void processReplenish(int enteredValue, int[] denominations, int[] availableAmounts, ItemStack[] items) {
+        assert this.client != null;
+        assert this.client.player != null;
+        int valueToEnter = enteredValue;
+        for (int i = 0; i < denominations.length; i++) {
+            int num = Math.min(valueToEnter / denominations[i], availableAmounts[i]);
+            valueToEnter -= num * denominations[i];
+            removeItemFromPlayer(items[i].getItem(), num);
+        }
+        if (valueToEnter == 0) {
+            updateBalanceMessage(enteredValue);
+            this.close();
+        } else {
+            this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.changing_fail").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
+            this.close();
+        }
+    }
+
+    private void processWithdrawal(int enteredValue, int[] denominations, ItemStack[] items) {
+        int remainingValue = enteredValue;
+        for (int i = 0; i < denominations.length; i++) {
+            int count = remainingValue / denominations[i];
+            remainingValue %= denominations[i];
+            addItemToPlayer(items[i].getItem(), count);
+        }
+        this.close();
+    }
+
+    private void removeItemFromPlayer(Item item, int count) {
+        SpecificItemRemovalPacket.sendItemRemovalRequest(item, count);
+    }
+
+    private void addItemToPlayer(Item item, int count) {
+        ItemGivenPacket.sendItemGivenRequest(item, count);
+    }
+
+    private void updateBalanceMessage(int enteredValue) {
+        assert this.client != null;
+        assert this.client.player != null;
+        MutableText currentT = Text.translatable("message.seasonal_adventures.atm.success.current_balance").formatted(Formatting.AQUA);
+        Text balanceT = Text.literal("" + enteredValue).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE);
+        this.client.player.sendMessage(currentT.append(balanceT), true);
+    }
+
+    public int getCurrencyAmount() {
+        assert this.client != null;
+        assert this.client.player != null;
+        PlayerLinkedData playerState = PlayerDataPersistentState.getPlayerState(this.client.player);
+        return playerState.currencyAmount;
     }
 
 
@@ -420,7 +343,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private void updateUserInputValue() {
         String text = numericTextFieldWidget.getText();
         try {
-            long newValue = Long.parseLong(text);
+            int newValue = Integer.parseInt(text);
             if (newValue >= 0 && newValue <= 99999999) {
                 userInputValue = newValue;
             }
@@ -428,7 +351,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         }
     }
 
-    public long getUserInputValue() {
+    public int getUserInputValue() {
         return userInputValue;
     }
 
@@ -436,8 +359,8 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         assert this.client != null;
         long currentValue = getUserInputValue();
         minusButton.active = currentValue > 50;
-        enterButton.active = currentValue >= 50 && currentValue <= 10000000;
-        plusButton.active = currentValue < 10000000;
+        enterButton.active = currentValue >= 50 && currentValue <= 9999999;
+        plusButton.active = currentValue < 9999950;
         requestCardButton.active = !JDBCardHandler.playerHasCard(this.client.player);
         replenishButton.active = !replenishMode;
         withdrawButton.active = replenishMode;
