@@ -63,7 +63,9 @@ public class SeasonalAdventures implements ModInitializer {
 	public static final RegistryKey<PlacedFeature> LARGE_LITHIUM_ORE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, new Identifier("seasonal_adventures", "ore_lithium_large"));
 	public static final RegistryKey<PlacedFeature> SMALL_LITHIUM_ORE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, new Identifier("seasonal_adventures", "ore_lithium_small"));
 	public static final String MOD_ID = "seasonal_adventures";
+
 	public static final Logger LOGGER = LoggerFactory.getLogger("Seasonal Adventures");
+
 	public static void sendDebugMessage (String log, PlayerEntity player) {
 		if (player.getWorld().getGameRules().getBoolean(SeasonalAdventures.SaDebug)){
 		final Text debug = Text.literal("[DEBUG] ").formatted(Formatting.BOLD, Formatting.GRAY);
@@ -90,6 +92,7 @@ public class SeasonalAdventures implements ModInitializer {
 		ItemGivenPacket.register();
 		ItemRemovalPacket.register();
 		CardGivenPacket.register();
+		BankingOperationsPacket.register();
 
 		ModBlockEntities.registerBlockEntities();
 

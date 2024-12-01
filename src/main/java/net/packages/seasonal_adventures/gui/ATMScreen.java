@@ -16,9 +16,7 @@ import net.packages.seasonal_adventures.gui.handlers.ATMScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.TexturedButtonWidget;
 import net.packages.seasonal_adventures.gui.widgets.NumericTextFieldWidget;
 import net.packages.seasonal_adventures.item.Items;
-import net.packages.seasonal_adventures.network.CardGivenPacket;
-import net.packages.seasonal_adventures.network.ItemGivenPacket;
-import net.packages.seasonal_adventures.network.SpecificItemRemovalPacket;
+import net.packages.seasonal_adventures.network.*;
 
 import static net.packages.seasonal_adventures.util.InventoryUtils.getItemAmount;
 
@@ -36,7 +34,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private static final Identifier UN_ENTER_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/un_enter_button.png");
     private static final Identifier ENTER_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/enter_button.png");
 
-    private long userInputValue = 0;
+    private int userInputValue = 0;
     private boolean replenishMode = true;
 
     private NumericTextFieldWidget numericTextFieldWidget;
@@ -196,8 +194,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
 
     private void handle_enter() {
         if (replenishMode) {
-            if (this.client.player.getInventory().getMainHandStack().isOf(Items.CARD))
-            {
+            if (this.client.player.getInventory().getMainHandStack().isOf(Items.CARD)) {
                 ItemStack v1 = new ItemStack(Items.V1);
                 ItemStack v5 = new ItemStack(Items.V5);
                 ItemStack v10 = new ItemStack(Items.V10);
@@ -216,7 +213,8 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                 int av1000 = getItemAmount(this.client.player, v1000);
                 int av10000 = getItemAmount(this.client.player, v10000);
 
-                int enteredValue = (int) getUserInputValue();
+                int enteredValue = getUserInputValue();
+                BankingOperationsPacket.executeOperation(OperationType.REPLENISH, enteredValue);
 
                 int totalValue = av1 + av5 * 5 + av10 * 10 + av50 * 50
                         + av100 * 100 + av500 * 500 + av1000 * 1000 + av10000 * 10000;
@@ -267,8 +265,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         }
                     }
 
-                    if (enteredValue == 0)
-                    {
+                    if (enteredValue == 0) {
                         int oldValue = (int) getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack());
                         Text currentT = Text.translatable("message.seasonal_adventures.atm.success.current_balance").formatted(Formatting.AQUA);
                         Text balanceT = Text.literal("" + (oldValue + valueToEnter)).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE);
@@ -283,27 +280,24 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V1000, used1000);
                         SpecificItemRemovalPacket.sendItemRemovalRequest(Items.V10000, used10000);
                         this.close();
-                    } else
-                    {
+                    } else {
                         this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.changing_fail").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
                         this.close();
                     }
-                } else
-                {
+                } else {
                     this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.replenish").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
                     this.close();
                 }
                 
-            } else
-            {
+            } else {
                 this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
                 this.close();
             }
 
-        } else
-        {
+        } else {
             if (this.client.player.getInventory().getMainHandStack().isOf(Items.CARD)) {
-                int enteredValue = (int) getUserInputValue();
+                int enteredValue = getUserInputValue();
+                BankingOperationsPacket.executeOperation(OperationType.WITHDRAW, enteredValue);
                 int onCardValue = (int) getCurrencyAmountFromItem(this.client.player.getInventory().getMainHandStack());
 
                 if (onCardValue >= enteredValue) {
@@ -420,7 +414,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private void updateUserInputValue() {
         String text = numericTextFieldWidget.getText();
         try {
-            long newValue = Long.parseLong(text);
+            int newValue = Integer.parseInt(text);
             if (newValue >= 0 && newValue <= 99999999) {
                 userInputValue = newValue;
             }
@@ -428,7 +422,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         }
     }
 
-    public long getUserInputValue() {
+    public int getUserInputValue() {
         return userInputValue;
     }
 
@@ -436,8 +430,8 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         assert this.client != null;
         long currentValue = getUserInputValue();
         minusButton.active = currentValue > 50;
-        enterButton.active = currentValue >= 50 && currentValue <= 10000000;
-        plusButton.active = currentValue < 10000000;
+        enterButton.active = currentValue >= 50 && currentValue <= 9999999;
+        plusButton.active = currentValue < 9999950;
         requestCardButton.active = !JDBCardHandler.playerHasCard(this.client.player);
         replenishButton.active = !replenishMode;
         withdrawButton.active = replenishMode;

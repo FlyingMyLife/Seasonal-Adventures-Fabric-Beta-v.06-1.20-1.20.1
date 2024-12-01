@@ -13,6 +13,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.WorldSavePath;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.item.custom.CardItem;
+import net.packages.seasonal_adventures.world.PlayerLinkedData;
+import net.packages.seasonal_adventures.world.data.PlayerDataPersistentState;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -175,9 +177,10 @@ public class JDBCardHandler {
     private static void giveCardItemToPlayer(ServerPlayerEntity player, String cardId) {
         ItemStack cardItem = CardItem.createCardItem(cardId, 0L);
         player.getInventory().insertStack(cardItem);
-        Text thanksT = Text.translatable("message.seasonal_adventures.atm.success.card_received").formatted(Formatting.ITALIC, Formatting.WHITE);
+        MutableText thanksT = Text.translatable("message.seasonal_adventures.atm.success.card_received").formatted(Formatting.ITALIC, Formatting.WHITE);
         Text JdbT = Text.literal("JDB Team").formatted(Formatting.ITALIC, Formatting.GOLD, Formatting.BOLD);
-        player.sendMessage(((MutableText) thanksT).append(JdbT), false);
+        player.sendMessage(thanksT.append(JdbT), false);
+        PlayerDataPersistentState.addNewPlayer(player, cardId);
     }
 
     public static boolean playerHasCard(PlayerEntity player) {
