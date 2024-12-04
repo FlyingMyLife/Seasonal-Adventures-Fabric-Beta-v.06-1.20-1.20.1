@@ -84,5 +84,6 @@
   "tooltip.seasonal_adventures.jade.locked_chest.level.knowledgeable": "Knowledgeable",
   "tooltip.seasonal_adventures.jade.locked_chest.level.experienced": "Experienced",
   "tooltip.seasonal_adventures.jade.locked_chest.level.skilled": "Skilled",
-  "tooltip.seasonal_adventures.jade.locked_chest.level.expert": "Expert"
+  "tooltip.seasonal_adventures.jade.locked_chest.level.expert": "Expert",
+  "tooltip.seasonal_adventures.jade.automaton": "Automaton"
 }

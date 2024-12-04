@@ -13,7 +13,6 @@ public class PinAngles {
 
     public void generate() {
         if (LockLevel != null) {
-            SeasonalAdventures.LOGGER.info("Generated pin angles on level of: {}", LockLevel);
             pins = pinsByLevel[LockLevel];
 
             PinAngles.clear();
@@ -55,10 +54,9 @@ public class PinAngles {
 
     public int getPin(int index) {
         if (index <= pins && PinAngles.elementAt(index) != null) {
-            SeasonalAdventures.LOGGER.info("Pins: {}, level: {}, index: {}", pins, LockLevel, index);
             return PinAngles.elementAt(index);
         } else {
-            SeasonalAdventures.LOGGER.error("Invalid index returning -1");
+            SeasonalAdventures.LOGGER.error("Invalid index, returning -1");
             return -1;
         }
     }

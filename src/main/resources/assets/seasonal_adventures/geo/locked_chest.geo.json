@@ -6,7 +6,7 @@
 				"identifier": "geometry.locked_chest",
 				"texture_width": 16,
 				"texture_height": 16,
-				"visible_bounds_width": 2,
+				"visible_bounds_width": 3,
 				"visible_bounds_height": 3.5,
 				"visible_bounds_offset": [0, 1.25, 0]
 			},
@@ -34,7 +34,7 @@
 						},
 						{
 							"origin": [-7, 10, -7],
-							"size": [14, 5, 14],
+							"size": [14, 4, 14],
 							"uv": {
 								"north": {"uv": [10.5, 4.75], "uv_size": [3.5, -1]},
 								"east": {"uv": [7, 3.5], "uv_size": [3.5, 1]},
@@ -160,43 +160,6 @@
 							}
 						}
 					]
-				},
-				{
-					"name": "particles",
-					"parent": "locked_chest",
-					"pivot": [0, 0, 0]
-				},
-				{
-					"name": "particle_group_1",
-					"parent": "particles",
-					"pivot": [0, 42, 0],
-					"locators": {
-						"particle1": [0, 42, 0]
-					}
-				},
-				{
-					"name": "particle_group_2",
-					"parent": "particles",
-					"pivot": [0, 42, 0],
-					"locators": {
-						"particle2": [0, 42, 0]
-					}
-				},
-				{
-					"name": "particle_group_3",
-					"parent": "particles",
-					"pivot": [0, 42, 0],
-					"locators": {
-						"particle3": [0, 42, 0]
-					}
-				},
-				{
-					"name": "particle_group_4",
-					"parent": "particles",
-					"pivot": [0, 42, 0],
-					"locators": {
-						"particle4": [0, 42, 0]
-					}
 				}
 			]
 		}

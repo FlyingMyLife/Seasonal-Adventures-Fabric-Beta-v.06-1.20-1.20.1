@@ -8,7 +8,6 @@ import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.loading.json.raw.Bone;
 import software.bernie.geckolib.model.GeoModel;
 
 public class LockedChestLvLCopperBlockModel extends GeoModel<LockedChestLvLCopperBlockEntity> {
@@ -32,7 +31,7 @@ public class LockedChestLvLCopperBlockModel extends GeoModel<LockedChestLvLCoppe
 
             if (animatable.getWorld() instanceof ServerWorld world) {
                 world.addParticle(
-                        ImplementedParticles.YELLOW_HIGHRES_PARTICLE,
+                        ImplementedParticles.SKINT_PARTICLE,
                         animatable.getPos().getX(),
                         animatable.getPos().getY(),
                         animatable.getPos().getZ(),

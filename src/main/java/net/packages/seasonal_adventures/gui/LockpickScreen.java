@@ -25,6 +25,7 @@ import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvL
 import net.packages.seasonal_adventures.gui.handlers.LockpickScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.RotatableLockpick;
 import net.packages.seasonal_adventures.item.Items;
+import net.packages.seasonal_adventures.network.ItemRemovalPacket;
 import net.packages.seasonal_adventures.network.RestoreChestPacket;
 import net.packages.seasonal_adventures.network.SpecificItemRemovalPacket;
 import net.packages.seasonal_adventures.sound.Sounds;
@@ -43,7 +44,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
 
     private float lockpickSpeed = 1.0f;
 
-    private static final int[] pinsDefValues = {5, 7, 8, 10, 12};
+    private static final int[] pinDefValues = {5, 7, 8, 10, 12};
 
     private static final  float[] lockpickSpeedValues = {5.0f, 12.2f, 18.4f, 26.6f, 35.8f};
 
@@ -58,8 +59,9 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
         super(handler, inventory, title);
         this.lockLevel = lockLevel;
         pinAngles.setLockLevel(lockLevel);
-        if (lockLevel >= 0 && lockLevel < pinsDefValues.length) {
-            this.pinsLeft = pinsDefValues[lockLevel];
+        pinAngles.generate();
+        if (lockLevel >= 0 && lockLevel < pinDefValues.length) {
+            this.pinsLeft = pinDefValues[lockLevel];
             this.lockpickSpeed = lockpickSpeedValues[lockLevel];
         }
     }
@@ -82,7 +84,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     }
 
     private void onPinAction(int pin) {
-        if (pin <= pinsDefValues[lockLevel]) {
+        if (pin <= pinDefValues[lockLevel]) {
             playSound(Sounds.PICK_PIN_SOUND, 0.9f);
             this.pinTriggerState[pin] = true;
             this.lockpick.toggleRotationDirection();
@@ -112,7 +114,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
         assert this.client.player != null;
         int currentAngle = (int) this.lockpick.getRotationAngle();
 
-        for (int i = 0; i < pinsDefValues[lockLevel]; i++) {
+        for (int i = 0; i < pinDefValues[lockLevel]; i++) {
             if (currentAngle <= pinAngles.getPin(i)+10 && currentAngle >= pinAngles.getPin(i)-10 && !pinTriggerState[i]) {
                 onPinAction(i);
             }
@@ -123,7 +125,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
             onPinAction(1);
         } else {
             playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.6f);
-            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            this.client.player.getInventory().getMainHandStack().decrement(1);
         }
     }
         @Override
@@ -178,13 +180,13 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderBackground(context);
         handleClosingActions();
-        int pinsToRender = pinsDefValues[lockLevel];
+        int pinsToRender = pinDefValues[lockLevel];
 
         for (int i = 0; i < pinsToRender; i++) {
 
             float rotationAngle = pinAngles.getPin(i);
 
-            boolean triggered = pinTriggerState[i + 1];
+            boolean triggered = pinTriggerState[i];
 
             renderRotatedLocks(context, triggered, rotationAngle);
         }
@@ -227,8 +229,6 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        pinAngles.setLockLevel(lockLevel);
-        pinAngles.generate();
         return new LockpickScreenHandler(syncId, playerInventory);
     }
 }

@@ -52,19 +52,14 @@ public class LockedChestBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (player.getWorld().getGameRules().getBoolean(SeasonalAdventures.SaDebug)) {
-            if (player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
-                PlayerInventory inventory = player.getInventory();
-                Text title = Text.literal("Lockpick Screen");
-                SeasonalAdventures.sendDebugMessage("Opening new lockpick screen with level: " + lockLevel + ", on pos: " + pos, player);
-                player.openHandledScreen(new LockpickScreen(new LockpickScreenHandler(0, new PlayerInventory(player)), inventory, title, 0));
-                return ActionResult.SUCCESS;
-            } else {
-                player.sendMessage(Text.translatable("message.seasonal_adventures.lock.fail.lockpick_required").formatted(Formatting.DARK_RED), true);
-                return ActionResult.FAIL;
-            }
+        if (player.getInventory().getMainHandStack().isOf(Items.LOCKPICK)) {
+            PlayerInventory inventory = player.getInventory();
+            Text title = Text.literal("Lockpick Screen");
+            SeasonalAdventures.sendDebugMessage("Opening new lockpick screen with level: " + lockLevel + ", on pos: " + pos, player);
+            player.openHandledScreen(new LockpickScreen(new LockpickScreenHandler(0, new PlayerInventory(player)), inventory, title, 0));
+            return ActionResult.SUCCESS;
         } else {
-            player.sendMessage(Text.literal("Данные действия недоступны!").formatted(Formatting.DARK_RED), true);
+            player.sendMessage(Text.translatable("message.seasonal_adventures.lock.fail.lockpick_required").formatted(Formatting.DARK_RED), true);
             return ActionResult.FAIL;
         }
     }

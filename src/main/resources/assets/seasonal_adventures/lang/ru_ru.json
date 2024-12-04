@@ -84,5 +84,6 @@
   "tooltip.seasonal_adventures.jade.locked_chest.level.knowledgeable": "Знаток",
   "tooltip.seasonal_adventures.jade.locked_chest.level.experienced": "Бывалый",
   "tooltip.seasonal_adventures.jade.locked_chest.level.skilled": "Мастер",
-  "tooltip.seasonal_adventures.jade.locked_chest.level.expert": "Эксперт"
+  "tooltip.seasonal_adventures.jade.locked_chest.level.expert": "Эксперт",
+  "tooltip.seasonal_adventures.jade.automaton": "Автоматон"
 }

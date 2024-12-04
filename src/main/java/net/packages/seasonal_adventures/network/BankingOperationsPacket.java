@@ -3,6 +3,7 @@ package net.packages.seasonal_adventures.network;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
@@ -21,6 +22,19 @@ public class BankingOperationsPacket {
         buf.writeInt(amount);
         ClientPlayNetworking.send(ID, buf);
     }
+    public static void executeOperation(int fineAmount, String reason) {
+        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        buf.writeEnumConstant(OperationType.FINE);
+        buf.writeInt(fineAmount);
+        buf.writeString(reason);
+        ClientPlayNetworking.send(ID, buf);
+    }
+    public static void executeOperation(int amount, PlayerEntity fromPlayer, PlayerEntity toPlayer) {
+        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        buf.writeEnumConstant(OperationType.TRANSFER);
+        buf.writeInt(amount);
+        ClientPlayNetworking.send(ID, buf);
+    }
     public static void register(){
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) -> {
             OperationType type = buf.readEnumConstant(OperationType.class);
@@ -33,6 +47,9 @@ public class BankingOperationsPacket {
                 } else if (type == OperationType.WITHDRAW) {
                     playerState.currencyAmount -= amount;
                     LOGGER.info("Persistent state withdrawal {current amount: {}, cardId: {} }", playerState.currencyAmount,  playerState.cardId);
+                } else if (type == OperationType.FINE) {
+                    String reason = buf.readString();
+
                 }
             });
         });
