@@ -28,6 +28,8 @@ public class Blocks {
     //Locked Chests
     public static final Block LOCKED_CHEST_LVL_COPPER = registerBlock("locked_chest_lvl_copper",
             new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 0));
+    public static final Block GUIDING_SKINTH = registerBlock("guiding_skinth",
+            new GuidingSkinthBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
     public static final Block LOCKED_CHEST_LVL_IRON = registerBlock("locked_chest_lvl_iron",
             new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 1));
     public static final Block LOCKED_CHEST_LVL_GOLD = registerBlock("locked_chest_lvl_gold",
@@ -56,10 +58,6 @@ public class Blocks {
             new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.DEEPSLATE).strength(4f), UniformIntProvider.create(2, 5)));
     public static final Block LAPTOP = registerBlock("laptop",
             new LaptopBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
-    public static final Block ANIMATED_BLOCK = registerBlock("animated_block",
-            new AnimatedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
-    public static final Block ENERGY_INJECTOR_BLOCK = registerBlock("energy_injector",
-            new EnergyInjector(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.STONE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
     public static final Block ADVANCED_AUTOMATON_BODY = registerBlock("advanced_automaton_body",
             new AdvancedAutomatonBodyBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
 
@@ -76,7 +74,7 @@ public class Blocks {
 
 
     public static void registerModBlocks() {
-        SeasonalAdventures.LOGGER.info("Registering ModBlocks for " + SeasonalAdventures.MOD_ID);
+        SeasonalAdventures.LOGGER.info("Registering Blocks for " + SeasonalAdventures.MOD_ID);
     }
 
 }

@@ -1,0 +1,17 @@
+{
+  "type": "seasonal_adventures:dimension_of_dreams_type",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:the_void",
+      "lakes": true,
+      "features": true,
+      "layers": [
+        {
+          "height": 0,
+          "block": "minecraft:air"
+        }
+      ]
+    }
+  }
+}

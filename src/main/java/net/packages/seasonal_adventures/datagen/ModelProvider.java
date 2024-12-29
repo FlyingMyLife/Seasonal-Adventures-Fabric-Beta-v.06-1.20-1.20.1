@@ -4,6 +4,8 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.data.client.Model;
+import net.minecraft.data.client.Models;
 import net.minecraft.item.ArmorItem;
 import net.packages.seasonal_adventures.item.Items;
 
@@ -19,6 +21,6 @@ public class ModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        // itemModelGenerator.register(Items.item);
+        itemModelGenerator.register(Items.SKINTH_OF_DREAMS, Models.GENERATED);
     }
 }

@@ -7,10 +7,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.packages.seasonal_adventures.item.Items;
 
@@ -35,8 +32,10 @@ public class CardItem extends Item {
         Text purpleCardId = Text.literal(cardId).setStyle(Style.EMPTY.withColor(Formatting.LIGHT_PURPLE));
         Text tooltipText = grayText.append(purpleCardId);
         tooltip.add(tooltipText);
-        tooltip.add(Text.empty());
-        tooltip.add(Text.translatable("tooltip.seasonal_adventures.card_tooltip.upper").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
-        tooltip.add(Text.translatable("tooltip.seasonal_adventures.card_tooltip").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
+        if (context == TooltipContext.ADVANCED) {
+            tooltip.add(Text.empty());
+            tooltip.add(Text.translatable("tooltip.seasonal_adventures.card_tooltip").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
+            tooltip.add(Text.translatable("tooltip.seasonal_adventures.card_tooltip.nl").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
+        }
     }
 }

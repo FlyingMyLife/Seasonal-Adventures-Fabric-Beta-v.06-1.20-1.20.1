@@ -4,13 +4,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -22,21 +21,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.RaycastContext;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
-import net.packages.seasonal_adventures.gui.handlers.LockpickScreenHandler;
+import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
+import net.packages.seasonal_adventures.gui.handler.LockpickScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.RotatableLockpick;
 import net.packages.seasonal_adventures.item.Items;
-import net.packages.seasonal_adventures.network.ItemRemovalPacket;
-import net.packages.seasonal_adventures.network.RestoreChestPacket;
-import net.packages.seasonal_adventures.network.SpecificItemRemovalPacket;
+import net.packages.seasonal_adventures.network.server.RestoreChestPacket;
+import net.packages.seasonal_adventures.network.server.SpecificItemRemovalPacket;
 import net.packages.seasonal_adventures.sound.Sounds;
-import net.packages.seasonal_adventures.util.PinAngles;
-import org.jetbrains.annotations.Nullable;
+import net.packages.seasonal_adventures.util.logic.PinAngles;
 
-public class LockpickScreen extends HandledScreen<LockpickScreenHandler> implements NamedScreenHandlerFactory {
+import java.util.Optional;
+
+public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
     
     private PinAngles pinAngles = new PinAngles();
 
-    private int lockLevel;
+    private int lockLevel = 0;
 
     private int pinsLeft;
 
@@ -44,9 +44,21 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
 
     private float lockpickSpeed = 1.0f;
 
-    private static final int[] pinDefValues = {5, 7, 8, 10, 12};
+    private static final int[] pinDefValues = {
+            5,
+            7,
+            8,
+            10,
+            12
+    };
 
-    private static final  float[] lockpickSpeedValues = {5.0f, 12.2f, 18.4f, 26.6f, 35.8f};
+    private static final float[] lockpickSpeedValues = {
+            5.0f,
+            12.2f,
+            18.4f,
+            26.6f,
+            35.8f
+    };
 
     private RotatableLockpick lockpick;
 
@@ -55,9 +67,9 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     private static final Identifier PIN_TRIGGERED = new Identifier("seasonal_adventures", "textures/gui/pin_triggered.png");
     private static final Identifier BACKGROUND_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick_background.png");
 
-    public LockpickScreen(LockpickScreenHandler handler, PlayerInventory inventory, Text title, int lockLevel) {
+    public LockpickScreen(LockpickScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        this.lockLevel = lockLevel;
+        System.out.println("Opened");
         pinAngles.setLockLevel(lockLevel);
         pinAngles.generate();
         if (lockLevel >= 0 && lockLevel < pinDefValues.length) {
@@ -68,6 +80,7 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
 
     @Override
     protected void init() {
+        System.out.println("Init");
         super.init();
         int buttonSize = 192;
         int x = this.width / 2 - buttonSize / 2;
@@ -92,7 +105,8 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
         } else {
             assert this.client != null;
             assert this.client.player != null;
-            SpecificItemRemovalPacket.removeItemStack(this.client.player, Items.LOCKPICK, 1);
+            SpecificItemRemovalPacket.sendItemStackRemovalRequest(new ItemStack(Items.LOCKPICK), 1);
+            client.player.getInventory().markDirty();
         }
     }
     private void playSound(SoundEvent sound, float pitch) {
@@ -110,20 +124,22 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
         );
     }
     private void onClick() {
+        System.out.println("Click");
         assert this.client != null;
         assert this.client.player != null;
         int currentAngle = (int) this.lockpick.getRotationAngle();
-
+        boolean activated = false;
         for (int i = 0; i < pinDefValues[lockLevel]; i++) {
             if (currentAngle <= pinAngles.getPin(i)+10 && currentAngle >= pinAngles.getPin(i)-10 && !pinTriggerState[i]) {
                 onPinAction(i);
+                activated = true;
             }
         }
         if (currentAngle <= 10 && currentAngle >= 0 && !pinTriggerState[1] && lockLevel >= 3) {
             onPinAction(1);
         } else if (currentAngle <= 360 && currentAngle >= 350 && !pinTriggerState[1] && lockLevel >= 3) {
             onPinAction(1);
-        } else {
+        } else if (!activated){
             playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.6f);
             this.client.player.getInventory().getMainHandStack().decrement(1);
         }
@@ -158,11 +174,6 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
         context.drawTexture(texture, 0, 0, 198, 198, 0, 0, 198, 198, 198, 198);
 
         matrixStack.pop();
-    }
-
-    @Override
-    public boolean shouldCloseOnEsc() {
-        return true;
     }
 
     private static BlockPos playerFacingBlock(PlayerEntity player) {
@@ -202,15 +213,10 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
     protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
     }
 
-    @Override
-    public Text getDisplayName() {
-        return Text.empty();
-    }
 
     private void handleClosingActions() {
         assert this.client != null;
         PlayerEntity player = this.client.player;
-        assert this.client.player != null;
         if (pinsLeft <= 0) {
             playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
             player.sendMessage(Text.translatable("message.seasonal_adventures.lock.success").formatted(Formatting.GREEN), true);
@@ -218,6 +224,8 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
             BlockEntity lockedChestBlockEntity = player.getWorld().getBlockEntity(pos);
             if (lockedChestBlockEntity instanceof LockedChestLvLCopperBlockEntity) {
                 RestoreChestPacket.sendRestoreChestRequest(pos, 0);
+            } else if (lockedChestBlockEntity instanceof LockedChestLvLIronBlockEntity) {
+                RestoreChestPacket.sendRestoreChestRequest(pos, 1);
             }
             this.close();
         }
@@ -226,9 +234,10 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> impleme
             this.close();
         }
     }
-    @Nullable
+
+
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new LockpickScreenHandler(syncId, playerInventory);
+    public Optional<Element> hoveredElement(double mouseX, double mouseY) {
+        return super.hoveredElement(mouseX, mouseY);
     }
 }

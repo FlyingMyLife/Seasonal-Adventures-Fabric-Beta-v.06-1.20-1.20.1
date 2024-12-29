@@ -60,6 +60,13 @@ public class ItemGroups {
                         entries.add(Blocks.LAPTOP);
                     }).build());
 
+    public static final ItemGroup MAGIC = Registry.register(Registries.ITEM_GROUP,
+            new Identifier(SeasonalAdventures.MOD_ID, "magic"),
+            FabricItemGroup.builder().displayName(Text.translatable("item_group.seasonal_adventures.magic"))
+                    .icon(() -> new ItemStack(Items.SKINTH_OF_DREAMS)).entries((displayContext, entries) -> {
+                        entries.add(new ItemStack(Items.SKINTH_OF_DREAMS));
+                    }).build());
+
 
     public static void registerItemGroups() {
         SeasonalAdventures.LOGGER.info("Registering Item Groups for " + SeasonalAdventures.MOD_ID);

@@ -14,28 +14,28 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registries;
-import net.packages.seasonal_adventures.gui.handlers.DylanScreenHandler;
-import net.packages.seasonal_adventures.gui.handlers.DylanSettingsScreenHandler;
+import net.packages.seasonal_adventures.gui.handler.DylanScreenHandler;
+import net.packages.seasonal_adventures.gui.handler.DylanSettingsScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.TexturedButtonWidget;
-import net.packages.seasonal_adventures.network.ItemRemovalPacket;
+import net.packages.seasonal_adventures.network.server.ItemRemovalPacket;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class DylanScreen extends HandledScreen<DylanScreenHandler> {
-    private static final List<Item> POSITIVE_ITEMS = Arrays.asList(
-            Registries.ITEM.get(new Identifier("seasonal_adventures", "beef_tartare")),
-            Registries.ITEM.get(new Identifier("candlelight", "beef_tartare")),
-            Registries.ITEM.get(new Identifier("minecraft", "cooked_mutton")),
-            Registries.ITEM.get(new Identifier("minecraft", "cooked_beef")),
-            Registries.ITEM.get(new Identifier("minecraft", "cooked_porkchop")),
-            Registries.ITEM.get(new Identifier("minecraft", "diamond")),
-            Registries.ITEM.get(new Identifier("minecraft", "netherite_ingot")),
-            Registries.ITEM.get(new Identifier("minecraft", "cookie")),
-            Registries.ITEM.get(new Identifier("minecraft", "cooked_chicken")),
-            Registries.ITEM.get(new Identifier("minecraft", "cooked_cod")),
-            Registries.ITEM.get(new Identifier("minecraft", "cooked_salmon")),
-            Registries.ITEM.get(new Identifier("minecraft", "cake"))
+    private static final List<Identifier> POSITIVE_ITEMS = Arrays.asList(
+            new Identifier("seasonal_adventures", "beef_tartare"),
+            new Identifier("candlelight", "beef_tartare"),
+            new Identifier("minecraft", "cooked_mutton"),
+            new Identifier("minecraft", "cooked_beef"),
+            new Identifier("minecraft", "cooked_porkchop"),
+            new Identifier("minecraft", "diamond"),
+            new Identifier("minecraft", "netherite_ingot"),
+            new Identifier("minecraft", "cookie"),
+            new Identifier("minecraft", "cooked_chicken"),
+            new Identifier("minecraft", "cooked_cod"),
+            new Identifier("minecraft", "cooked_salmon"),
+            new Identifier("minecraft", "cake")
     );
     private static final Item SCHEME_CUSTOM = Registries.ITEM.get(new Identifier("seasonal_adventures", "dylan_mk1_scheme"));
     private static final List<Item> NEUTRAL_ITEMS = Arrays.asList(
@@ -206,7 +206,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
     private void handle_settings() {
         PlayerEntity player = this.client.player;
         if (player != null) {
-            Screen settingsScreen = new DylanSettingsScreen(new DylanSettingsScreenHandler(0, player.getInventory()), player.getInventory(), Text.translatable("gui.dylan_settings_screen"));
+            Screen settingsScreen = new DylanSettingsScreen(new DylanSettingsScreenHandler(0, player.getInventory()), player.getInventory(), Text.translatable("gui.dylan_settings_screen"), this);
             MinecraftClient.getInstance().setScreen(settingsScreen);
         }
     }

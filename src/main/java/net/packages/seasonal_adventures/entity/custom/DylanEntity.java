@@ -11,7 +11,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.packages.seasonal_adventures.entity.Entities;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
@@ -25,7 +24,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import net.packages.seasonal_adventures.entity.ai.DylanAttackGoal;
-import net.packages.seasonal_adventures.gui.handlers.DylanScreenHandler;
+import net.packages.seasonal_adventures.gui.handler.DylanScreenHandler;
 import net.packages.seasonal_adventures.sound.Sounds;
 import org.jetbrains.annotations.Nullable;
 

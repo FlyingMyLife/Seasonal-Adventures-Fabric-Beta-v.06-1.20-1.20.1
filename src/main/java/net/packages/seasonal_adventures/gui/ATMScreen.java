@@ -2,28 +2,32 @@ package net.packages.seasonal_adventures.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TextWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.packages.seasonal_adventures.events.JDBCardHandler;
-import net.packages.seasonal_adventures.gui.handlers.ATMScreenHandler;
+import net.packages.seasonal_adventures.gui.handler.ATMScreenHandler;
+import net.packages.seasonal_adventures.util.rendering.RenderingUtils;
 import net.packages.seasonal_adventures.gui.widgets.TexturedButtonWidget;
 import net.packages.seasonal_adventures.gui.widgets.NumericTextFieldWidget;
 import net.packages.seasonal_adventures.item.Items;
-import net.packages.seasonal_adventures.network.*;
+import net.packages.seasonal_adventures.network.server.BankingOperationsPacket;
+import net.packages.seasonal_adventures.network.server.ItemGivenPacket;
+import net.packages.seasonal_adventures.network.server.SpecificItemRemovalPacket;
+import net.packages.seasonal_adventures.util.game.InventoryUtils;
+import net.packages.seasonal_adventures.util.enums.BankingOperationType;
 import net.packages.seasonal_adventures.world.PlayerLinkedData;
-import net.packages.seasonal_adventures.world.data.PlayerDataPersistentState;
+import net.packages.seasonal_adventures.world.data.persistent_state.WorldDataPersistentState;
 
 import java.util.Objects;
-
-import static net.packages.seasonal_adventures.util.InventoryUtils.getItemAmount;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private int backgroundX;
@@ -41,6 +45,13 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
 
     private int userInputValue = 0;
     private boolean replenishMode = true;
+
+    private static final ItemStack [] denominations = { new ItemStack(Items.V1), new ItemStack(Items.V5), new ItemStack(Items.V10),
+            new ItemStack(Items.V50), new ItemStack(Items.V100), new ItemStack(Items.V500),
+            new ItemStack(Items.V1000), new ItemStack(Items.V10000)
+    };
+
+    int [] denominationMultipliers = {1, 5, 10, 50, 100, 500, 1000, 10000};
 
     private NumericTextFieldWidget numericTextFieldWidget;
     private TexturedButtonWidget requestCardButton;
@@ -105,12 +116,12 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         topButtonsHeight,
                         0,
                         0,
-                        20,
+                         0,
                         REPLENISH_BUTTON,
                         UN_REPLENISH_BUTTON,
                         topButtonsWidth,
                         topButtonsHeight,
-                        button -> handle_replenish(),
+                        button -> handleReplenish(),
                         Text.translatable("gui.seasonal_adventures.button.replenish")
                 ));
         withdrawButton = addDrawableChild(
@@ -121,12 +132,12 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         topButtonsHeight,
                         0,
                         0,
-                        20,
+                        0,
                         WITHDRAW_BUTTON,
                         UN_WITHDRAW_BUTTON,
                         topButtonsWidth,
                         topButtonsHeight,
-                        button -> handle_withdraw(),
+                        button -> handleWithdraw(),
                         Text.translatable("gui.seasonal_adventures.button.withdraw")
                 ));
         plusButton = addDrawableChild(
@@ -137,12 +148,12 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         defaultButtonHeight,
                         0,
                         0,
-                        24,
+                        0,
                         DEFAULT_BUTTON,
                         UN_DEFAULT_BUTTON,
                         defaultButtonWidth,
                         defaultButtonHeight,
-                        button -> handle_plus(),
+                        button -> handlePlus(),
                         Text.literal("+ 50")
                 ));
         minusButton = addDrawableChild(
@@ -153,12 +164,12 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         defaultButtonHeight,
                         0,
                         0,
-                        24,
+                        0,
                         DEFAULT_BUTTON,
                         UN_DEFAULT_BUTTON,
                         defaultButtonWidth,
                         defaultButtonHeight,
-                        button -> handle_minus(),
+                        button -> handleMinus(),
                         Text.literal("- 50")
                 ));
         requestCardButton = addDrawableChild(
@@ -169,12 +180,12 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         defaultButtonHeight,
                         0,
                         0,
-                        24,
+                        0,
                         DEFAULT_BUTTON,
                         UN_DEFAULT_BUTTON,
                         defaultButtonWidth,
                         defaultButtonHeight,
-                        button -> handle_request_card(),
+                        button -> handleRequestCard(),
                         Text.literal("+")
                 ));
         enterButton = addDrawableChild(
@@ -185,134 +196,162 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         defaultButtonHeight,
                         0,
                         0,
-                        20,
+                        0,
                         ENTER_BUTTON,
                         UN_ENTER_BUTTON,
                         defaultButtonWidth,
                         defaultButtonHeight,
-                        button -> handle_enter(),
+                        button -> handleEnter(),
                         Text.literal("")
                 ));
 
         updateButtonState();
     }
 
-    private void handle_enter() {
+    private void handleEnter() {
         assert this.client != null;
-        assert this.client.player != null;
-        if (!this.client.player.getInventory().getMainHandStack().isOf(Items.CARD)) {
-            this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
+        PlayerEntity player = this.client.player;
+        ItemStack cardStack = player.getInventory().getMainHandStack();
+        if (!cardStack.isOf(Items.CARD)) {
+            player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
+            this.close();
+            return;
+        }
+        NbtCompound cardNbt = cardStack.getNbt();
+        assert cardNbt != null;
+        String cardId = cardNbt.getString("cardId");
+        AtomicReference<PlayerLinkedData> owner = new AtomicReference<>();
+        WorldDataPersistentState.getServerState(Objects.requireNonNull(this.client.getServer())).playerBankingData.forEach((((uuid, playerLinkedData) -> {
+            if (Objects.equals(cardId, playerLinkedData.cardId)){
+                owner.set(playerLinkedData);
+            }
+        })));
+        if (owner.get() == null) {
+            player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.identifying_player").formatted(Formatting.RED), true);
+            this.close();
+            return;
+        }
+        if (!Objects.equals(owner.get().nickname, player.getEntityName())) {
+            player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.identifying_player.contacting_owner").formatted(Formatting.RED, Formatting.BOLD), true);
             this.close();
             return;
         }
 
         int enteredValue = getUserInputValue();
-        int[] denominations = {10000, 1000, 500, 100, 50, 10, 5, 1};
-        ItemStack[] items = {new ItemStack(Items.V10000), new ItemStack(Items.V1000), new ItemStack(Items.V500),
-                new ItemStack(Items.V100), new ItemStack(Items.V50), new ItemStack(Items.V10),
-                new ItemStack(Items.V5), new ItemStack(Items.V1)};
-        int[] availableAmounts = replenishMode ? new int[denominations.length] : getDenominationsFromCard(denominations);
-
-        BankingOperationsPacket.executeOperation(replenishMode ? OperationType.REPLENISH : OperationType.WITHDRAW, enteredValue);
-
         if (replenishMode) {
-            int totalValue = getTotalValue(denominations, availableAmounts);
-            if (totalValue < enteredValue) {
-                this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.replenish").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
+            if (getInventoryVAmount() < enteredValue) {
+                player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.replenish").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
                 this.close();
                 return;
             }
-            processReplenish(enteredValue, denominations, availableAmounts, items);
+
+            int leftValue = enteredValue;
+            int[] availableDenominations = new int[denominations.length];
+            int[] toRemove = new int[denominations.length];
+
+            for (int i = 0; i < denominations.length; i++) {
+                availableDenominations[i] = InventoryUtils.getItemAmount(player, denominations[i]);
+            }
+
+            for (int i = 0; i < denominations.length; i++) {
+                if (enteredValue >= denominationMultipliers[i]) {
+                    int num = Math.min(enteredValue / denominationMultipliers[i], availableDenominations[i]);
+                    enteredValue -= num * denominationMultipliers[i];
+                    toRemove[i] = num;
+                }
+            }
+
+            if (enteredValue > 0) {
+                player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.changing_fail").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
+                this.close();
+                return;
+            }
+
+            for (int i = 0; i < denominations.length; i++) {
+                if (toRemove[i] > 0) {
+                    removeItemStackFromPlayer(denominations[i], toRemove[i]);
+                }
+            }
+
+            player.sendMessage(Text.translatable("message.seasonal_adventures.atm.success").formatted(Formatting.GREEN), true);
+            BankingOperationsPacket.executeBasicOperations(BankingOperationType.REPLENISH, leftValue);
+            this.close();
         } else {
-            int onCardValue = getCurrencyAmount();
+            int onCardValue = getOnCardValue();
             if (onCardValue < enteredValue) {
-                this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.withdrawal").formatted(Formatting.RED, Formatting.BOLD), true);
+                player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.insufficient_funds.withdrawal").formatted(Formatting.RED, Formatting.BOLD), true);
                 this.close();
                 return;
             }
-            processWithdrawal(enteredValue, denominations, items);
-        }
-    }
 
-    private int[] getDenominationsFromCard(int[] denominations) {
-        assert this.client != null;
-        assert this.client.player != null;
-        int[] availableAmounts = new int[denominations.length];
-        ItemStack[] items = {new ItemStack(Items.V1), new ItemStack(Items.V5), new ItemStack(Items.V10),
-                new ItemStack(Items.V50), new ItemStack(Items.V100), new ItemStack(Items.V500),
-                new ItemStack(Items.V1000), new ItemStack(Items.V10000)};
-        for (int i = 0; i < denominations.length; i++) {
-            availableAmounts[i] = getItemAmount(this.client.player, items[i]);
-        }
-        return availableAmounts;
-    }
+            int leftValue = enteredValue;
+            int [] toAdd = new int[denominations.length];
+            for (int i = denominations.length - 1; i >= 0; i--) {
+                toAdd[i] = leftValue / denominationMultipliers[i];
+                leftValue = leftValue % denominationMultipliers[i];
+            }
 
-    private int getTotalValue(int[] denominations, int[] availableAmounts) {
-        int totalValue = 0;
-        for (int i = 0; i < denominations.length; i++) {
-            totalValue += availableAmounts[i] * denominations[i];
-        }
-        return totalValue;
-    }
-
-    private void processReplenish(int enteredValue, int[] denominations, int[] availableAmounts, ItemStack[] items) {
-        assert this.client != null;
-        assert this.client.player != null;
-        int valueToEnter = enteredValue;
-        for (int i = 0; i < denominations.length; i++) {
-            int num = Math.min(valueToEnter / denominations[i], availableAmounts[i]);
-            valueToEnter -= num * denominations[i];
-            removeItemFromPlayer(items[i].getItem(), num);
-        }
-        if (valueToEnter == 0) {
-            updateBalanceMessage(enteredValue);
+            for (int i = 0; i < denominations.length; i++) {
+                addItemStackToPlayer(denominations[i], toAdd[i]);
+            }
+            player.sendMessage(Text.translatable("message.seasonal_adventures.atm.success").formatted(Formatting.GREEN), true);
+            BankingOperationsPacket.executeBasicOperations(BankingOperationType.WITHDRAW, enteredValue);
             this.close();
+        }
+    }
+    private void renderBalance(DrawContext context, int mouseX, int mouseY, float delta) {
+        PlayerEntity player = client.player;
+        if (player.getInventory().getMainHandStack().isOf(Items.CARD)) {
+            RenderingUtils.renderItemWithTooltip(context, player.getMainHandStack(), client.player, textRenderer, width - 96, 16, mouseX, mouseY);
+            TextWidget balance = new TextWidget(width - 80, 16,64, 16, Text.literal(getOnCardValue() + "V"), textRenderer);
+            balance.render(context, mouseX, mouseY, delta);
         } else {
-            this.client.player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.changing_fail").formatted(Formatting.DARK_RED, Formatting.BOLD), true);
-            this.close();
+            TextWidget unidentifiedBalance = new TextWidget(width - 80, 16,64, 16, Text.literal("-"), textRenderer);
+            unidentifiedBalance.render(context, mouseX, mouseY, delta);
         }
     }
 
-    private void processWithdrawal(int enteredValue, int[] denominations, ItemStack[] items) {
-        int remainingValue = enteredValue;
-        for (int i = 0; i < denominations.length; i++) {
-            int count = remainingValue / denominations[i];
-            remainingValue %= denominations[i];
-            addItemToPlayer(items[i].getItem(), count);
+    private void removeItemStackFromPlayer(ItemStack itemStack, int count) {
+        SpecificItemRemovalPacket.sendItemStackRemovalRequest(itemStack, count);
+    }
+
+    private void addItemStackToPlayer(ItemStack itemStack, int count) {
+        ItemGivenPacket.sendItemStackGivenRequest(itemStack, count);
+    }
+
+
+    public int getOnCardValue() {
+        assert client != null;
+        assert client.player != null;
+        ItemStack cardStack = client.player.getMainHandStack();
+        NbtCompound cardNbt = cardStack.getNbt();
+        assert cardNbt != null;
+        String cardId = cardNbt.getString("cardId");
+        AtomicInteger balance = new AtomicInteger();
+        WorldDataPersistentState.getServerState(Objects.requireNonNull(this.client.getServer())).playerBankingData.forEach((((uuid, playerLinkedData) -> {
+            if (Objects.equals(cardId, playerLinkedData.cardId)){
+                balance.set(playerLinkedData.balance);
+            }
+        })));
+        return balance.get();
+    }
+    public int getInventoryVAmount() {
+        assert client != null;
+        PlayerEntity player = client.player;
+        assert player != null;
+        int value = 0;
+        for (int i = 0; i < denominations.length-1; i++) {
+            value += InventoryUtils.getItemAmount(player, denominations[i]) * denominationMultipliers[i];
         }
+        return value;
+    }
+
+    private void handleRequestCard() {
+        BankingOperationsPacket.executeRequestCardOperation();
         this.close();
     }
 
-    private void removeItemFromPlayer(Item item, int count) {
-        SpecificItemRemovalPacket.sendItemRemovalRequest(item, count);
-    }
-
-    private void addItemToPlayer(Item item, int count) {
-        ItemGivenPacket.sendItemGivenRequest(item, count);
-    }
-
-    private void updateBalanceMessage(int enteredValue) {
-        assert this.client != null;
-        assert this.client.player != null;
-        MutableText currentT = Text.translatable("message.seasonal_adventures.atm.success.current_balance").formatted(Formatting.AQUA);
-        Text balanceT = Text.literal("" + enteredValue).formatted(Formatting.ITALIC, Formatting.DARK_PURPLE);
-        this.client.player.sendMessage(currentT.append(balanceT), true);
-    }
-
-    public int getCurrencyAmount() {
-        assert this.client != null;
-        assert this.client.player != null;
-        PlayerLinkedData playerState = PlayerDataPersistentState.getPlayerState(this.client.player);
-        return playerState.currencyAmount;
-    }
-
-
-    private void handle_request_card() {
-        CardGivenPacket.GiveCard();
-        this.close();
-    }
-
-    private void handle_plus() {
+    private void handlePlus() {
         updateUserInputValue();
         long value = getUserInputValue();
         if (value + 50 <= 99999999) {
@@ -320,7 +359,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         }
     }
 
-    private void handle_minus() {
+    private void handleMinus() {
         updateUserInputValue();
         long value = getUserInputValue();
         if (value - 50 >= 0) {
@@ -328,13 +367,13 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         }
     }
 
-    private void handle_withdraw() {
+    private void handleWithdraw() {
         if (replenishMode) {
             this.replenishMode = false;
         }
     }
 
-    private void handle_replenish() {
+    private void handleReplenish() {
         if (!replenishMode) {
             this.replenishMode = true;
         }
@@ -357,15 +396,16 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
 
     private void updateButtonState() {
         assert this.client != null;
+        PlayerEntity player = this.client.player;
+        assert player != null;
         long currentValue = getUserInputValue();
         minusButton.active = currentValue > 50;
         enterButton.active = currentValue >= 50 && currentValue <= 9999999;
         plusButton.active = currentValue < 9999950;
-        requestCardButton.active = !JDBCardHandler.playerHasCard(this.client.player);
+        requestCardButton.active = !BankingOperationsPacket.getPlayerCardStatus(client.getServer(), player);
         replenishButton.active = !replenishMode;
         withdrawButton.active = replenishMode;
     }
-
     @Override
     public void renderBackground(DrawContext context) {
         RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
@@ -375,16 +415,21 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.textB.render(context, mouseX, mouseY, delta);
         this.renderBackground(context);
+        assert client != null;
+        assert client.player != null;
+        renderBalance(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         this.updateButtonState();
         this.updateUserInputValue();
     }
 
     @Override
-    protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+
     }
 
     @Override
-    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+    protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+
     }
 }

@@ -1,10 +1,5 @@
 package net.packages.seasonal_adventures.block.custom;
 
-import dev.kosmx.playerAnim.api.layered.AnimationStack;
-import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.minecraft.block.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
@@ -27,7 +22,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.util.AnimatedPlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -62,15 +56,17 @@ public class LaptopBlock extends HorizontalFacingBlock {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        /*
         if (player instanceof AnimatedPlayer){
             var animationContainer = ((AnimatedPlayer) (player)).seasonalAdventuresGetModAnimation();
 
-            KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(new Identifier(SeasonalAdventures.MOD_ID, "skint_activation"));
+            KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(new Identifier(SeasonalAdventures.MOD_ID, "guiding_skinth_activation"));
 
             var builder = anim.mutableCopy();
             anim = builder.build();
             animationContainer.setAnimation(new KeyframeAnimationPlayer(anim));
         }
+        */
         if (player.isSneaking()) {
             if (state.get(OPEN)) {
                 world.setBlockState(pos, state.with(OFF, !state.get(OFF)));

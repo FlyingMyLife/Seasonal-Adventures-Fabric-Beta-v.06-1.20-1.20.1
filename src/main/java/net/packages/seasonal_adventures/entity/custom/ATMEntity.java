@@ -14,7 +14,7 @@ import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.gui.handlers.ATMScreenHandler;
+import net.packages.seasonal_adventures.gui.handler.ATMScreenHandler;
 import net.packages.seasonal_adventures.item.Items;
 
 import java.util.Collections;

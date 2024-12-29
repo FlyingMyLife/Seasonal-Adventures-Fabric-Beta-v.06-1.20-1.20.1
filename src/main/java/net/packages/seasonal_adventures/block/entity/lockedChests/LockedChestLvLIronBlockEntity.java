@@ -8,7 +8,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockPos;
-import net.packages.seasonal_adventures.block.entity.ModBlockEntities;
+import net.packages.seasonal_adventures.block.entity.BlockEntities;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -27,7 +27,7 @@ public class LockedChestLvLIronBlockEntity extends BlockEntity implements GeoBlo
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public LockedChestLvLIronBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY, pos, state);
+        super(BlockEntities.LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY, pos, state);
     }
 
     @Override

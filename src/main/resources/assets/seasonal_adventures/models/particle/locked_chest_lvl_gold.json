@@ -1,6 +1,0 @@
-{
-  "parent": "seasonal_adventures:block/locked_chest_lvl_gold",
-  "textures": {
-    "particle": "seasonal_adventures:block/locked_chest_lvl_gold_particle"
-  }
-}

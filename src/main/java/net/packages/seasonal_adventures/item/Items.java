@@ -1,11 +1,8 @@
 package net.packages.seasonal_adventures.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
-import net.minecraft.item.ItemGroups;
 import net.minecraft.util.Rarity;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.entity.Entities;
@@ -21,7 +18,7 @@ public class Items {
     public static final Item IRON_LOCK = registerItem("iron_lock", new LockItem(new FabricItemSettings(), 1));
     public static final Item GOLD_LOCK = registerItem("gold_lock", new LockItem(new FabricItemSettings(), 2));
 
-    //Броня ABPS [Active biolog]
+    //Броня ABPS [Active biological protection suit]
     public static final Item ABP_HELMET = registerItem("abp_helmet", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.HELMET, new FabricItemSettings()));
     public static final Item ABP_CHESTPLATE = registerItem("abp_chestplate", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.CHESTPLATE, new FabricItemSettings()));
     public static final Item ABP_LEGGINGS = registerItem("abp_leggings", new ABPSuitItem(ArmorMaterials.ActiveBiologicalProtectionSuit, ArmorItem.Type.LEGGINGS, new FabricItemSettings()));
@@ -47,7 +44,7 @@ public class Items {
     public static final Item GRADE_5_TITANIUM_INGOT = registerItem("grade_5_titanium_ingot", new Item(new FabricItemSettings()));
     public static final Item GRADE_5_TITANIUM_SHEET = registerItem("grade_5_titanium_sheet", new Item(new FabricItemSettings()));
     public static final Item SOLID_AUTOMATON_CASING = registerItem("solid_automaton_casing", new Item(new FabricItemSettings()));
-    public static final Item SANCHEZ_GLASSES = registerItem("sanchez_glasses", new SanchezGlasses(new FabricItemSettings().equipmentSlot(stack -> EquipmentSlot.HEAD).rarity(Rarity.EPIC)));
+    public static final Item SANCHEZ_GLASSES = registerItem("sanchez_glasses", new SanchezGlassesItem(new FabricItemSettings().equipmentSlot(stack -> EquipmentSlot.HEAD).rarity(Rarity.EPIC)));
     public static final Item CARD = registerItem("card", new CardItem(new FabricItemSettings().rarity(Rarity.EPIC).maxCount(1).fireproof()));
     public static final Item TITANIUM_NUGGET = registerItem("titanium_nugget", new Item(new FabricItemSettings()));
     public static final Item TITANIUM_SHEET = registerItem("titanium_sheet", new Item(new FabricItemSettings()));
@@ -62,16 +59,15 @@ public class Items {
     public static final Item BEEF_TARTARE = registerItem("beef_tartare", new Item(new FabricItemSettings().food(FoodComponents.BEEF_TARTARE)));
     public static final Item BIOCOMPONENT_OPTICAL_UNIT = registerItem("biocomponent_optical_unit", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
     public static final Item LOCKPICK= registerItem("lockpick", new Item(new FabricItemSettings().maxCount(16).rarity(Rarity.RARE)));
+    public static final Item SKINTH_OF_DREAMS = registerItem("skinth_of_dreams", new SkinthOfDreamsItem(new FabricItemSettings()));
 
-    private static void addItemsToFoodAndDrinkItemGroup(FabricItemGroupEntries entries) {
-    }
 
     private static Item registerItem(String name, Item item) {
             return Registry.register(Registries.ITEM, new Identifier(SeasonalAdventures.MOD_ID, name), item);
     }
 
     public static void registerModItems() {
-        SeasonalAdventures.LOGGER.info("Registering Mod Items for " + SeasonalAdventures.MOD_ID);
+        SeasonalAdventures.LOGGER.info("Registering Items for " + SeasonalAdventures.MOD_ID);
     }
 }
 

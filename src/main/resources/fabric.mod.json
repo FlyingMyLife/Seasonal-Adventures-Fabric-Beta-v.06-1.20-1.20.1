@@ -1,16 +1,16 @@
 {
 	"schemaVersion": 1,
 	"id": "seasonal_adventures",
-	"version": "v0.6.2",
+	"version": "v0.6.3",
 	"name": "Seasonal Adventures",
-	"description": "Мод по сезонам Лололошки |BETA|\nобновление Replenish 'n' Unlock",
+	"description": "Мод по сезонам Лололошки |IN BETA| \nОбновление Replenish 'n' Unlock",
 	"icon": "assets/seasonal_adventures/icon.png",
 	"authors": [
-		"Main developer: FlyingMyLife",
-		"Models and Textures: ModernDel"
+		"FlyingMyLife, ModernDel"
 	],
 	"contact": {
-		"homepage": "https://modrinth.com/mod/seasonal_adventures",
+		"issues": "https://github.com/FlyingMyLife/Seasonal-Adventures-Fabric-Beta-v.06-1.20-1.20.1/issues",
+		"homepage": "https://shor.by/seasonal_adventures",
 		"sources": "https://github.com/FlyingMyLife/Seasonal-Adventures-Fabric-Beta-v.06-1.20-1.20.1"
 	},
 	"license": "MIT",
@@ -19,11 +19,11 @@
 		"main": [
 			"net.packages.seasonal_adventures.SeasonalAdventures"
 		],
-		"fabric-datagen": [
-			"net.packages.seasonal_adventures.SeasonalAdventuresDataGenerator"
-		],
 		"client": [
 			"net.packages.seasonal_adventures.SeasonalAdventuresClient"
+		],
+		"fabric-datagen": [
+			"net.packages.seasonal_adventures.SeasonalAdventuresDataGenerator"
 		],
 		"jade": [
 			"net.packages.seasonal_adventures.jade.JadePlugin"

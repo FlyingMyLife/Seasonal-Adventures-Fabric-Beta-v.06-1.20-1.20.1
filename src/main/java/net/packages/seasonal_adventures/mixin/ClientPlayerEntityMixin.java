@@ -6,7 +6,7 @@ import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.packages.seasonal_adventures.util.AnimatedPlayer;
+import net.packages.seasonal_adventures.util.game.AnimatedPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,13 +19,9 @@ public class ClientPlayerEntityMixin implements AnimatedPlayer {
     @Unique
     private final ModifierLayer<IAnimation> seasonalAdventuresAnimationContainer = new ModifierLayer<>();
 
-    /**
-     * Add the animation registration to the end of the constructor
-     * Or you can use {@link dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess#REGISTER_ANIMATION_EVENT} event for this
-     */
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void init(ClientWorld world, GameProfile profile, CallbackInfo ci) {
-        PlayerAnimationAccess.getPlayerAnimLayer((AbstractClientPlayerEntity) (Object)this).addAnimLayer(100, seasonalAdventuresAnimationContainer);
+        PlayerAnimationAccess.getPlayerAnimLayer((AbstractClientPlayerEntity) (Object)this).addAnimLayer(18, seasonalAdventuresAnimationContainer);
     }
 
     @Override
