@@ -5,5 +5,6 @@ public enum BankingOperationType {
     REPLENISH,
     FINE,
     TRANSFER,
-    REQUEST_CARD
+    REQUEST_CARD,
+    SEND_WARNING
 }

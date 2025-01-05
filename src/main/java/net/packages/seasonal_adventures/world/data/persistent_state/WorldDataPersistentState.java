@@ -64,6 +64,7 @@ public class WorldDataPersistentState extends PersistentState {
         WorldDataPersistentState state = new WorldDataPersistentState();
 
         NbtCompound playersNbt = tag.getCompound("players");
+        initializedDimensionOfDreams = tag.getBoolean("initialized_dimension_of_dreams");
         playersNbt.getKeys().forEach(key -> {
             PlayerLinkedData playerData = new PlayerLinkedData();
             int currencyAmount = -1;
@@ -83,7 +84,6 @@ public class WorldDataPersistentState extends PersistentState {
             if (playersNbt.getCompound(key).contains("nickname")) {
                 nickname = playersNbt.getCompound(key).getString("nickname");
             }
-            initializedDimensionOfDreams = tag.getBoolean("initialized_dimension_of_dreams");
             playerData.balance = currencyAmount;
             playerData.cardId = cardId;
             playerData.nickname = nickname;

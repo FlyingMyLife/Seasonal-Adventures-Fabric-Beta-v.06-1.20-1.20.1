@@ -24,10 +24,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class BankingOperationsPacket {
 
-    public static Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "banking_operations");
+    public static Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "banking_operations_packet");
     public static final Logger LOGGER = LoggerFactory.getLogger("JDBank");
     public static void executeBasicOperations(BankingOperationType type, int amount) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -41,7 +42,11 @@ public class BankingOperationsPacket {
         buf.writeInt(-1);
         ClientPlayNetworking.send(ID, buf);
     }
-
+    public static void executeSendWarningOperation(UUID ownerUUID) {
+        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        buf.writeEnumConstant(BankingOperationType.SEND_WARNING);
+        buf.writeUuid(ownerUUID);
+    }
     public static void executeFineOperation(int fineAmount, String reason) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         buf.writeEnumConstant(BankingOperationType.FINE);
@@ -98,6 +103,23 @@ public class BankingOperationsPacket {
                     PlayerLinkedData playerState = WorldDataPersistentState.getPlayerState(player, server);
                     playerState.balance -= amount;
                     LOGGER.info("Processed operation {Operation type: FINE, current balance: {}, cardId: {}, fined: {}V, player: {}}", playerState.balance,  playerState.cardId, amount, playerState.nickname);
+                } else if (type == BankingOperationType.SEND_WARNING){
+                    UUID ownerUUID = buf.readUuid();
+                    PlayerEntity owner = server.getPlayerManager().getPlayer(ownerUUID);
+                    if (owner != null) {
+                        owner.sendMessage(Text.translatable("message.seasonal_adventures.atm.warn", player.getEntityName().formatted(Formatting.RED, Formatting.BOLD), true));
+                        LOGGER.info("Unauthorized access to {}'s card, contacting with owner!", owner.getEntityName());
+                    } else {
+                        AtomicReference<String> ownerCardId = new AtomicReference<>();
+                        AtomicReference<String> ownerNickname = new AtomicReference<>();
+                        WorldDataPersistentState.getServerState(server).playerBankingData.forEach(((uuid, playerLinkedData) -> {
+                            if (ownerUUID == uuid) {
+                                ownerNickname.set(playerLinkedData.nickname);
+                                ownerCardId.set(playerLinkedData.cardId);
+                            }
+                        }));
+                        LOGGER.info("Failed to contact with player {uuid: {}, nickname: {}, cardId: {}}", ownerUUID, ownerNickname.get(), ownerCardId.get());
+                    }
                 } else if (type == BankingOperationType.TRANSFER) {
                     PlayerEntity sender = server.getPlayerManager().getPlayer(buf.readUuid());
                     PlayerEntity recipient = server.getPlayerManager().getPlayer(buf.readUuid());

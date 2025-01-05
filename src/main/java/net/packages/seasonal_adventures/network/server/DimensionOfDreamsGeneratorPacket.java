@@ -14,10 +14,12 @@ import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.structure.Structure;
 import net.packages.seasonal_adventures.SeasonalAdventures;
+import net.packages.seasonal_adventures.util.game.ServerUtils;
+import net.packages.seasonal_adventures.world.data.persistent_state.WorldDataPersistentState;
 import net.packages.seasonal_adventures.world.dimension.Dimensions;
 
 public class DimensionOfDreamsGeneratorPacket {
-    private static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "dimension_teleport");
+    private static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "dimension_teleport_packet");
     ;
 
     public static void teleportToDimensionOfDreams() {
@@ -29,8 +31,9 @@ public class DimensionOfDreamsGeneratorPacket {
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) -> {
             server.execute( () -> {
                 ServerWorld world = server.getWorld(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY);
+                assert world != null;
 
-                BlockPos targetPos = new BlockPos(0, 1, 0);
+                BlockPos targetPos = new BlockPos(8, 21, 9);
 
                 TeleportTarget target = new TeleportTarget(
                         new Vec3d(targetPos.getX() + 0.5f, targetPos.getY(), targetPos.getZ() + 0.5f),
@@ -39,6 +42,18 @@ public class DimensionOfDreamsGeneratorPacket {
                         player.getPitch()
                 );
                 FabricDimensions.teleport(player, world, target);
+                WorldDataPersistentState state = WorldDataPersistentState.getServerState(server);
+                if (!state.initializedDimensionOfDreams) {
+                    ServerUtils.placeStructure(world, new Identifier("seasonal_adventures:island_of_dreams"), new BlockPos(0, 0, 0));
+                    for (int x = -8; x <= 24; x++) {
+                        for (int z = -8; z <= 24; z++) {
+                            world.removeBlock(new BlockPos(x, -61, z), false);
+                        }
+                    }
+                    state.initializedDimensionOfDreams = true;
+                    SeasonalAdventures.LOGGER.info("Generated start island in dimension of dreams");
+                }
+                SeasonalAdventures.LOGGER.info("Teleported {} to dimension of dreams", player.getEntityName());
             });
         });
     }

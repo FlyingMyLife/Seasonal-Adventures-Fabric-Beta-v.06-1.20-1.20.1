@@ -16,12 +16,22 @@ import net.minecraft.world.World;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.gui.handler.ATMScreenHandler;
 import net.packages.seasonal_adventures.item.Items;
+import net.packages.seasonal_adventures.network.client.ConfigSyncPacket;
 
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ATMEntity extends LivingEntity {
     private boolean isAtmBreakable(PlayerEntity player) {
-        if (getEntityWorld().getGameRules().getBoolean(SeasonalAdventures.IS_ATMS_BREAKABLE)) {
+        AtomicBoolean isAtmBreakable = new AtomicBoolean();
+        ConfigSyncPacket.getConfigFromServerAsync(config -> {
+            if (config != null) {
+                isAtmBreakable.set(config.atm_breakable);
+            } else {
+                SeasonalAdventures.LOGGER.error("Failed to retrieve config from server.");
+            }
+        });
+        if (isAtmBreakable.get()) {
             return true;
         } else {
             if (player.hasPermissionLevel(4)) {

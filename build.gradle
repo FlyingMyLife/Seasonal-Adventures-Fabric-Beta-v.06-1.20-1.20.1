@@ -33,7 +33,7 @@ repositories {
 }
 dependencies {
     modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
-    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:1.0.2-rc1+1.20")
+    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${player_anim}")
     modImplementation "curse.maven:jade-324717:5771000"
     implementation("com.eliotlash.mclib:mclib:20")
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'

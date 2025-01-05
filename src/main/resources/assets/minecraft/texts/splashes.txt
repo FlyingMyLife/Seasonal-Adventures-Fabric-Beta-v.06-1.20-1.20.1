@@ -1,0 +1,163 @@
+§bSeasonal Adventures!
+§k v0.7 - 04/02/2025
+§4NullPointerException
+Java 17
+§7Modding!
+§7Okay, I understand it now
+§6null
+§bThe §mFirst§r §bReality
+§0§o*взгляд смотрящего выражает благодарность за установку этого мода*
+If you see this, know - BUILD SUCCESSFUL in 37s
+§cMissing textures? Welcome to modding!
+§dWhy are you here? You should be coding.
+§eIt's not a bug, it's a feature.
+§lJust one more line of code...
+§bTesting? Never heard of it.
+§mMy mod works perfectly... on my machine.
+§rA bug-free code is a myth.
+§7When in doubt, restart Minecraft.
+§kMy IDE is the real MVP.
+§oYou can never have too many Java imports.
+§cCode compiler: Are you sure about that?
+§fDid you try turning it off and on?
+§6The modding life chose me.
+§lDon’t forget to commit your code.
+§e`assert(false);` - A modder's best friend.
+§kException handling? What’s that?
+§7My code is perfect, the compiler just hates me.
+§4Another crash? Must be a feature update.
+§cWorld generation is 90% magic, 10% nightmares.
+§7Minecraft: where everything is possible... except stability.
+§rLet’s hope that crash report helps!
+§mFound a bug, fixed 10 others.
+§kTime to refactor... again.
+§cRedstone is my only true friend.
+§dModding community > Everything else.
+§6Can’t stop modding, won’t stop modding.
+§eIf you aren’t debugging, you aren’t modding.
+§rCode first, sleep later.
+§f"Modifying Minecraft" - The dream job.
+§cFork it, make it better.
+§bIs this a mod or a feature request?
+§7Don’t forget to test with every build!
+§oMinecraft modding: Where success is a bug away.
+§dProgramming mods? More like modding problems.
+§bEvery modder's nightmare: Missing semicolon.
+§6Cave noises are better than code reviews.
+§eOnly real modders understand the struggle.
+§7Where's the documentation when you need it?
+§4Debugging: It’s like solving a Rubik's cube.
+§fEvery update is a new adventure.
+§bMinecraft modding: A way of life.
+§7When in doubt, add more mobs.
+§cEndermen stealing your work one file at a time.
+§dIs it a bug or a feature? Only the dev knows.
+§6The server crashed? Must be modded.
+§4Why sleep when you can debug?
+§lAll I wanted was a simple block.
+§oCode a mob, crash the world.
+§fMinecraft modding is 90% figuring out why it doesn’t work.
+§7Modding: You fix one bug, ten more appear.
+§bJust one more update… maybe two.
+§mIf you’re not failing, are you even modding?
+§eWhen the crash log is longer than your code.
+§dMy mod works for me... most of the time.
+§7Don’t worry, it’s just "temporary" code.
+§rMaybe it’s time to try the “turn it off and on again” method.
+§fCode it, test it, pray it works.
+§l"WorldGen" - Where nightmares are born.
+§cWho needs documentation when you have Stack Overflow?
+§7Minecraft modding: Where the debugger is your best friend.
+§bI coded it, but I didn’t test it. Oops.
+§oA modder’s life is just fixing someone else’s errors.
+§6Check the logs? More like check the chaos.
+§dWhen your mod is 2 lines of code and 20 lines of debug.
+§rModding isn’t easy, but at least it’s rewarding (sometimes).
+§4World generation: A work of art... in progress.
+§fWhy does every new feature break something else?
+§eModding is 10% coding, 90% debugging.
+§bWho needs sleep when you can crash the game?
+§dMinecraft crash logs: My favorite bedtime reading.
+§6The first rule of modding: Never trust a new update.
+§7Mods are like potato chips, you can never just have one.
+§cRedstone circuits are easy... said no modder ever.
+§fIf it works on my PC, it’s ready for release.
+§bThe best mods are the ones with zero errors (for now).
+§oNot another error! It’s just a “small” bug.
+§eModding: Making Minecraft more chaotic since forever.
+§rHave you tried deleting META-INF yet?
+§7It’s not a bug, it’s an undocumented feature.
+§cThe only "stable" Minecraft version is the one you're not using.
+§fWhen in doubt, add more ores.
+§bMinecraft modders: The original problem solvers.
+§7Can you fix that crash? No, but I can try.
+§oThe best features? They’re always in the next update.
+§lThe mod’s working... now back to more testing.
+§4When your mod makes more mobs than mobs ever did.
+§7"I can’t find the bug" - The developer’s curse.
+§bWho needs Minecraft when you have code?
+§cOne crash at a time, we’ll get there.
+§fTest it with a clean world, they said. It’ll be fine, they said.
+§dЧто такое "пинг" и зачем он мне?
+§cЯ никогда не останусь без древесины.
+§bМожно ли создать мир, где не будет ночи?
+§fЛаги — мой новый лучший друг.
+§7Каждый новый мир — это новая история.
+§cЛучше не экспериментировать с партиклами.
+§cNullPointerException? The best error!
+§4Syntax error: Don’t worry, it’s just a regular thing.
+§7Failed to connect to the server... again.
+§bMinecraft can’t load your world. Great!
+§eHow do I fix this error? Check the log.
+§lMinecraft crashed! Please, not again!
+§oError! Expected one thing, got something completely different.
+§rYour mods are incompatible? Classic problem.
+§mData loading error. Just another day.
+§cPlease don’t tell me it’s an ID error again.
+§7What’s up with the graphics bug? Just reinstall it.
+§4Server connection error? Got it, time for a restart.
+§bWhen Minecraft can’t find your world.
+§fError logs? That’s modding.
+§eTime for debugging.
+§lCheck the logs... maybe it’s not that bad.
+§rCan’t find the file. Where did I lose it?
+§mNeed help with world generation error!
+§dIt’s not a bug, it’s a game feature!
+§fMinecraft won’t load your world? Well...
+§7Minecraft failed to load the mods. Standard.
+§cIt’s not an error, it’s just a system glitch.
+§bHaving mod issues? You’re not alone.
+§rMinecraft crashed? Typical for updates.
+§lWhere are my world files? I definitely didn’t delete them.
+§4Something’s wrong with my chunk... again.
+§dCan’t load the map — back to square one.
+§mTesting maps? Expect errors.
+§bMinecraft updated — now there are bugs again!
+§eSomething went wrong. Nothing new.
+§7Error logs are longer than my code.
+§cMinecraft always breaks its chunks.
+§fDid you fix it? I sure didn’t.
+§oMinecraft doesn’t get my mod again.
+§rDid you try fixing it or just closed the game?
+§lDon’t look for bugs, they will always find you.
+§mMinecraft can’t find resources again.
+§dWorld error? Hello, generation.
+§7Instead of fixes, there are even more bugs.
+§bMinecraft didn’t load your world? Beautiful!
+§fHave you ever fixed a bug just to create a new one?
+§cOops, all progress lost again.
+§4Minecraft and mods — a combination of errors.
+§bMods not compatible? Shocking, but true.
+§7Couldn’t you have just done this without errors?
+§rYou’re not to blame — it’s just another error.
+§lNew bug? Totally normal.
+§fWhen you’re coding and then hit a bug.
+§dAnother rendering error? Oh well.
+§cLost your world? It’s just the update bugs.
+§bMinecraft said "not today."
+§7Minecraft didn’t understand my operating system again.
+§mMod errors? It’s just part of the game.
+§lPlayed mods, and now the game doesn’t work!
+§eWhen Minecraft can’t even load a default world.
+§fError after error after error...
+§5Code compiled... but it's not working as expected. §r§8The mystery continues.

@@ -15,10 +15,15 @@ import net.packages.seasonal_adventures.block.entity.client.LockedChestLvLCopper
 import net.packages.seasonal_adventures.block.entity.client.LockedChestLvLIronBlockRenderer;
 import net.packages.seasonal_adventures.entity.Entities;
 import net.packages.seasonal_adventures.entity.client.*;
-import net.packages.seasonal_adventures.gui.*;
+import net.packages.seasonal_adventures.entity.client.legacy.DylanModel;
+import net.packages.seasonal_adventures.entity.client.legacy.DylanRenderer;
 import net.packages.seasonal_adventures.gui.handler.DylanScreenHandler;
 import net.packages.seasonal_adventures.gui.handler.DylanSettingsScreenHandler;
-import net.packages.seasonal_adventures.gui.handler.LockpickScreenHandler;
+import net.packages.seasonal_adventures.gui.screen.ATMScreen;
+import net.packages.seasonal_adventures.gui.screen.DylanScreen;
+import net.packages.seasonal_adventures.gui.screen.DylanSettingsScreen;
+import net.packages.seasonal_adventures.gui.screen.LockpickScreen;
+import net.packages.seasonal_adventures.network.client.ConfigSyncPacket;
 import net.packages.seasonal_adventures.particle.Particles;
 import net.packages.seasonal_adventures.particle.client.FadingParticle;
 
@@ -44,6 +49,8 @@ public class SeasonalAdventuresClient implements ClientModInitializer {
 
         ParticleFactoryRegistry.getInstance().register(Particles.SKINTH_PARTICLE, FadingParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(Particles.SKINTH_OF_DREAMS_PARTICLE, FadingParticle.Factory::new);
+
+        ConfigSyncPacket.registerClientPacket();
     }
 
 }

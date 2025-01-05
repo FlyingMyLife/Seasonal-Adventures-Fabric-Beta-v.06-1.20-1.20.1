@@ -29,7 +29,7 @@ import net.packages.seasonal_adventures.sound.Sounds;
 import org.jetbrains.annotations.Nullable;
 
 import static java.lang.Boolean.TRUE;
-
+@Deprecated
 public class DylanEntity extends AnimalEntity {
 
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(DylanEntity.class, TrackedDataHandlerRegistry.BOOLEAN);

@@ -1,5 +1,6 @@
 package net.packages.seasonal_adventures.block;
 
+import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.client.gui.screen.Screen;
@@ -21,10 +22,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Blocks {
+
     //Locked Chests
     public static final Block LOCKED_CHEST_LVL_COPPER = registerBlock("locked_chest_lvl_copper",
             new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 0));
@@ -60,6 +63,17 @@ public class Blocks {
             new LaptopBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
     public static final Block ADVANCED_AUTOMATON_BODY = registerBlock("advanced_automaton_body",
             new AdvancedAutomatonBodyBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
+
+    public static final List<Block> SIMPLE_BLOCKS = Arrays.asList(
+            DEEPSLATE_ALUMINIUM_ORE,
+            DEEPSLATE_TITANIUM_ORE,
+            DEEPSLATE_LITHIUM_ORE,
+            ALUMINIUM_ORE,
+            TITANIUM_ORE,
+            LITHIUM_ORE,
+            TITANIUM_BLOCK,
+            GRADE_5_TITANIUM_BLOCK
+    );
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

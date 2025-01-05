@@ -1,18 +1,18 @@
 {
   "variants": {
     "facing=north": {
-      "model": "seasonal_adventures:particle/locked_chest_lvl_gold"
+      "model": "seasonal_adventures:block/locked_chest"
     },
     "facing=east": {
-      "model": "seasonal_adventures:particle/locked_chest_lvl_gold",
+      "model": "seasonal_adventures:block/locked_chest",
       "y": 90
     },
     "facing=south": {
-      "model": "seasonal_adventures:particle/locked_chest_lvl_gold",
+      "model": "seasonal_adventures:block/locked_chest",
       "y": 180
     },
     "facing=west": {
-      "model": "seasonal_adventures:particle/locked_chest_lvl_gold",
+      "model": "seasonal_adventures:block/locked_chest",
       "y": 270
     }
   }

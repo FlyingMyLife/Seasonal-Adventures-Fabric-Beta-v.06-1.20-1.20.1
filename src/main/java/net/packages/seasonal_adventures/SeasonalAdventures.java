@@ -8,16 +8,17 @@ import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.fabric.impl.resource.loader.FabricModResourcePack;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.packages.seasonal_adventures.block.Blocks;
@@ -30,6 +31,7 @@ import net.packages.seasonal_adventures.event.EventHandler;
 import net.packages.seasonal_adventures.gui.handler.*;
 import net.packages.seasonal_adventures.item.ItemGroups;
 import net.packages.seasonal_adventures.item.Items;
+import net.packages.seasonal_adventures.network.client.ConfigSyncPacket;
 import net.packages.seasonal_adventures.network.server.*;
 import net.packages.seasonal_adventures.particle.Particles;
 import net.packages.seasonal_adventures.recipe.conditions.BeefTartareRecipeCondition;
@@ -39,10 +41,6 @@ import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
 
 public class SeasonalAdventures implements ModInitializer {
-    public static final GameRules.Key<GameRules.BooleanRule> IS_ATMS_BREAKABLE = GameRuleRegistry.register("isAtmsBreakable", GameRules.Category.MISC, GameRuleFactory.createBooleanRule(true));
-	public static final Identifier MAIN_LAB_CHEST = new Identifier("seasonal_adventures", "chests/main_lab_chest");
-	public static final Identifier TITANIUM_CHEST_LOOT_TABLE = new Identifier("seasonal_adventures", "chests/titanium_chest");
-	public static final Identifier ALUMINIUM_CHEST_LOOT_TABLE = new Identifier("seasonal_adventures", "chests/aluminium_chest");
 	public static final ScreenHandlerType<LockpickScreenHandler> LOCKPICK_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("flying_machines", "lockpick_screen"), (ScreenHandlerRegistry.SimpleClientHandlerFactory<LockpickScreenHandler>) LockpickScreenHandler::new);
 	public static final ScreenHandlerType<DylanScreenHandler> DYLAN_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("seasonal_adventures", "dylan_screen"), DylanScreenHandler::new);
 	public static final ScreenHandlerType<ATMScreenHandler> ATM_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("seasonal_adventures", "atm_screen"), ATMScreenHandler::new);
@@ -70,20 +68,22 @@ public class SeasonalAdventures implements ModInitializer {
 	}
 	@Override
 	public void onInitialize() {
-		DimensionOfDreamsGeneratorPacket.register();
+		ConfigBuilder.initializeConfig();
 		GeckoLib.initialize();
-		ConfigBuilder.writeConfig();
 		EventHandler.initialize();
-
 		ResourceConditions.register(new Identifier(MOD_ID, "beef_tartare_condition"), BeefTartareRecipeCondition::shouldLoad);
+
+		DimensionOfDreamsGeneratorPacket.register();
+		ConfigSyncPacket.registerServerPacket();
 		RestoreChestPacket.register();
 		SpecificItemRemovalPacket.register();
 		ItemGivenPacket.register();
 		ItemRemovalPacket.register();
 		BankingOperationsPacket.register();
+		LoadChunkPacket.register();
+
 		Particles.registerParticles();
 		BlockEntities.registerBlockEntities();
-
 		Sounds.registerSounds();
 		ItemGroups.registerItemGroups();
 		Items.registerModItems();

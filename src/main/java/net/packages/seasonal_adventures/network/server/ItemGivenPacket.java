@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 
 public class ItemGivenPacket {
-    public static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "specific_item_given");
+    public static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "specific_item_given_packet");
 
     public static void sendItemGivenRequest(Item itemToGive, int countToGive) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

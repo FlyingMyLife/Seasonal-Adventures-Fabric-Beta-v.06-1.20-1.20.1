@@ -12,6 +12,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.network.server.DimensionOfDreamsGeneratorPacket;
+import net.packages.seasonal_adventures.network.server.LoadChunkPacket;
 import net.packages.seasonal_adventures.util.game.AnimatedPlayer;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +34,8 @@ public class SkinthOfDreamsItem extends Item {
 
             anim = builder.build();
             animationContainer.setAnimation(new KeyframeAnimationPlayer(anim));
+
+            LoadChunkPacket.loadChunkInDimensionOfDreams(0, 0);
             Thread timer = new Thread(() -> {
                 try {
                     Thread.sleep(3000);

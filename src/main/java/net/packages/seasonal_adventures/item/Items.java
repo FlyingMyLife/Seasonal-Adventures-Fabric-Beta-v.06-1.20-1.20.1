@@ -1,6 +1,7 @@
 package net.packages.seasonal_adventures.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Rarity;
@@ -10,6 +11,9 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.item.custom.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Items {
 
@@ -61,13 +65,21 @@ public class Items {
     public static final Item LOCKPICK= registerItem("lockpick", new Item(new FabricItemSettings().maxCount(16).rarity(Rarity.RARE)));
     public static final Item SKINTH_OF_DREAMS = registerItem("skinth_of_dreams", new SkinthOfDreamsItem(new FabricItemSettings()));
 
+    public static final List<Item> SIMPLE_ITEMS = Arrays.asList(
+            V1, V5, V10, V50, V100, V500, V1000, V10000, AUTOMATON_SKIN,
+            SYS_CABLE, CENTRAL_AI_PROCESSOR, TITANIUM_INGOT, LITHIUM_INGOT,
+            LI_ON_BATTERY, GRADE_5_TITANIUM_INGOT, GRADE_5_TITANIUM_SHEET, CARD,
+            TITANIUM_NUGGET, TITANIUM_SHEET, RAW_LITHIUM, RAW_TITANIUM, PURIFIED_SILICON,
+            ALUMINIUM_INGOT, ALUMINIUM_NUGGET, RAW_ALUMINIUM, ATM, BEEF_TARTARE,
+            BIOCOMPONENT_OPTICAL_UNIT, LOCKPICK, SKINTH_OF_DREAMS, RAW_SILICON
+    );
 
     private static Item registerItem(String name, Item item) {
             return Registry.register(Registries.ITEM, new Identifier(SeasonalAdventures.MOD_ID, name), item);
     }
 
     public static void registerModItems() {
-        SeasonalAdventures.LOGGER.info("Registering Items for " + SeasonalAdventures.MOD_ID);
+        SeasonalAdventures.LOGGER.info("Registering ItemTags for " + SeasonalAdventures.MOD_ID);
     }
 }
 

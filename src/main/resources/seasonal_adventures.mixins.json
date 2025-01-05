@@ -8,7 +8,7 @@
     "Mixin"
   ],
   "client": [
-    "TitleScreenMixin"
+    "client.TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

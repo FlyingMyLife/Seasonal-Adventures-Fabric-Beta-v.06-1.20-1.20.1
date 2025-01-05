@@ -4,7 +4,7 @@ import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.animation.AnimationHelper;
 import net.minecraft.client.render.entity.animation.Keyframe;
 import net.minecraft.client.render.entity.animation.Transformation;
-
+@Deprecated
 public class DylanAnimations {
 
 	public static final Animation WALK = Animation.Builder.create(1.5f).looping()
