@@ -1,4 +1,4 @@
-package net.packages.seasonal_adventures.jade.provider.entity;
+package net.packages.seasonal_adventures.api.jade.provider.entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;

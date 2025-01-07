@@ -1,4 +1,4 @@
-package net.packages.seasonal_adventures.jade.provider.block;
+package net.packages.seasonal_adventures.api.jade.provider.block;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;

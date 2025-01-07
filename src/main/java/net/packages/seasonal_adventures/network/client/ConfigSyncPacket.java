@@ -8,7 +8,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.config.object.ConfigObject;
-import net.packages.seasonal_adventures.config.ConfigBuilder;
+import net.packages.seasonal_adventures.config.ConfigLoader;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -48,7 +48,7 @@ public class ConfigSyncPacket {
             server.execute(() -> {
                 SeasonalAdventures.LOGGER.info("Got config request, sending...");
                 try {
-                    ConfigObject configData = ConfigBuilder.readConfig();
+                    ConfigObject configData = ConfigLoader.readConfig();
                     String jsonConfig = GSON.toJson(configData);
 
                     PacketByteBuf responseBuf = PacketByteBufs.create();

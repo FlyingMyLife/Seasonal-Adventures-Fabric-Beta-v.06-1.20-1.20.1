@@ -25,7 +25,7 @@ public class Dimensions {
     public static void bootstrapType(Registerable<DimensionType> context) {
         context.register(DIMENSION_OF_DREAMS_TYPE, new DimensionType(
                 OptionalLong.of(5700), // fixedTime
-                false, // hasSkylight
+                true, // hasSkylight
                 false, // hasCeiling
                 false, // ultraWarm
                 true, // natural
@@ -38,6 +38,8 @@ public class Dimensions {
                 BlockTags.INFINIBURN_OVERWORLD,
                 DimensionTypes.OVERWORLD_ID, // effectsLocation
                 1.0f, // ambientLight
-                new DimensionType.MonsterSettings(false, false, UniformIntProvider.create(0, 0), 0)));
+                new DimensionType.MonsterSettings(false, false, UniformIntProvider.create(0, 0), 0)
+        ));
+
     }
 }

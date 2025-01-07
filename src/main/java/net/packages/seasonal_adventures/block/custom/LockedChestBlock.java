@@ -26,7 +26,7 @@ import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.block.Blocks;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
-import net.packages.seasonal_adventures.config.ConfigBuilder;
+import net.packages.seasonal_adventures.config.ConfigLoader;
 import net.packages.seasonal_adventures.gui.handler.LockpickScreenHandler;
 import net.packages.seasonal_adventures.item.Items;
 import org.jetbrains.annotations.Nullable;
@@ -55,10 +55,9 @@ public class LockedChestBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (ConfigBuilder.getDevelopmentStatus()){
+        if (ConfigLoader.readConfig().betaFeatures){
             if (player.getInventory().getMainHandStack().isOf(Items.LOCKPICK)) {
 
-                SeasonalAdventures.sendDebugMessage("Opening new lockpick screen with level: " + lockLevel + ", on pos: " + pos, player);
                 player.openHandledScreen(new SimpleNamedScreenHandlerFactory(
                         (syncId, inventory, playerEntity) -> new LockpickScreenHandler(0, inventory),
                         Text.of("Lockpick Screen")));

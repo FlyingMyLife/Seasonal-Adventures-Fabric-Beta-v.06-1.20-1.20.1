@@ -1,4 +1,4 @@
-package net.packages.seasonal_adventures.gui.screen;
+package net.packages.seasonal_adventures.gui.screen.ingame;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;

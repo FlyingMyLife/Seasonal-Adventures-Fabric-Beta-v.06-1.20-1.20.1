@@ -1,38 +1,56 @@
 package net.packages.seasonal_adventures.config.object;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConfigObject {
-    public boolean development;
     public boolean betaFeatures;
-    public boolean atm_breakable;
-    public List<CharacterConfig> characterConfigs = new ArrayList<>();
+    public ConfigButtonPosition configButtonPos;
+    public boolean atmBreakable;
+    public boolean fancyLocationLoading;
+    public boolean countUnspecifiedItemsAsNeutral;
 
-    public ConfigObject(boolean development, boolean betaFeatures, boolean atm_breakable) {
-        this.development = development;
+    public List<String> positiveDylanPresents = Arrays.asList(
+            "seasonal_adventures:beef_tartare",
+            "candlelight:beef_tartare",
+            "minecraft:cooked_mutton",
+            "minecraft:cooked_beef",
+            "minecraft:cooked_porkchop",
+            "minecraft:diamond",
+            "minecraft:netherite_ingot",
+            "minecraft:cookie",
+            "minecraft:cooked_chicken",
+            "minecraft:cooked_cod",
+            "minecraft:cooked_salmon",
+            "minecraft:cake"
+    );
+
+    public List<String> neutralDylanPresents = Arrays.asList(
+            "seasonal_adventures:lockpick",
+            "minecraft:book",
+            "minecraft:compass",
+            "minecraft:clock",
+            "minecraft:spyglass",
+            "minecraft:paper",
+            "minecraft:lightning_rod",
+            "minecraft:redstone",
+            "minecraft:blaze_powder",
+            "minecraft:tnt"
+    );
+
+    public List<String> negativeDylanPresents = List.of();
+
+    public ConfigObject(boolean betaFeatures, boolean atmBreakable, boolean fancyLocationLoading, boolean countUnspecifiedItemsAsNeutral) {
         this.betaFeatures = betaFeatures;
-        this.atm_breakable = atm_breakable;
+        this.atmBreakable = atmBreakable;
+        this.fancyLocationLoading = fancyLocationLoading;
+        this.countUnspecifiedItemsAsNeutral = countUnspecifiedItemsAsNeutral;
+        this.configButtonPos = configButtonPos.DEFAULT;
     }
 
-    public static class CharacterConfig {
-        public String name;
-        public PresentConfig presentConfig = new PresentConfig();
-
-        public CharacterConfig(String name) {
-            this.name = name;
-        }
-    }
-
-    public static class PresentConfig {
-        public boolean countUnspecifiedItemsAsNeutral;
-
-        // If var countUnspecifiedItemsAsNeutral is true, all unspecified items will be counted as neutral items,
-        // otherwise they will be counted as negative items.
-
-        public List<String> positive = new ArrayList<>();
-        public List<String> neutral = new ArrayList<>();
-        public List<String> negative = new ArrayList<>();
-
+    public enum ConfigButtonPosition {
+        HIDDEN,
+        DEFAULT,
+        LEFT_MULTIPLAYER,
     }
 }

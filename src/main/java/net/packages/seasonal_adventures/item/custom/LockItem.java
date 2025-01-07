@@ -46,7 +46,6 @@ public class LockItem extends Item {
                         inventory.put(i, chest.getStack(i).copy());
                     }
                     assert player != null;
-                    SeasonalAdventures.sendDebugMessage("Chest contains:" + inventory, player);
 
                     for (int i = 0; i < ((ChestBlockEntity) blockEntity).size(); i++) {
                         ItemStack item = ((ChestBlockEntity) blockEntity).getStack(i);

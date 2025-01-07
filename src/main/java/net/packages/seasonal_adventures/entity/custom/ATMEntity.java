@@ -26,19 +26,13 @@ public class ATMEntity extends LivingEntity {
         AtomicBoolean isAtmBreakable = new AtomicBoolean();
         ConfigSyncPacket.getConfigFromServerAsync(config -> {
             if (config != null) {
-                isAtmBreakable.set(config.atm_breakable);
-            } else {
-                SeasonalAdventures.LOGGER.error("Failed to retrieve config from server.");
+                isAtmBreakable.set(config.atmBreakable);
             }
         });
         if (isAtmBreakable.get()) {
             return true;
         } else {
-            if (player.hasPermissionLevel(4)) {
-                return true;
-            }else {
-                return false;
-            }
+            return player.hasPermissionLevel(4);
         }
     }
     public ATMEntity(EntityType<? extends LivingEntity> type, World world) {

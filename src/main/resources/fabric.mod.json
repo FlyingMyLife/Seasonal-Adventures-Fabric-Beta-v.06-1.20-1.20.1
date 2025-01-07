@@ -26,7 +26,10 @@
 			"net.packages.seasonal_adventures.SeasonalAdventuresDataGenerator"
 		],
 		"jade": [
-			"net.packages.seasonal_adventures.jade.JadePlugin"
+			"net.packages.seasonal_adventures.api.jade.JadeAPI"
+		],
+		"modmenu": [
+			"net.packages.seasonal_adventures.api.modmenu.ModMenuAPI"
 		]
 	},
 	"mixins": [
@@ -40,7 +43,6 @@
 		"minecraft": ">=1.20.0 <=1.20.1",
 		"java": ">=17",
 		"fabric-api": "*",
-		"geckolib": ">=4.4.9",
-		"bendy-lib": ">=4.0.0"
+		"geckolib": ">=4.4.9"
 	}
 }

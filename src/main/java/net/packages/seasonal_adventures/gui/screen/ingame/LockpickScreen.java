@@ -1,4 +1,4 @@
-package net.packages.seasonal_adventures.gui.screen;
+package net.packages.seasonal_adventures.gui.screen.ingame;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.entity.BlockEntity;
