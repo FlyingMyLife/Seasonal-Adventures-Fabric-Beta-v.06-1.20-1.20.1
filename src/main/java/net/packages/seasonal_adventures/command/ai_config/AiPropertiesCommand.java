@@ -7,14 +7,14 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.network.client.SecretKeyUpdatePacket;
+import net.packages.seasonal_adventures.network.s2c.SecretKeyUpdatePacket;
 
 public class AiPropertiesCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(((CommandManager.literal("ai").then(CommandManager.literal("setKey")
-                        .then(CommandManager.argument("key", StringArgumentType.string())
+                        .then(CommandManager.argument("configData", StringArgumentType.string())
                                 .executes(context -> {
-                                            String key = StringArgumentType.getString(context, "key");
+                                            String key = StringArgumentType.getString(context, "configData");
                                             if (context.getSource().isExecutedByPlayer()) {
                                                 ServerPlayerEntity player = context.getSource().getPlayer();
                                                 assert player != null;

@@ -4,12 +4,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
-import net.packages.seasonal_adventures.block.entity.BlockEntities;
+import net.packages.seasonal_adventures.block.entity.SABlockEntities;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
@@ -26,7 +24,7 @@ public class LockedChestLvLCopperBlockEntity extends BlockEntity implements GeoB
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public LockedChestLvLCopperBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY, pos, state);
+        super(SABlockEntities.LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY, pos, state);
     }
 
     @Override

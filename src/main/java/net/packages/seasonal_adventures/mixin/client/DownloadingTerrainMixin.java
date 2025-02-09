@@ -9,8 +9,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.config.ConfigReader;
-import net.packages.seasonal_adventures.network.server.ApplyStatusEffectPacket;
+import net.packages.seasonal_adventures.config.ClientConfig.HANDLER;
+import net.packages.seasonal_adventures.network.c2s.ApplyStatusEffectPacket;
 import net.packages.seasonal_adventures.world.dimension.Dimensions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,7 +45,7 @@ public abstract class DownloadingTerrainMixin extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         assert Objects.requireNonNull(client).player != null;
         assert client.player != null;
-        if (client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY) && Objects.requireNonNull(ConfigReader.readConfig()).fancyLocationLoading) {
+        if (client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY) && Objects.requireNonNull(ClientConfig.HANDLER.readConfig()).fancyLocationLoading) {
             ci.cancel();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, opacity);
             context.drawTexture(BACKGROUND_TEXTURE, 0, 0, 0, 0, width, height, width, height);
@@ -71,7 +71,7 @@ public abstract class DownloadingTerrainMixin extends Screen {
     public void tick(CallbackInfo ci) {
         assert client != null;
         assert client.player != null;
-        if (client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY) && Objects.requireNonNull(ConfigReader.readConfig()).fancyLocationLoading) {
+        if (client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY) && Objects.requireNonNull(ClientConfig.HANDLER.readConfig()).fancyLocationLoading) {
             ci.cancel();
             if (this.client.player == null) {
                 return;

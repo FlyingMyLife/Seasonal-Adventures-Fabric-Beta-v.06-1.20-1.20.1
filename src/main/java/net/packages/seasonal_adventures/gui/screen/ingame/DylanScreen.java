@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registries;
 import net.packages.seasonal_adventures.gui.handler.DylanScreenHandler;
 import net.packages.seasonal_adventures.gui.handler.DylanSettingsScreenHandler;
-import net.packages.seasonal_adventures.network.server.ItemRemovalPacket;
+import net.packages.seasonal_adventures.network.c2s.ItemRemovalPacket;
 
 import java.util.Arrays;
 import java.util.List;

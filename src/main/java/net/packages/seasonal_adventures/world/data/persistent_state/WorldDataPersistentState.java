@@ -9,7 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.world.PlayerLinkedData;
+import net.packages.seasonal_adventures.world.data.PlayerLinkedData;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -20,22 +20,6 @@ public class WorldDataPersistentState extends PersistentState {
     public HashMap<UUID, PlayerLinkedData> playerBankingData = new HashMap<>();
 
     public static boolean initializedDimensionOfDreams = false;
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        NbtCompound playersNbt = new NbtCompound();
-        playerBankingData.forEach((uuid, playerData) -> {
-            NbtCompound playerNbt = new NbtCompound();
-            playerNbt.putInt("currencyAmount", playerData.balance);
-            playerNbt.putString("cardId", Objects.requireNonNullElse(playerData.cardId, "null"));
-            playerNbt.putString("nickname", Objects.requireNonNullElse(playerData.cardId, "null"));
-            playersNbt.put(uuid.toString(), playerNbt);
-        });
-        nbt.putBoolean("initialized_dimension_of_dreams", initializedDimensionOfDreams);
-        nbt.put("players", playersNbt);
-
-        return nbt;
-    }
 
     public static void addNewPlayerToBankingSystem(PlayerEntity player, String cardId, MinecraftServer server) {
         WorldDataPersistentState serverState = getServerState(server);
@@ -60,7 +44,7 @@ public class WorldDataPersistentState extends PersistentState {
         return serverState.playerBankingData.computeIfAbsent(player.getUuid(), uuid -> new PlayerLinkedData());
     }
 
-    public static WorldDataPersistentState createFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    public static WorldDataPersistentState createFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
         WorldDataPersistentState state = new WorldDataPersistentState();
 
         NbtCompound playersNbt = tag.getCompound("players");
@@ -94,17 +78,36 @@ public class WorldDataPersistentState extends PersistentState {
 
         return state;
     }
-
+    public static WorldDataPersistentState createNew() {
+        WorldDataPersistentState state = new WorldDataPersistentState();
+        state.playerBankingData.clear();
+        return state;
+    }
+    private static final Type<WorldDataPersistentState> type = new Type<>(
+            WorldDataPersistentState::createNew,
+            WorldDataPersistentState::createFromNbt,
+            null
+    );
     public static WorldDataPersistentState getServerState(MinecraftServer server) {
         PersistentStateManager persistentStateManager = Objects.requireNonNull(server.getWorld(ServerWorld.OVERWORLD)).getPersistentStateManager();
-
-        WorldDataPersistentState state = persistentStateManager.getOrCreate(
-                nbt -> WorldDataPersistentState.createFromNbt(nbt, null),
-                WorldDataPersistentState::new,
-                "sa_world_data"
-        );
-
+        WorldDataPersistentState state = persistentStateManager.getOrCreate(type, "sa-world");
         state.markDirty();
         return state;
+    }
+
+    @Override
+    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup wrapperLookup) {
+        NbtCompound playersNbt = new NbtCompound();
+        playerBankingData.forEach((uuid, playerData) -> {
+            NbtCompound playerNbt = new NbtCompound();
+            playerNbt.putInt("currencyAmount", playerData.balance);
+            playerNbt.putString("cardId", Objects.requireNonNullElse(playerData.cardId, "null"));
+            playerNbt.putString("nickname", Objects.requireNonNullElse(playerData.cardId, "null"));
+            playersNbt.put(uuid.toString(), playerNbt);
+        });
+        nbt.putBoolean("initialized_dimension_of_dreams", initializedDimensionOfDreams);
+        nbt.put("players", playersNbt);
+
+        return nbt;
     }
 }

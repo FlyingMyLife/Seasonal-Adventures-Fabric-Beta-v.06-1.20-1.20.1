@@ -9,8 +9,8 @@ import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.config.ConfigReader;
-import net.packages.seasonal_adventures.config.object.ConfigObject;
+import net.packages.seasonal_adventures.config.ClientConfig.HANDLER;
+import net.packages.seasonal_adventures.config.ClientConfig;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,17 +27,17 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Inject(at = @At("RETURN"), method = "initWidgetsNormal")
     private void init(int y, int spacingY, CallbackInfo ci) {
-        ConfigObject.ConfigButtonPosition buttonPosition = Objects.requireNonNull(ConfigReader.readConfig()).configButtonPos;
+        ClientConfig.ClientConfigButtonPosition buttonPosition = Objects.requireNonNull(ClientConfig.HANDLER.readConfig()).configButtonPos;
         TexturedButtonWidget seasonalAdventuresConfigButton = getTexturedButtonWidget(y, spacingY, buttonPosition);
         addDrawableChild(seasonalAdventuresConfigButton);
-        if (buttonPosition == ConfigObject.ConfigButtonPosition.HIDDEN && FabricLoader.getInstance().isModLoaded("modmenu")) {
+        if (buttonPosition == ClientConfig.ClientConfigButtonPosition.HIDDEN && FabricLoader.getInstance().isModLoaded("modmenu")) {
             seasonalAdventuresConfigButton.active = false;
         }
     }
 
-    private @NotNull TexturedButtonWidget getTexturedButtonWidget(int y, int spacingY, ConfigObject.ConfigButtonPosition buttonPosition) {
+    private @NotNull TexturedButtonWidget getTexturedButtonWidget(int y, int spacingY, ClientConfig.ClientConfigButtonPosition buttonPosition) {
         int x = this.width / 2 + 100 + 4;
-        if (buttonPosition == ConfigObject.ConfigButtonPosition.LEFT_MULTIPLAYER) {
+        if (buttonPosition == ClientConfig.ClientConfigButtonPosition.LEFT_MULTIPLAYER) {
             x = this.width / 2 - 124;
         }
         return new TexturedButtonWidget(x, y + spacingY, 20, 20, 0, 0, 20,

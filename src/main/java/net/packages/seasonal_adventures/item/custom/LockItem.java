@@ -14,8 +14,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.block.Blocks;
+import net.packages.seasonal_adventures.block.SABlocks;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
 
@@ -57,8 +56,8 @@ public class LockItem extends Item {
 
                     Direction facing = blockState.get(Properties.HORIZONTAL_FACING);
                     BlockState lockedChestBlockState = null;
-                    if (lockLevel == 0) lockedChestBlockState = Blocks.LOCKED_CHEST_LVL_COPPER.getDefaultState().with(Properties.HORIZONTAL_FACING, facing);
-                    if (lockLevel == 1) lockedChestBlockState = Blocks.LOCKED_CHEST_LVL_IRON.getDefaultState().with(Properties.HORIZONTAL_FACING, facing);
+                    if (lockLevel == 0) lockedChestBlockState = SABlocks.LOCKED_CHEST_LVL_COPPER.getDefaultState().with(Properties.HORIZONTAL_FACING, facing);
+                    if (lockLevel == 1) lockedChestBlockState = SABlocks.LOCKED_CHEST_LVL_IRON.getDefaultState().with(Properties.HORIZONTAL_FACING, facing);
                     world.setBlockState(pos, lockedChestBlockState);
 
                     BlockEntity lockedChestBlockEntity = world.getBlockEntity(pos);

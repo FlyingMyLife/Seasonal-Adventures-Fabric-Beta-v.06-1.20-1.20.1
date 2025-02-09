@@ -4,11 +4,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.packages.seasonal_adventures.gui.ScreenHandlers;
+import net.packages.seasonal_adventures.gui.SAScreenHandlers;
 
 public class ATMScreenHandler extends ScreenHandler {
     public ATMScreenHandler(int syncId, PlayerInventory inv) {
-        super(ScreenHandlers.ATM_SCREEN_HANDLER, syncId);
+        super(SAScreenHandlers.ATM_SCREEN_HANDLER, syncId);
     }
 
 

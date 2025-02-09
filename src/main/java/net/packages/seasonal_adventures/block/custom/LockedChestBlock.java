@@ -25,12 +25,12 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.packages.seasonal_adventures.block.Blocks;
+import net.packages.seasonal_adventures.block.SABlocks;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
-import net.packages.seasonal_adventures.config.ConfigReader;
+import net.packages.seasonal_adventures.config.ClientConfig.HANDLER;
 import net.packages.seasonal_adventures.gui.handler.LockpickScreenHandler;
-import net.packages.seasonal_adventures.item.Items;
+import net.packages.seasonal_adventures.item.SAItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -58,8 +58,8 @@ public class LockedChestBlock extends BlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (Objects.requireNonNull(ConfigReader.readConfig()).betaFeatures){
-            if (player.getInventory().getMainHandStack().isOf(Items.LOCKPICK)) {
+        if (Objects.requireNonNull(ClientConfig.HANDLER.readConfig()).betaFeatures){
+            if (player.getInventory().getMainHandStack().isOf(SAItems.LOCKPICK)) {
                 player.openHandledScreen(new NamedScreenHandlerFactory() {
                     @Override
                     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
@@ -95,8 +95,8 @@ public class LockedChestBlock extends BlockWithEntity {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        if (state.getBlock().equals(Blocks.LOCKED_CHEST_LVL_COPPER)) return new LockedChestLvLCopperBlockEntity(pos, state);
-        if (state.getBlock().equals(Blocks.LOCKED_CHEST_LVL_IRON)) return new LockedChestLvLIronBlockEntity(pos, state);
+        if (state.getBlock().equals(SABlocks.LOCKED_CHEST_LVL_COPPER)) return new LockedChestLvLCopperBlockEntity(pos, state);
+        if (state.getBlock().equals(SABlocks.LOCKED_CHEST_LVL_IRON)) return new LockedChestLvLIronBlockEntity(pos, state);
         else return null;
     }
 

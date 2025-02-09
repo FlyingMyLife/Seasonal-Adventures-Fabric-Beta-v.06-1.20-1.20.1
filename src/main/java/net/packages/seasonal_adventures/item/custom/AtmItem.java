@@ -2,6 +2,7 @@ package net.packages.seasonal_adventures.item.custom;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
@@ -10,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.packages.seasonal_adventures.network.server.ItemRemovalPacket;
+import net.packages.seasonal_adventures.network.c2s.ItemRemovalPacket;
 
 public class AtmItem extends Item {
 
@@ -38,7 +39,7 @@ public class AtmItem extends Item {
         }
     }
     private void spawnEntityAt(World world, PlayerEntity player, BlockPos pos) {
-        LivingEntity entity = entityType.create(world);
+        LivingEntity entity = entityType.create(world, SpawnReason.MOB_SUMMONED);
         if (entity != null) {
             entity.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             float[] angles = getEntityRotationToPlayer(entity, player);

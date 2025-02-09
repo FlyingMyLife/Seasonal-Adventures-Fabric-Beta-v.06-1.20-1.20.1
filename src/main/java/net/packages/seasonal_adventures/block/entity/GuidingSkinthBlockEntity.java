@@ -11,7 +11,7 @@ import software.bernie.geckolib.util.RenderUtil;
 
 public class GuidingSkinthBlockEntity extends BlockEntity implements GeoBlockEntity {
     public GuidingSkinthBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.GUIDING_SKINTH_BLOCK_ENTITY,pos, state);
+        super(SABlockEntities.GUIDING_SKINTH_BLOCK_ENTITY,pos, state);
     }
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     @Override

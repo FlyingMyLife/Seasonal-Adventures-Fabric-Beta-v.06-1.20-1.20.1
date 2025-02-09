@@ -7,26 +7,26 @@ import net.minecraft.data.recipe.RecipeGenerator;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
-import net.packages.seasonal_adventures.block.Blocks;
-import net.packages.seasonal_adventures.item.Items;
+import net.packages.seasonal_adventures.block.SABlocks;
+import net.packages.seasonal_adventures.item.SAItems;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 public class RecipeProvider extends FabricRecipeProvider {
     public static List<ItemConvertible> TITANIUM_SMELTABLES = List.of(
-            Blocks.TITANIUM_ORE,
-            Blocks.DEEPSLATE_TITANIUM_ORE,
-            Items.RAW_TITANIUM
+            SABlocks.TITANIUM_ORE,
+            SABlocks.DEEPSLATE_TITANIUM_ORE,
+            SAItems.RAW_TITANIUM
     );
     public static List<ItemConvertible> ALUMINIUM_SMELTABLES = List.of(
-            Blocks.ALUMINIUM_ORE,
-            Blocks.DEEPSLATE_ALUMINIUM_ORE,
-            Items.RAW_ALUMINIUM
+            SABlocks.ALUMINIUM_ORE,
+            SABlocks.DEEPSLATE_ALUMINIUM_ORE,
+            SAItems.RAW_ALUMINUM
     );
     public static List<ItemConvertible> LITHIUM_SMELTABLES = List.of(
-            Blocks.LITHIUM_ORE,
-            Blocks.DEEPSLATE_LITHIUM_ORE,
-            Items.RAW_LITHIUM
+            SABlocks.LITHIUM_ORE,
+            SABlocks.DEEPSLATE_LITHIUM_ORE,
+            SAItems.RAW_LITHIUM
     );
 
     public RecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
@@ -39,20 +39,20 @@ public class RecipeProvider extends FabricRecipeProvider {
         RecipeGenerator generator = new RecipeGenerator(wrapperLookup, recipeExporter) {
             @Override
             public void generate() {
-                offerSmelting(TITANIUM_SMELTABLES, RecipeCategory.MISC, Items.TITANIUM_INGOT,
+                offerSmelting(TITANIUM_SMELTABLES, RecipeCategory.MISC, SAItems.TITANIUM_INGOT,
                         0.7f, 200, "titanium_ingot");
-                offerBlasting(TITANIUM_SMELTABLES, RecipeCategory.MISC, Items.TITANIUM_INGOT,
+                offerBlasting(TITANIUM_SMELTABLES, RecipeCategory.MISC, SAItems.TITANIUM_INGOT,
                         0.7f, 100, "titanium_ingot");
-                offerSmelting(ALUMINIUM_SMELTABLES, RecipeCategory.MISC, Items.ALUMINIUM_INGOT,
+                offerSmelting(ALUMINIUM_SMELTABLES, RecipeCategory.MISC, SAItems.ALUMINUM_INGOT,
                         0.7f, 200, "aluminium_ingot");
-                offerBlasting(ALUMINIUM_SMELTABLES, RecipeCategory.MISC, Items.ALUMINIUM_INGOT,
+                offerBlasting(ALUMINIUM_SMELTABLES, RecipeCategory.MISC, SAItems.ALUMINUM_INGOT,
                         0.7f, 100, "aluminium_ingot");
-                offerSmelting(LITHIUM_SMELTABLES, RecipeCategory.MISC, Items.LITHIUM_INGOT,
+                offerSmelting(LITHIUM_SMELTABLES, RecipeCategory.MISC, SAItems.LITHIUM_INGOT,
                         0.7f, 200, "lithium_ingot");
-                offerBlasting(LITHIUM_SMELTABLES, RecipeCategory.MISC, Items.LITHIUM_INGOT,
+                offerBlasting(LITHIUM_SMELTABLES, RecipeCategory.MISC, SAItems.LITHIUM_INGOT,
                         0.7f, 100, "lithium_ingot");
-                offerReversibleCompactingRecipes(RecipeCategory.BUILDING_BLOCKS, Items.GRADE_5_TITANIUM_INGOT, RecipeCategory.DECORATIONS, Blocks.GRADE_5_TITANIUM_BLOCK);
-                offerReversibleCompactingRecipes(RecipeCategory.BUILDING_BLOCKS, Items.TITANIUM_INGOT, RecipeCategory.DECORATIONS, Blocks.TITANIUM_BLOCK);
+                offerReversibleCompactingRecipes(RecipeCategory.BUILDING_BLOCKS, SAItems.GRADE_5_TITANIUM_INGOT, RecipeCategory.DECORATIONS, SABlocks.GRADE_5_TITANIUM_BLOCK);
+                offerReversibleCompactingRecipes(RecipeCategory.BUILDING_BLOCKS, SAItems.TITANIUM_INGOT, RecipeCategory.DECORATIONS, SABlocks.TITANIUM_BLOCK);
             }
         };
         return generator;

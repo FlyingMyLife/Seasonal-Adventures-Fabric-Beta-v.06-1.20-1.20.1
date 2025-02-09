@@ -6,11 +6,9 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -18,10 +16,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.gui.handler.ATMScreenHandler;
-import net.packages.seasonal_adventures.item.Items;
-import net.packages.seasonal_adventures.network.client.ConfigSyncPacket;
+import net.packages.seasonal_adventures.item.SAItems;
+import net.packages.seasonal_adventures.network.s2c.ConfigSyncPacket;
 
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -124,7 +121,7 @@ public class ATMEntity extends LivingEntity {
             if (player.isSneaking() && !player.isCreative() && isAtmBreakable(player)) {
                 this.setHealth(0);
                 this.setRemoved(RemovalReason.KILLED);
-                dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.ATM));
+                dropStack((ServerWorld) this.getWorld(), new ItemStack(SAItems.ATM));
                 return ActionResult.SUCCESS;
             } else if (player.isSneaking() && player.isCreative() && isAtmBreakable(player)) {
                 this.setHealth(0);

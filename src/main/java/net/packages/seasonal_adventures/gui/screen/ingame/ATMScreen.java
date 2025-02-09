@@ -15,13 +15,13 @@ import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.gui.RenderingUtils;
 import net.packages.seasonal_adventures.gui.handler.ATMScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.NumericTextFieldWidget;
-import net.packages.seasonal_adventures.item.Items;
-import net.packages.seasonal_adventures.network.server.BankingOperationsPacket;
-import net.packages.seasonal_adventures.network.server.ItemGivenPacket;
-import net.packages.seasonal_adventures.network.server.SpecificItemRemovalPacket;
+import net.packages.seasonal_adventures.item.SAItems;
+import net.packages.seasonal_adventures.network.c2s.BankingOperationsPacket;
+import net.packages.seasonal_adventures.network.c2s.ItemGivenPacket;
+import net.packages.seasonal_adventures.network.c2s.SpecificItemRemovalPacket;
 import net.packages.seasonal_adventures.util.game.InventoryUtils;
-import net.packages.seasonal_adventures.util.enums.BankingOperationType;
-import net.packages.seasonal_adventures.world.PlayerLinkedData;
+import net.packages.seasonal_adventures.util.type.BankingOperationType;
+import net.packages.seasonal_adventures.world.data.PlayerLinkedData;
 import net.packages.seasonal_adventures.world.data.persistent_state.WorldDataPersistentState;
 
 import java.util.Objects;
@@ -46,9 +46,9 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private int userInputValue = 0;
     private boolean replenishMode = true;
 
-    private static final ItemStack [] denominations = { new ItemStack(Items.V1), new ItemStack(Items.V5), new ItemStack(Items.V10),
-            new ItemStack(Items.V50), new ItemStack(Items.V100), new ItemStack(Items.V500),
-            new ItemStack(Items.V1000), new ItemStack(Items.V10000)
+    private static final ItemStack [] denominations = { new ItemStack(SAItems.V1), new ItemStack(SAItems.V5), new ItemStack(SAItems.V10),
+            new ItemStack(SAItems.V50), new ItemStack(SAItems.V100), new ItemStack(SAItems.V500),
+            new ItemStack(SAItems.V1000), new ItemStack(SAItems.V10000)
     };
 
     int [] denominationMultipliers = {1, 5, 10, 50, 100, 500, 1000, 10000};
@@ -212,7 +212,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
         assert this.client != null;
         PlayerEntity player = this.client.player;
         ItemStack cardStack = player.getInventory().getMainHandStack();
-        if (!cardStack.isOf(Items.CARD)) {
+        if (!cardStack.isOf(SAItems.CARD)) {
             player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.card_required").formatted(Formatting.RED, Formatting.BOLD), true);
             this.close();
             return;
@@ -305,7 +305,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     }
     private void renderBalance(DrawContext context, int mouseX, int mouseY, float delta) {
         PlayerEntity player = client.player;
-        if (player.getInventory().getMainHandStack().isOf(Items.CARD)) {
+        if (player.getInventory().getMainHandStack().isOf(SAItems.CARD)) {
             RenderingUtils.renderItemWithTooltip(context, player.getMainHandStack(), client.player, textRenderer, width - 96, 16, mouseX, mouseY);
             TextWidget balance = new TextWidget(width - 80, 16,64, 16, Text.literal(getOnCardValue() + "V"), textRenderer);
             balance.render(context, mouseX, mouseY, delta);

@@ -22,12 +22,12 @@ import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvL
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
 import net.packages.seasonal_adventures.gui.handler.LockpickScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.RotatableLockpick;
-import net.packages.seasonal_adventures.item.Items;
-import net.packages.seasonal_adventures.network.server.ItemRemovalPacket;
-import net.packages.seasonal_adventures.network.server.RestoreChestPacket;
-import net.packages.seasonal_adventures.network.server.SpecificItemRemovalPacket;
-import net.packages.seasonal_adventures.sound.Sounds;
-import net.packages.seasonal_adventures.util.logic.PinAngles;
+import net.packages.seasonal_adventures.item.SAItems;
+import net.packages.seasonal_adventures.network.c2s.ItemRemovalPacket;
+import net.packages.seasonal_adventures.network.c2s.RestoreChestPacket;
+import net.packages.seasonal_adventures.network.c2s.SpecificItemRemovalPacket;
+import net.packages.seasonal_adventures.sound.SASounds;
+import net.packages.seasonal_adventures.util.data.PinAngles;
 
 import java.util.Optional;
 
@@ -86,13 +86,13 @@ public class UnlockingScreen extends HandledScreen<LockpickScreenHandler> {
     }
     private void onPinAction(int pin) {
         if (pin <= pinDefValues[lockLevel]) {
-            playSound(Sounds.PICK_PIN_SOUND, 0.9f);
+            playSound(SASounds.PICK_PIN_SOUND, 0.9f);
             this.pinTriggerState[pin] = true;
             this.lockpick.toggleRotationDirection();
             this.pinsLeft--;
         } else {
             assert this.client != null;
-            SpecificItemRemovalPacket.sendItemStackRemovalRequest(new ItemStack(Items.LOCKPICK), 1);
+            SpecificItemRemovalPacket.sendItemStackRemovalRequest(new ItemStack(SAItems.LOCKPICK), 1);
             client.player.getInventory().markDirty();
         }
     }
@@ -140,7 +140,7 @@ public class UnlockingScreen extends HandledScreen<LockpickScreenHandler> {
 
         super.render(context, mouseX, mouseY, delta);
 
-        if (pinsLeft <= 0 || !client.player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
+        if (pinsLeft <= 0 || !client.player.getInventory().contains(new ItemStack(SAItems.LOCKPICK))) {
             handleClosingActions();
         }
     }
@@ -177,11 +177,11 @@ public class UnlockingScreen extends HandledScreen<LockpickScreenHandler> {
         PlayerEntity player = this.client.player;
 
         if (pinsLeft <= 0) {
-            playSound(Sounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
+            playSound(SASounds.LOCKPICK_UNLOCK_SOUND, 1.0f);
             player.sendMessage(Text.translatable("message.seasonal_adventures.lock.success").formatted(Formatting.GREEN), true);
             unlockChest(player);
             this.close();
-        } else if (!player.getInventory().contains(new ItemStack(Items.LOCKPICK))) {
+        } else if (!player.getInventory().contains(new ItemStack(SAItems.LOCKPICK))) {
             player.sendMessage(Text.translatable("message.seasonal_adventures.lock.fail").formatted(Formatting.DARK_RED), true);
             this.close();
         }

@@ -3,21 +3,18 @@ package net.packages.seasonal_adventures.item.custom;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.network.server.DimensionOfDreamsGeneratorPacket;
-import net.packages.seasonal_adventures.network.server.LoadChunkPacket;
+import net.packages.seasonal_adventures.network.c2s.DimensionOfDreamsGeneratorPacket;
+import net.packages.seasonal_adventures.network.c2s.LoadChunkPacket;
 import net.packages.seasonal_adventures.util.game.AnimatedPlayer;
 import net.packages.seasonal_adventures.world.dimension.Dimensions;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -27,12 +24,13 @@ public class SkinthOfDreamsItem extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (user instanceof AnimatedPlayer && !user.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY)){
             var animationContainer = ((AnimatedPlayer) (user)).seasonalAdventuresGetModAnimation();
 
-            KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(Identifier.of(SeasonalAdventures.MOD_ID, "used_skinth_of_dreams"));
+            KeyframeAnimation anim = (KeyframeAnimation) PlayerAnimationRegistry.getAnimation(Identifier.of(SeasonalAdventures.MOD_ID, "used_skinth_of_dreams"));
 
+            assert anim != null;
             var builder = anim.mutableCopy();
 
             anim = builder.build();
@@ -56,7 +54,7 @@ public class SkinthOfDreamsItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         Text tooltipText = Text.translatable("tooltip.seasonal_adventures.skinth_of_dreams").formatted(Formatting.LIGHT_PURPLE);
         Text tooltipTextNl = Text.translatable("tooltip.seasonal_adventures.skinth_of_dreams.nl").formatted(Formatting.LIGHT_PURPLE);
         tooltip.add(tooltipText);
