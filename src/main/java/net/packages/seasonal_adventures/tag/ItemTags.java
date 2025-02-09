@@ -11,6 +11,6 @@ public class ItemTags {
     public static final TagKey<Item> V_ITEMS = createTag("v_items");
 
     private static TagKey<Item> createTag(String name) {
-        return TagKey.of(RegistryKeys.ITEM, new Identifier(SeasonalAdventures.MOD_ID, name));
+        return TagKey.of(RegistryKeys.ITEM, Identifier.of(SeasonalAdventures.MOD_ID, name));
     }
 }

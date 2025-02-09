@@ -13,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 
-public class ConfigLoader {
+public class ConfigReader {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static String configPath = FabricLoader.getInstance().getConfigDir().toString() + "\\seasonal_adventures.json";
     public static ConfigObject defaultConfig = new ConfigObject(false, false, true, false);
@@ -25,7 +25,7 @@ public class ConfigLoader {
                 gson.toJson(defaultConfig, writer);
                 SeasonalAdventures.LOGGER.info("Default config file created");
             } catch (IOException e) {
-                e.printStackTrace();
+                SeasonalAdventures.LOGGER.error("Failed to initialize config [IOException], e:{}", String.valueOf(e));
             }
         }
     }
@@ -35,7 +35,7 @@ public class ConfigLoader {
             gson.toJson(config, writer);
             SeasonalAdventures.LOGGER.info("Updated config file");
         } catch (IOException e) {
-            e.printStackTrace();
+            SeasonalAdventures.LOGGER.error("Failed to write config [IOException], e:{}", String.valueOf(e));
         }
     }
 
@@ -50,7 +50,7 @@ public class ConfigLoader {
                 return gson.fromJson(reader, ConfigObject.class);
 
             } catch (IOException e) {
-                e.printStackTrace();
+                SeasonalAdventures.LOGGER.error("Failed to read config [IOException], e:{}", String.valueOf(e));
                 return null;
             }
         }

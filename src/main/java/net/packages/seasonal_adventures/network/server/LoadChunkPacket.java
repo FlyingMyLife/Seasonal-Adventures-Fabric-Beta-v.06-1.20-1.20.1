@@ -11,7 +11,7 @@ import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.world.dimension.Dimensions;
 
 public class LoadChunkPacket {
-    public static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "load_chunk_packet");
+    public static final Identifier ID = Identifier.of(SeasonalAdventures.MOD_ID, "load_chunk_packet");
     public static void loadChunkInDimensionOfDreams(int chunkX, int chunkZ) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         buf.writeInt(chunkX);

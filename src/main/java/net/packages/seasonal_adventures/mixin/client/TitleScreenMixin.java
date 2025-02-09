@@ -9,7 +9,7 @@ import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.config.ConfigLoader;
+import net.packages.seasonal_adventures.config.ConfigReader;
 import net.packages.seasonal_adventures.config.object.ConfigObject;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +27,7 @@ public abstract class TitleScreenMixin extends Screen {
 
     @Inject(at = @At("RETURN"), method = "initWidgetsNormal")
     private void init(int y, int spacingY, CallbackInfo ci) {
-        ConfigObject.ConfigButtonPosition buttonPosition = Objects.requireNonNull(ConfigLoader.readConfig()).configButtonPos;
+        ConfigObject.ConfigButtonPosition buttonPosition = Objects.requireNonNull(ConfigReader.readConfig()).configButtonPos;
         TexturedButtonWidget seasonalAdventuresConfigButton = getTexturedButtonWidget(y, spacingY, buttonPosition);
         addDrawableChild(seasonalAdventuresConfigButton);
         if (buttonPosition == ConfigObject.ConfigButtonPosition.HIDDEN && FabricLoader.getInstance().isModLoaded("modmenu")) {
@@ -41,7 +41,7 @@ public abstract class TitleScreenMixin extends Screen {
             x = this.width / 2 - 124;
         }
         return new TexturedButtonWidget(x, y + spacingY, 20, 20, 0, 0, 20,
-                new Identifier(SeasonalAdventures.MOD_ID, "textures/gui/seasonal_adventures_config_button.png"), 32, 64, (button -> {
+                Identifier.of(SeasonalAdventures.MOD_ID, "textures/gui/seasonal_adventures_config_button.png"), 32, 64, (button -> {
             MinecraftClient.getInstance().setScreen(MidnightConfig.getScreen(this, SeasonalAdventures.MOD_ID));
         }));
     }

@@ -4,7 +4,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleEffect;
+import org.jetbrains.annotations.Nullable;
 
 public class FadingParticle extends AnimatedParticle {
     @Environment(EnvType.CLIENT)
@@ -34,15 +35,16 @@ public class FadingParticle extends AnimatedParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public static class Factory implements ParticleFactory<DefaultParticleType> {
+    public static class Factory implements ParticleFactory<ParticleEffect> {
         private final SpriteProvider spriteProvider;
 
         public Factory(SpriteProvider spriteProvider) {
             this.spriteProvider = spriteProvider;
         }
 
-        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            return new FadingParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider);
+        @Override
+        public @Nullable Particle createParticle(ParticleEffect parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            return new FadingParticle(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
         }
     }
 }

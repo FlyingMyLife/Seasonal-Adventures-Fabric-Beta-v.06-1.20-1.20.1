@@ -11,11 +11,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class ItemGroups {
-    public static final ItemGroup TECHNOLOGY = Registry.register(Registries.ITEM_GROUP,
-            new Identifier(SeasonalAdventures.MOD_ID, "technology"),
-            FabricItemGroup.builder().displayName(Text.translatable("item_group.seasonal_adventures.technology"))
+    public static final ItemGroup THE_LAST_REALITY = Registry.register(Registries.ITEM_GROUP,
+            Identifier.of(SeasonalAdventures.MOD_ID, "the_last_reality"),
+            FabricItemGroup.builder().displayName(Text.translatable("item_group.seasonal_adventures.the_last_reality"))
                     .icon(() -> new ItemStack(Items.DEACTIVATED_DYLAN)).entries((displayContext, entries) -> {
                         entries.add(Items.LOCKPICK);
+                        entries.add(Items.COPPER_LOCK);
+                        entries.add(Items.IRON_LOCK);
                         entries.add(Items.SANCHEZ_GLASSES);
                         entries.add(Items.BEEF_TARTARE);
                         entries.add(Items.ATM);
@@ -60,9 +62,9 @@ public class ItemGroups {
                         entries.add(Blocks.LAPTOP);
                     }).build());
 
-    public static final ItemGroup MAGIC = Registry.register(Registries.ITEM_GROUP,
-            new Identifier(SeasonalAdventures.MOD_ID, "magic"),
-            FabricItemGroup.builder().displayName(Text.translatable("item_group.seasonal_adventures.magic"))
+    public static final ItemGroup THE_HEART_OF_UNIVERSE = Registry.register(Registries.ITEM_GROUP,
+            Identifier.of(SeasonalAdventures.MOD_ID, "the_heart_of_universe"),
+            FabricItemGroup.builder().displayName(Text.translatable("item_group.seasonal_adventures.the_heart_of_universe"))
                     .icon(() -> new ItemStack(Items.SKINTH_OF_DREAMS)).entries((displayContext, entries) -> {
                         entries.add(new ItemStack(Items.SKINTH_OF_DREAMS));
                     }).build());

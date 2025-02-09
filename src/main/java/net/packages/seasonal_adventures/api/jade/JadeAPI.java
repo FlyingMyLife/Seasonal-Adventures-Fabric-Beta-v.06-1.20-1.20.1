@@ -3,7 +3,6 @@ package net.packages.seasonal_adventures.api.jade;
 import net.packages.seasonal_adventures.block.custom.LockedChestBlock;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
-import net.packages.seasonal_adventures.entity.custom.DylanEntity;
 import net.packages.seasonal_adventures.api.jade.provider.block.LockedChestComponentProvider;
 import net.packages.seasonal_adventures.api.jade.provider.entity.DylanEntityComponentProvider;
 import snownee.jade.api.*;

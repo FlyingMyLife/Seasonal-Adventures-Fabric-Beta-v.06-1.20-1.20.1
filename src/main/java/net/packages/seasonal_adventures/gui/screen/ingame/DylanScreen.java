@@ -1,8 +1,6 @@
 package net.packages.seasonal_adventures.gui.screen.ingame;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +14,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registries;
 import net.packages.seasonal_adventures.gui.handler.DylanScreenHandler;
 import net.packages.seasonal_adventures.gui.handler.DylanSettingsScreenHandler;
-import net.packages.seasonal_adventures.gui.widgets.MultiTextureButtonWidget;
 import net.packages.seasonal_adventures.network.server.ItemRemovalPacket;
 
 import java.util.Arrays;
@@ -24,20 +21,20 @@ import java.util.List;
 
 public class DylanScreen extends HandledScreen<DylanScreenHandler> {
     private static final List<Identifier> POSITIVE_ITEMS = Arrays.asList(
-            new Identifier("seasonal_adventures", "beef_tartare"),
-            new Identifier("candlelight", "beef_tartare"),
-            new Identifier("minecraft", "cooked_mutton"),
-            new Identifier("minecraft", "cooked_beef"),
-            new Identifier("minecraft", "cooked_porkchop"),
-            new Identifier("minecraft", "diamond"),
-            new Identifier("minecraft", "netherite_ingot"),
-            new Identifier("minecraft", "cookie"),
-            new Identifier("minecraft", "cooked_chicken"),
-            new Identifier("minecraft", "cooked_cod"),
-            new Identifier("minecraft", "cooked_salmon"),
-            new Identifier("minecraft", "cake")
+            Identifier.of("seasonal_adventures", "beef_tartare"),
+            Identifier.of("candlelight", "beef_tartare"),
+            Identifier.of("minecraft", "cooked_mutton"),
+            Identifier.of("minecraft", "cooked_beef"),
+            Identifier.of("minecraft", "cooked_porkchop"),
+            Identifier.of("minecraft", "diamond"),
+            Identifier.of("minecraft", "netherite_ingot"),
+            Identifier.of("minecraft", "cookie"),
+            Identifier.of("minecraft", "cooked_chicken"),
+            Identifier.of("minecraft", "cooked_cod"),
+            Identifier.of("minecraft", "cooked_salmon"),
+            Identifier.of("minecraft", "cake")
     );
-    private static final Item SCHEME_CUSTOM = Registries.ITEM.get(new Identifier("seasonal_adventures", "dylan_mk1_scheme"));
+    private static final Item SCHEME_CUSTOM = Registries.ITEM.get(Identifier.of("seasonal_adventures", "dylan_mk1_scheme"));
     private static final List<Item> NEUTRAL_ITEMS = Arrays.asList(
 
     );
@@ -54,13 +51,13 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
     private MultiTextureButtonWidget button2;
     private MultiTextureButtonWidget button3;
     private TextWidget textWidget;
-    private static final Identifier BUTTON_TEXTURE_1 = new Identifier("seasonal_adventures", "textures/gui/deprecated/button_1.png");
-    private static final Identifier BUTTON_TEXTURE_2 = new Identifier("seasonal_adventures", "textures/gui/deprecated/button_2.png");
-    private static final Identifier BUTTON_TEXTURE_3 = new Identifier("seasonal_adventures", "textures/gui/deprecated/button_3.png");
+    private static final Identifier BUTTON_TEXTURE_1 = Identifier.of("seasonal_adventures", "textures/gui/deprecated/button_1.png");
+    private static final Identifier BUTTON_TEXTURE_2 = Identifier.of("seasonal_adventures", "textures/gui/deprecated/button_2.png");
+    private static final Identifier BUTTON_TEXTURE_3 = Identifier.of("seasonal_adventures", "textures/gui/deprecated/button_3.png");
 
-    private static final Identifier UNAVAILABLE_BUTTON_TEXTURE_1 = new Identifier("seasonal_adventures", "textures/gui/deprecated/unavailable_button_1.png");
-    private static final Identifier UNAVAILABLE_BUTTON_TEXTURE_2 = new Identifier("seasonal_adventures", "textures/gui/deprecated/unavailable_button_2.png");
-    private static final Identifier UNAVAILABLE_BUTTON_TEXTURE_3 = new Identifier("seasonal_adventures", "textures/gui/deprecated/unavailable_button_3.png");
+    private static final Identifier UNAVAILABLE_BUTTON_TEXTURE_1 = Identifier.of("seasonal_adventures", "textures/gui/deprecated/unavailable_button_1.png");
+    private static final Identifier UNAVAILABLE_BUTTON_TEXTURE_2 = Identifier.of("seasonal_adventures", "textures/gui/deprecated/unavailable_button_2.png");
+    private static final Identifier UNAVAILABLE_BUTTON_TEXTURE_3 = Identifier.of("seasonal_adventures", "textures/gui/deprecated/unavailable_button_3.png");
 
     @Override
     protected void init() {
@@ -149,7 +146,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
         boolean hasItem = !heldItemStack.isEmpty();
         boolean isCooldownOver = this.client.world.getTime() - lastPressedTime > COOLDOWN_TICKS;
 
-        Identifier itemId = new Identifier("seasonal_adventures", "laptop");
+        Identifier itemId = Identifier.of("seasonal_adventures", "laptop");
         Item item = Registries.ITEM.get(itemId);
         boolean hasItemInHotbar = false;
         for (int i = 0; i < 9; i++) {
@@ -162,7 +159,7 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
         this.button1.active = hasItem && isCooldownOver;
         this.button2.active = false;
         this.button3.active = false;
-        if (hasItemInHotbar && heldItemStack.getItem().equals(Registries.ITEM.get(new Identifier("seasonal_adventures", "sys_cable")))) {
+        if (hasItemInHotbar && heldItemStack.getItem().equals(Registries.ITEM.get(Identifier.of("seasonal_adventures", "sys_cable")))) {
             this.button3.active = true;
         }
     }
@@ -206,8 +203,8 @@ public class DylanScreen extends HandledScreen<DylanScreenHandler> {
     private void handle_settings() {
         PlayerEntity player = this.client.player;
         if (player != null) {
-            Screen settingsScreen = new DylanSettingsScreen(new DylanSettingsScreenHandler(0, player.getInventory()), player.getInventory(), Text.translatable("gui.dylan_settings_screen"), this);
-            MinecraftClient.getInstance().setScreen(settingsScreen);
+            DylanSettingsScreen settingsScreen = new DylanSettingsScreen(new DylanSettingsScreenHandler(0, player.getInventory()), player.getInventory(), Text.translatable("gui.dylan_settings_screen"));
+            settingsScreen.setParentScreen(this);
         }
     }
 

@@ -5,9 +5,14 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
@@ -40,8 +45,8 @@ public class ATMEntity extends LivingEntity {
     }
     public static DefaultAttributeContainer createATMAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 0.0)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.0D)
+                .add(EntityAttributes.MAX_HEALTH, 0.0)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.0D)
                 .build();
     }
 
@@ -89,7 +94,7 @@ public class ATMEntity extends LivingEntity {
 
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld world, DamageSource source, float amount) {
         return false;
     }
 
@@ -115,11 +120,11 @@ public class ATMEntity extends LivingEntity {
     }
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
-        if (player instanceof ServerPlayerEntity serverPlayer) {
+        if (player instanceof ServerPlayerEntity) {
             if (player.isSneaking() && !player.isCreative() && isAtmBreakable(player)) {
                 this.setHealth(0);
                 this.setRemoved(RemovalReason.KILLED);
-                dropItem(new ItemStack(Items.ATM, 1).getItem());
+                dropStack((ServerWorld) this.getWorld(), new ItemStack(Items.ATM));
                 return ActionResult.SUCCESS;
             } else if (player.isSneaking() && player.isCreative() && isAtmBreakable(player)) {
                 this.setHealth(0);
@@ -127,13 +132,20 @@ public class ATMEntity extends LivingEntity {
                 return ActionResult.SUCCESS;
             }
             if (!player.isSneaking()) {
-                serverPlayer.openHandledScreen(new SimpleNamedScreenHandlerFactory(
-                        (syncId, inventory, playerEntity) -> new ATMScreenHandler(syncId, inventory),
-                            Text.of("ATM")));
-                    return ActionResult.SUCCESS;
-                } else {
+                player.openHandledScreen(new NamedScreenHandlerFactory() {
+                    @Override
+                    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+                        return new ATMScreenHandler(syncId, inv);
+                    }
+
+                    @Override
+                    public Text getDisplayName() {
+                        return Text.empty();
+                    }
+                });
+            } else {
                 return ActionResult.FAIL;
-        }
+            }
     }
         return ActionResult.FAIL;
     }

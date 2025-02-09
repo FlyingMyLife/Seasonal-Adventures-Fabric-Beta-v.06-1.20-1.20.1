@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class BankingOperationsPacket {
 
-    public static Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "banking_operations_packet");
+    public static Identifier ID = Identifier.of(SeasonalAdventures.MOD_ID, "banking_operations_packet");
     public static final Logger LOGGER = LoggerFactory.getLogger("JDBank");
     public static void executeBasicOperations(BankingOperationType type, int amount) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

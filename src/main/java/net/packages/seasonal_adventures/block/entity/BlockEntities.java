@@ -17,11 +17,11 @@ public class BlockEntities {
     public static BlockEntityType<GuidingSkinthBlockEntity> GUIDING_SKINTH_BLOCK_ENTITY;
 
     public static void registerBlockEntities() {
-        LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SeasonalAdventures.MOD_ID,"locked_block_lvl_copper_block_entity"),
+        LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SeasonalAdventures.MOD_ID,"locked_block_lvl_copper_block_entity"),
                 FabricBlockEntityTypeBuilder.create(LockedChestLvLCopperBlockEntity::new, Blocks.LOCKED_CHEST_LVL_COPPER).build());
-        LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SeasonalAdventures.MOD_ID,"locked_block_lvl_iron_block_entity"),
+        LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SeasonalAdventures.MOD_ID,"locked_block_lvl_iron_block_entity"),
                 FabricBlockEntityTypeBuilder.create(LockedChestLvLIronBlockEntity::new, Blocks.LOCKED_CHEST_LVL_IRON).build());
-        GUIDING_SKINTH_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SeasonalAdventures.MOD_ID,"guiding_skinth_block_entity"),
+        GUIDING_SKINTH_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SeasonalAdventures.MOD_ID,"guiding_skinth_block_entity"),
                 FabricBlockEntityTypeBuilder.create(GuidingSkinthBlockEntity::new, Blocks.GUIDING_SKINTH).build());
     }
 

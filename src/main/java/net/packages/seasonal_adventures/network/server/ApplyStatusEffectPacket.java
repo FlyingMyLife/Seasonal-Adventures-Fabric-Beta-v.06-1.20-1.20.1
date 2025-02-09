@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 
 public class ApplyStatusEffectPacket {
-    public static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "apply_status_effect_packet");
+    public static final Identifier ID = Identifier.of(SeasonalAdventures.MOD_ID, "apply_status_effect_packet");
 
     public static void applySpawnProtectionEffect() {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());

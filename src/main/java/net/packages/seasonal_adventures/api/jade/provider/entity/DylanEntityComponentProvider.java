@@ -24,6 +24,6 @@ public enum DylanEntityComponentProvider implements
 
     @Override
     public Identifier getUid() {
-        return new Identifier(SeasonalAdventures.MOD_ID, "dylan_entity_component_provider");
+        return Identifier.of(SeasonalAdventures.MOD_ID, "dylan_entity_component_provider");
     }
 }

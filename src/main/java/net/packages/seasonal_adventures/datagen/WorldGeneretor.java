@@ -2,7 +2,6 @@ package net.packages.seasonal_adventures.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 
@@ -15,11 +14,11 @@ public class WorldGeneretor extends FabricDynamicRegistryProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
-        entries.addAll(registries.getWrapperOrThrow(RegistryKeys.DIMENSION_TYPE));
+        entries.addAll(registries.getOrThrow(RegistryKeys.DIMENSION_TYPE));
     }
 
     @Override
     public String getName() {
-        return "World Gen";
+        return "world_generator";
     }
 }

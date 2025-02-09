@@ -16,11 +16,11 @@ import java.util.OptionalLong;
 
 public class Dimensions {
     public static final RegistryKey<DimensionOptions> DIMENSION_OF_DREAMS_KEY = RegistryKey.of(RegistryKeys.DIMENSION,
-            new Identifier(SeasonalAdventures.MOD_ID, "dimension_of_dreams"));
+            Identifier.of(SeasonalAdventures.MOD_ID, "dimension_of_dreams"));
     public static final RegistryKey<World> DIMENSION_OF_DREAMS_LEVEL_KEY = RegistryKey.of(RegistryKeys.WORLD,
-            new Identifier(SeasonalAdventures.MOD_ID, "dimension_of_dreams"));
+            Identifier.of(SeasonalAdventures.MOD_ID, "dimension_of_dreams"));
     public static final RegistryKey<DimensionType> DIMENSION_OF_DREAMS_TYPE = RegistryKey.of(RegistryKeys.DIMENSION_TYPE,
-            new Identifier(SeasonalAdventures.MOD_ID, "dimension_of_dreams_type"));
+            Identifier.of(SeasonalAdventures.MOD_ID, "dimension_of_dreams_type"));
 
     public static void bootstrapType(Registerable<DimensionType> context) {
         context.register(DIMENSION_OF_DREAMS_TYPE, new DimensionType(

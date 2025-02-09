@@ -9,11 +9,13 @@ import net.packages.seasonal_adventures.gui.handler.DylanSettingsScreenHandler;
 
 public class DylanSettingsScreen extends HandledScreen<DylanSettingsScreenHandler> {
     private final DylanSettingsScreenHandler handler;
-    private final Screen parent;
-    public DylanSettingsScreen(DylanSettingsScreenHandler handler, PlayerInventory inventory, Text title, Screen parent) {
+    private Screen parent;
+    public DylanSettingsScreen(DylanSettingsScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.handler = handler;
-        this.parent = parent;
+    }
+    public void setParentScreen(Screen parentScreen) {
+        this.parent = parentScreen;
     }
 
     @Override

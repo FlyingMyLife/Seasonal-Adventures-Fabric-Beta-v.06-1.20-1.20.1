@@ -5,15 +5,11 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.packages.seasonal_adventures.SeasonalAdventures;
-import net.packages.seasonal_adventures.config.ConfigLoader;
+import net.packages.seasonal_adventures.config.ConfigReader;
 import net.packages.seasonal_adventures.network.server.ApplyStatusEffectPacket;
 import net.packages.seasonal_adventures.world.dimension.Dimensions;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,15 +35,17 @@ public abstract class DownloadingTerrainMixin extends Screen {
     @Unique
     private final long loadStartTime = System.currentTimeMillis();
     @Unique
-    private static final Identifier [] SPARK_TEXTURES = {null, new Identifier(SeasonalAdventures.MOD_ID, "textures/gui/loading_location/spark_loading_1.png"), new Identifier(SeasonalAdventures.MOD_ID, "textures/gui/loading_location/spark_loading_2.png"), new Identifier(SeasonalAdventures.MOD_ID, "textures/gui/loading_location/spark_loading_3.png"), new Identifier(SeasonalAdventures.MOD_ID, "textures/gui/loading_location/spark_loading_4.png")};
+    private static final int [] SPARK_V = {0, 0, 49, 99, 149};
     @Unique
-    private static Identifier BACKGROUND_TEXTURE = new Identifier(SeasonalAdventures.MOD_ID, "textures/gui/loading_location/dimension_of_dreams.png");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.of(SeasonalAdventures.MOD_ID, "textures/gui/screen/loading_location/dimension_of_dreams.png");
+    @Unique
+    private static final Identifier SPARK_TEXTURE = Identifier.of(SeasonalAdventures.MOD_ID, "textures/gui/screen/loading_location/spark_sprite.png");
 
     @Inject(at = @At("HEAD"), method = "render", cancellable = true)
     public void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         assert Objects.requireNonNull(client).player != null;
         assert client.player != null;
-        if (client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY) && Objects.requireNonNull(ConfigLoader.readConfig()).fancyLocationLoading) {
+        if (client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY) && Objects.requireNonNull(ConfigReader.readConfig()).fancyLocationLoading) {
             ci.cancel();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, opacity);
             context.drawTexture(BACKGROUND_TEXTURE, 0, 0, 0, 0, width, height, width, height);
@@ -61,19 +59,19 @@ public abstract class DownloadingTerrainMixin extends Screen {
             int sparkSize = 50;
             int sparkX = (width - sparkSize) - 25;
             int sparkY = (height - sparkSize) - 25;
-            RenderSystem.setShaderTexture(0, getSparkTexture((int) (System.currentTimeMillis() - loadStartTime)));
-            context.drawTexture(getSparkTexture((int) (System.currentTimeMillis() - loadStartTime)), sparkX, sparkY, 0, 0, sparkSize, sparkSize, sparkSize, sparkSize);
+            RenderSystem.setShaderTexture(0, getSparkV((int) (System.currentTimeMillis() - loadStartTime)));
+            context.drawTexture(SPARK_TEXTURE, sparkX, sparkY, 0, getSparkV((int) (System.currentTimeMillis() - loadStartTime)), sparkSize, sparkSize, 50, 200);
         }
     }
     @Unique
-    private Identifier getSparkTexture(int ms) {
-        return SPARK_TEXTURES[(ms / 125) % 4 + 1];
+    private int getSparkV(int ms) {
+        return SPARK_V[(ms / 125) % 4 + 1];
     }
     @Inject(at = @At("HEAD"), method = "tick", cancellable = true)
     public void tick(CallbackInfo ci) {
         assert client != null;
         assert client.player != null;
-        if (client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY) && Objects.requireNonNull(ConfigLoader.readConfig()).fancyLocationLoading) {
+        if (client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY) && Objects.requireNonNull(ConfigReader.readConfig()).fancyLocationLoading) {
             ci.cancel();
             if (this.client.player == null) {
                 return;

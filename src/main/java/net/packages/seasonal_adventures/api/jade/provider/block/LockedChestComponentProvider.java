@@ -41,7 +41,7 @@ public enum LockedChestComponentProvider implements
     }
     @Override
     public Identifier getUid() {
-        return new Identifier(SeasonalAdventures.MOD_ID, "locked_chest_component_provider");
+        return Identifier.of(SeasonalAdventures.MOD_ID, "locked_chest_component_provider");
     }
 
 }

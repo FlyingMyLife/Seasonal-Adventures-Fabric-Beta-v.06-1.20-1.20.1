@@ -5,10 +5,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.packages.seasonal_adventures.SeasonalAdventures;
+import net.packages.seasonal_adventures.gui.ScreenHandlers;
 
 public class LockpickScreenHandler extends ScreenHandler {
-    public LockpickScreenHandler(int i, PlayerInventory playerInventory) {
-        super(SeasonalAdventures.LOCKPICK_SCREEN_HANDLER, i);
+    public LockpickScreenHandler(int syncId, PlayerInventory inv) {
+        super(ScreenHandlers.LOCKPICK_SCREEN_HANDLER, syncId);
     }
 
 

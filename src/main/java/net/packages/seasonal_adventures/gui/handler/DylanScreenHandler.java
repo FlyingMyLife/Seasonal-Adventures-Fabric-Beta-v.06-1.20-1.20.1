@@ -5,10 +5,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.packages.seasonal_adventures.SeasonalAdventures;
+import net.packages.seasonal_adventures.gui.ScreenHandlers;
 
 public class DylanScreenHandler extends ScreenHandler {
-    public DylanScreenHandler(int syncId, PlayerInventory playerInventory) {
-        super(SeasonalAdventures.DYLAN_SCREEN_HANDLER, syncId);
+    public DylanScreenHandler(int syncId, PlayerInventory inv) {
+        super(ScreenHandlers.DYLAN_SCREEN_HANDLER, syncId);
     }
 
     @Override

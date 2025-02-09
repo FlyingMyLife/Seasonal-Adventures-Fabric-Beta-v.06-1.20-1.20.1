@@ -1,18 +1,18 @@
 package net.packages.seasonal_adventures.block.custom;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -21,8 +21,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.packages.seasonal_adventures.SeasonalAdventures;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -37,7 +35,12 @@ public class LaptopBlock extends HorizontalFacingBlock {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return null;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         if (Screen.hasShiftDown()) {
             tooltip.add(Text.translatable("tooltip.seasonal_adventures.without_functional.detailed").formatted(Formatting.GRAY));
         } else {
@@ -49,18 +52,19 @@ public class LaptopBlock extends HorizontalFacingBlock {
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(OPEN, OFF, FACING);
     }
+
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return (BlockState)this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        /*
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+                /*
         if (player instanceof AnimatedPlayer){
             var animationContainer = ((AnimatedPlayer) (player)).seasonalAdventuresGetModAnimation();
 
-            KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(new Identifier(SeasonalAdventures.MOD_ID, "guiding_skinth_activation"));
+            KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(Identifier.of(SeasonalAdventures.MOD_ID, "guiding_skinth_activation"));
 
             var builder = anim.mutableCopy();
             anim = builder.build();
@@ -80,23 +84,15 @@ public class LaptopBlock extends HorizontalFacingBlock {
         return ActionResult.FAIL;
     }
 
-
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
-
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return COLLISION_SHAPE;
     }
-
-    @Override
-    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
-        return true;
-    }
-
     @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
         return world.getBlockState(pos.down()).isOpaque();

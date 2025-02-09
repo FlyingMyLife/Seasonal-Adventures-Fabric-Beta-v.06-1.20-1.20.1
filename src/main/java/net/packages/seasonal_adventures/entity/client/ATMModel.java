@@ -1,17 +1,25 @@
 package net.packages.seasonal_adventures.entity.client;
 
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.util.Identifier;
+import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.packages.seasonal_adventures.entity.custom.ATMEntity;
+import java.util.Optional;
 
-public class ATMModel<A extends LivingEntity> extends EntityModel<ATMEntity> {
-    private final ModelPart atm;
-    public ATMModel(ModelPart root) {
-        this.atm = root.getChild("atm");
+public class ATMModel<T extends ATMEntity> extends EntityModel<LivingEntityRenderState> {
+    public static final EntityModelLayer ATM =
+            new EntityModelLayer(Identifier.of(SeasonalAdventures.MOD_ID, "atm"), "main");
+    public final ModelPart atm;
+
+    protected ATMModel(ModelPart atm) {
+        super(atm);
+        this.atm = atm;
     }
+
+
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
@@ -25,11 +33,7 @@ public class ATMModel<A extends LivingEntity> extends EntityModel<ATMEntity> {
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-        atm.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-    }
-
-    @Override
-    public void setAngles(ATMEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+    public Optional<ModelPart> getPart(String name) {
+        return Optional.ofNullable(atm);
     }
 }

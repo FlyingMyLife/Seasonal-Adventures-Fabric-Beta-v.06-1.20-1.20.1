@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TextWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -13,7 +14,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.gui.RenderingUtils;
 import net.packages.seasonal_adventures.gui.handler.ATMScreenHandler;
-import net.packages.seasonal_adventures.gui.widgets.MultiTextureButtonWidget;
 import net.packages.seasonal_adventures.gui.widgets.NumericTextFieldWidget;
 import net.packages.seasonal_adventures.item.Items;
 import net.packages.seasonal_adventures.network.server.BankingOperationsPacket;
@@ -33,15 +33,15 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private int backgroundX;
     private int backgroundY;
 
-    private static final Identifier BACKGROUND_TEXTURE   = new Identifier("seasonal_adventures", "textures/gui/atm/background.png");
-    private static final Identifier REPLENISH_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/replenish_button.png");
-    private static final Identifier WITHDRAW_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/withdraw_button.png");
-    private static final Identifier DEFAULT_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/default_button.png");
-    private static final Identifier UN_DEFAULT_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/un_default_button.png");
-    private static final Identifier UN_REPLENISH_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/un_replenish_button.png");
-    private static final Identifier UN_WITHDRAW_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/un_withdraw_button.png");
-    private static final Identifier UN_ENTER_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/un_enter_button.png");
-    private static final Identifier ENTER_BUTTON = new Identifier("seasonal_adventures", "textures/gui/atm/enter_button.png");
+    private static final Identifier BACKGROUND_TEXTURE   = Identifier.of("seasonal_adventures", "textures/gui/screen/atm/background.png");
+    private static final Identifier REPLENISH_BUTTON = Identifier.of("seasonal_adventures", "textures/gui/screen/atm/replenish_button.png");
+    private static final Identifier WITHDRAW_BUTTON = Identifier.of("seasonal_adventures", "textures/gui/screen/atm/withdraw_button.png");
+    private static final Identifier DEFAULT_BUTTON = Identifier.of("seasonal_adventures", "textures/gui/screen/atm/default_button.png");
+    private static final Identifier UN_DEFAULT_BUTTON = Identifier.of("seasonal_adventures", "textures/gui/screen/atm/un_default_button.png");
+    private static final Identifier UN_REPLENISH_BUTTON = Identifier.of("seasonal_adventures", "textures/screen/gui/atm/un_replenish_button.png");
+    private static final Identifier UN_WITHDRAW_BUTTON = Identifier.of("seasonal_adventures", "textures/screen/gui/atm/un_withdraw_button.png");
+    private static final Identifier UN_ENTER_BUTTON = Identifier.of("seasonal_adventures", "textures/screen/gui/atm/un_enter_button.png");
+    private static final Identifier ENTER_BUTTON = Identifier.of("seasonal_adventures", "textures/screen/gui/atm/enter_button.png");
 
     private int userInputValue = 0;
     private boolean replenishMode = true;
@@ -54,12 +54,12 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     int [] denominationMultipliers = {1, 5, 10, 50, 100, 500, 1000, 10000};
 
     private NumericTextFieldWidget numericTextFieldWidget;
-    private MultiTextureButtonWidget requestCardButton;
-    private MultiTextureButtonWidget replenishButton;
-    private MultiTextureButtonWidget withdrawButton;
-    private MultiTextureButtonWidget plusButton;
-    private MultiTextureButtonWidget minusButton;
-    private MultiTextureButtonWidget enterButton;
+    private TexturedButtonWidget requestCardButton;
+    private TexturedButtonWidget replenishButton;
+    private TexturedButtonWidget withdrawButton;
+    private TexturedButtonWidget plusButton;
+    private TexturedButtonWidget minusButton;
+    private TexturedButtonWidget enterButton;
     private TextWidget textB;
 
     public ATMScreen(ATMScreenHandler handler, PlayerInventory inventory, Text title) {
@@ -109,7 +109,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
 
 
         replenishButton = addDrawableChild(
-                new MultiTextureButtonWidget(
+                new TexturedButtonWidget(
                         replenishButtonX,
                         replenishButtonY,
                         topButtonsWidth,
@@ -125,7 +125,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         Text.translatable("gui.seasonal_adventures.button.replenish")
                 ));
         withdrawButton = addDrawableChild(
-                new MultiTextureButtonWidget(
+                new TexturedButtonWidget(
                         withdrawButtonX,
                         withdrawButtonY,
                         topButtonsWidth,
@@ -141,7 +141,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         Text.translatable("gui.seasonal_adventures.button.withdraw")
                 ));
         plusButton = addDrawableChild(
-                new MultiTextureButtonWidget(
+                new TexturedButtonWidget(
                         plusButtonX,
                         plusButtonY,
                         defaultButtonWidth,
@@ -157,7 +157,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         Text.literal("+ 50")
                 ));
         minusButton = addDrawableChild(
-                new MultiTextureButtonWidget(
+                new TexturedButtonWidget(
                         minusButtonX,
                         minusButtonY,
                         defaultButtonWidth,
@@ -173,7 +173,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         Text.literal("- 50")
                 ));
         requestCardButton = addDrawableChild(
-                new MultiTextureButtonWidget(
+                new TexturedButtonWidget(
                         requestCardButtonX,
                         requestCardButtonY,
                         defaultButtonWidth,
@@ -189,7 +189,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
                         Text.literal("+")
                 ));
         enterButton = addDrawableChild(
-                new MultiTextureButtonWidget(
+                new TexturedButtonWidget(
                         enterButtonX,
                         enterButtonY,
                         defaultButtonWidth,
@@ -233,7 +233,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
             this.close();
             return;
         }
-        if (!Objects.equals(owner.get().nickname, player.getEntityName())) {
+        if (!Objects.equals(owner.get().nickname, player.getName())) {
             player.sendMessage(Text.translatable("message.seasonal_adventures.atm.fail.identifying_player.contacting_owner").formatted(Formatting.RED, Formatting.BOLD), true);
             player.sendMessage(Text.literal("This feature is in development").formatted(Formatting.ITALIC, Formatting.AQUA));
             this.close();

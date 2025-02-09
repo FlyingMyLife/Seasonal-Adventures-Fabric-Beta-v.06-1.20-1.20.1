@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 
 public class ItemRemovalPacket {
-    public static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "item_removal_packet");
+    public static final Identifier ID = Identifier.of(SeasonalAdventures.MOD_ID, "item_removal_packet");
 
     public static void ItemStackRemove() {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -19,14 +19,9 @@ public class ItemRemovalPacket {
     public static void register() {
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
-                ItemStack mainHandStack = player.getInventory().getMainHandStack();
-
-                if (!mainHandStack.isEmpty()) {
-
-                    mainHandStack.decrement(1);
-
-                    player.getInventory().markDirty();
-                }
+                player.getInventory().markDirty();
+                player.getInventory().getMainHandStack().decrement(0);
+                player.getInventory().markDirty();
             });
         });
     }

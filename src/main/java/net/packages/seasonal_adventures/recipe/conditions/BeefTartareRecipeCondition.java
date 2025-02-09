@@ -1,30 +1,21 @@
 package net.packages.seasonal_adventures.recipe.conditions;
 
-import com.google.gson.JsonObject;
-import net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider;
+import com.mojang.serialization.*;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
 import net.minecraft.util.Identifier;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 
-public class BeefTartareRecipeCondition implements ConditionJsonProvider {
+public class BeefTartareRecipeCondition implements ResourceConditionType<ResourceCondition> {
 
-    private final boolean condition;
-
-    public BeefTartareRecipeCondition(boolean condition) {
-        this.condition = condition;
+    @Override
+    public Identifier id() {
+        return Identifier.of(SeasonalAdventures.MOD_ID, "crafting_table/beef_tartare_condition");
     }
 
     @Override
-    public Identifier getConditionId() {
-        return new Identifier(SeasonalAdventures.MOD_ID, "crafting_table/beef_tartare_condition");
+    public MapCodec<ResourceCondition> codec() {
+        return null;
     }
 
-    @Override
-    public void writeParameters(JsonObject object) {
-       toJson().addProperty("condition", condition);
-    }
-
-
-    public static boolean shouldLoad(JsonObject jsonObject) {
-        return SeasonalAdventures.isCandlelightInstalled;
-    }
 }

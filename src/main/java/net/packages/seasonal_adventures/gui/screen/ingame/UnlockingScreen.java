@@ -17,13 +17,13 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.RaycastContext;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
 import net.packages.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
 import net.packages.seasonal_adventures.gui.handler.LockpickScreenHandler;
 import net.packages.seasonal_adventures.gui.widgets.RotatableLockpick;
 import net.packages.seasonal_adventures.item.Items;
+import net.packages.seasonal_adventures.network.server.ItemRemovalPacket;
 import net.packages.seasonal_adventures.network.server.RestoreChestPacket;
 import net.packages.seasonal_adventures.network.server.SpecificItemRemovalPacket;
 import net.packages.seasonal_adventures.sound.Sounds;
@@ -31,7 +31,7 @@ import net.packages.seasonal_adventures.util.logic.PinAngles;
 
 import java.util.Optional;
 
-public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
+public class UnlockingScreen extends HandledScreen<LockpickScreenHandler> {
 
     private PinAngles pinAngles = new PinAngles();
     private int lockLevel = 0;
@@ -44,30 +44,28 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
 
     private RotatableLockpick lockpick;
 
-    private static final Identifier LOCKPICK_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick.png");
-    private static final Identifier PIN_DEFAULT = new Identifier("seasonal_adventures", "textures/gui/pin_default.png");
-    private static final Identifier PIN_TRIGGERED = new Identifier("seasonal_adventures", "textures/gui/pin_triggered.png");
-    private static final Identifier BACKGROUND_TEXTURE = new Identifier("seasonal_adventures", "textures/gui/lockpick_background.png");
+    private static final Identifier LOCKPICK_TEXTURE = Identifier.of("seasonal_adventures", "textures/gui/screen/unlocking/lockpick.png");
+    private static final Identifier PIN_DEFAULT = Identifier.of("seasonal_adventures", "textures/gui/screen/unlocking/pin_default.png");
+    private static final Identifier PIN_TRIGGERED = Identifier.of("seasonal_adventures", "textures/gui/screen/unlocking/pin_triggered.png");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.of("seasonal_adventures", "textures/gui/screen/unlocking/background.png");
 
-    public LockpickScreen(LockpickScreenHandler handler, PlayerInventory inventory, Text title) {
+    public UnlockingScreen(LockpickScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        pinAngles.setLockLevel(lockLevel);
-        pinAngles.generate();
-        if (lockLevel >= 0 && lockLevel < pinDefValues.length) {
-            this.pinsLeft = pinDefValues[lockLevel];
-            this.lockpickSpeed = lockpickSpeedValues[lockLevel];
-        }
     }
-
     @Override
     protected void init() {
         super.init();
-        int buttonSize = 192;
-        int x = this.width / 2 - buttonSize / 2;
-        int y = this.height / 2 - buttonSize / 2;
+        lockLevel = getLockLevel();
+        pinAngles.setLockLevel(lockLevel);
+        pinAngles.generate();
+        pinsLeft = pinDefValues[lockLevel];
+        lockpickSpeed = lockpickSpeedValues[lockLevel];
+        int lockpickSize = 192;
+        int x = this.width / 2 - lockpickSize / 2;
+        int y = this.height / 2 - lockpickSize / 2;
 
         this.lockpick = new RotatableLockpick(
-                x, y, buttonSize, buttonSize,
+                x, y, lockpickSize, lockpickSize,
                 0, 0, 0, LOCKPICK_TEXTURE, 192, 192,
                 lockpickSpeed,
                 button -> onClick()
@@ -75,7 +73,17 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
 
         this.addDrawableChild(this.lockpick);
     }
-
+    private int getLockLevel() {
+        assert client != null;
+        assert client.player != null;
+        BlockPos pos = playerFacingBlock(client.player);
+        BlockEntity blockEntity = client.player.getWorld().getBlockEntity(pos);
+        if (blockEntity instanceof LockedChestLvLCopperBlockEntity) {
+            return 0;
+        } else if (blockEntity instanceof LockedChestLvLIronBlockEntity) {
+            return 1;
+        } else return -1;
+    }
     private void onPinAction(int pin) {
         if (pin <= pinDefValues[lockLevel]) {
             playSound(Sounds.PICK_PIN_SOUND, 0.9f);
@@ -116,7 +124,8 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
         }
         if (!activated) {
             playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.6f);
-            this.client.player.getInventory().getMainHandStack().decrement(1);
+            ItemRemovalPacket.ItemStackRemove();
+            client.player.getInventory().updateItems();
         }
     }
 
@@ -138,18 +147,20 @@ public class LockpickScreen extends HandledScreen<LockpickScreenHandler> {
 
     private void renderRotatedLocks(DrawContext context, boolean triggered, float rotationAngle) {
         Identifier texture = triggered ? PIN_TRIGGERED : PIN_DEFAULT;
-
         MatrixStack matrixStack = context.getMatrices();
         matrixStack.push();
 
-        float centerX = this.width / 2.0f;
-        float centerY = this.height / 2.0f;
+        int centerX = this.width / 2;
+        int centerY = this.height / 2;
 
-        matrixStack.translate(centerX, centerY, 0);
-        matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotationAngle));
-        matrixStack.translate(-99.0f, -99.0f, 0);
+        matrixStack.translate(centerX, centerY, 0.0f);
+
+        matrixStack.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Z.rotationDegrees(rotationAngle));
+
+        matrixStack.translate(-99.0f, -99.0f, 0.0f);
 
         context.drawTexture(texture, 0, 0, 198, 198, 0, 0, 198, 198, 198, 198);
+
         matrixStack.pop();
     }
 

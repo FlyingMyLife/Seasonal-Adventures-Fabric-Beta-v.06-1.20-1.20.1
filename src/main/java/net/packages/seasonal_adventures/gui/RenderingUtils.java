@@ -2,14 +2,15 @@ package net.packages.seasonal_adventures.gui;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 
 public class RenderingUtils {
     public static void renderItemTooltipIfHovered(DrawContext context, TextRenderer renderer, PlayerEntity player, ItemStack item, int x, int y, int mouseX, int mouseY) {
         if (isItemWithinBounds(x , y , mouseX, mouseY)) {
-            context.drawTooltip(renderer, item.getTooltip(player, TooltipContext.BASIC), mouseX, mouseY);
+            context.drawTooltip(renderer, item.getTooltip(Item.TooltipContext.DEFAULT, player, TooltipType.BASIC), mouseX, mouseY);
         }
     }
 

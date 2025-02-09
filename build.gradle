@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -11,6 +11,7 @@ base {
 }
 
 repositories {
+    mavenCentral()
     maven {
         url "https://www.cursemaven.com"
         content {
@@ -18,40 +19,29 @@ repositories {
         }
     }
     maven {
-        name "KosmX's maven"
-        url 'https://maven.kosmx.dev/'
-    }
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-    }
-    maven {
-        name = "Terraformers"
-        url = "https://maven.terraformersmc.com/"
-    }
-    maven {
         name = 'GeckoLib'
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         content {
-            includeGroupByRegex("software\\.bernie.*")
-            includeGroup("com.eliotlash.mclib")
+            includeGroup("software.bernie.geckolib")
         }
-
     }
+    maven { url "https://maven.terraformersmc.com/" }
+    maven { url "https://maven.kosmx.dev/" }
+    maven { url "https://maven.fabricmc.net/" }
+    maven { url "https://api.modrinth.com/maven/" }
 }
 dependencies {
-    modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
+    modImplementation ("com.terraformersmc:modmenu:${modmenu_version}")
     modImplementation include ("maven.modrinth:midnightlib:${midnightlib_version}")
-    modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
-    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${player_anim}")
-    modImplementation "curse.maven:jade-324717:5771000"
-    implementation("com.eliotlash.mclib:mclib:20")
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    implementation 'com.google.code.gson:gson:2.8.7'
-    minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation ("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
+    modImplementation include ("dev.kosmx.player-anim:player-animation-lib-fabric:${player_anim}")
+    modImplementation ("curse.maven:jade-324717:6155088")
+    implementation ('com.squareup.okhttp3:okhttp:4.9.3')
+    implementation ('com.google.code.gson:gson:2.9.0')
+    minecraft ("com.mojang:minecraft:${minecraft_version}")
+    mappings ("net.fabricmc:yarn:${yarn_mappings}:v2")
+    modImplementation ("net.fabricmc:fabric-loader:${loader_version}")
+    modImplementation ("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
 }
 
 processResources {

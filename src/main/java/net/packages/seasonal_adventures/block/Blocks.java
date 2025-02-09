@@ -1,14 +1,5 @@
 package net.packages.seasonal_adventures.block;
 
-import com.google.common.collect.Lists;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import net.packages.seasonal_adventures.block.custom.*;
 import net.packages.seasonal_adventures.SeasonalAdventures;
 import net.minecraft.block.Block;
@@ -30,39 +21,39 @@ public class Blocks {
 
     //Locked Chests
     public static final Block LOCKED_CHEST_LVL_COPPER = registerBlock("locked_chest_lvl_copper",
-            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 0));
+            new LockedChestBlock(Block.Settings.copy(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 0));
     public static final Block GUIDING_SKINTH = registerBlock("guiding_skinth",
-            new GuidingSkinthBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
+            new GuidingSkinthBlock(Block.Settings.copy(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.AMETHYST_BLOCK)));
     public static final Block LOCKED_CHEST_LVL_IRON = registerBlock("locked_chest_lvl_iron",
-            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 1));
+            new LockedChestBlock(Block.Settings.copy(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 1));
     public static final Block LOCKED_CHEST_LVL_GOLD = registerBlock("locked_chest_lvl_gold",
-            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 2));
+            new LockedChestBlock(Block.Settings.copy(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 2));
     public static final Block LOCKED_CHEST_LVL_DIAMOND = registerBlock("locked_chest_lvl_diamond",
-            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 3));
+            new LockedChestBlock(Block.Settings.copy(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 3));
     public static final Block LOCKED_CHEST_LVL_NETHERITE = registerBlock("locked_chest_lvl_netherite",
-            new LockedChestBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 4));
+            new LockedChestBlock(Block.Settings.copy(net.minecraft.block.Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD), 4));
 
 
     public static final Block TITANIUM_BLOCK = registerBlock("titanium_block",
-            new Block(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.NETHERITE_BLOCK).sounds(BlockSoundGroup.NETHERITE)));
+            new Block(Block.Settings.copy(net.minecraft.block.Blocks.NETHERITE_BLOCK).sounds(BlockSoundGroup.NETHERITE)));
     public static final Block GRADE_5_TITANIUM_BLOCK = registerBlock("grade_5_titanium_block",
-            new Block(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.NETHERITE_BLOCK).sounds(BlockSoundGroup.COPPER)));
+            new Block(Block.Settings.copy(net.minecraft.block.Blocks.NETHERITE_BLOCK).sounds(BlockSoundGroup.COPPER)));
     public static final Block ALUMINIUM_ORE = registerBlock("aluminium_ore",
-            new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.STONE).strength(2f), UniformIntProvider.create(2, 5)));
+            new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), Block.Settings.copy(net.minecraft.block.Blocks.STONE).strength(2f)));
     public static final Block TITANIUM_ORE = registerBlock("titanium_ore",
-            new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.STONE).strength(2f), UniformIntProvider.create(2, 5)));
+            new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), Block.Settings.copy(net.minecraft.block.Blocks.STONE).strength(2f)));
     public static final Block DEEPSLATE_TITANIUM_ORE = registerBlock("deepslate_titanium_ore",
-            new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.DEEPSLATE).strength(4f), UniformIntProvider.create(2, 5)));
+            new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), Block.Settings.copy(net.minecraft.block.Blocks.DEEPSLATE).strength(4f)));
     public static final Block LITHIUM_ORE = registerBlock("lithium_ore",
-            new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.STONE).strength(2f), UniformIntProvider.create(2, 5)));
+            new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), Block.Settings.copy(net.minecraft.block.Blocks.STONE).strength(2f)));
     public static final Block DEEPSLATE_LITHIUM_ORE = registerBlock("deepslate_lithium_ore",
-            new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.DEEPSLATE).strength(4f), UniformIntProvider.create(2, 5)));
+            new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), Block.Settings.copy(net.minecraft.block.Blocks.DEEPSLATE).strength(4f)));
     public static final Block DEEPSLATE_ALUMINIUM_ORE = registerBlock("deepslate_aluminium_ore",
-            new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.DEEPSLATE).strength(4f), UniformIntProvider.create(2, 5)));
+            new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), Block.Settings.copy(net.minecraft.block.Blocks.DEEPSLATE).strength(4f)));
     public static final Block LAPTOP = registerBlock("laptop",
-            new LaptopBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
+            new LaptopBlock(Block.Settings.copy(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
     public static final Block ADVANCED_AUTOMATON_BODY = registerBlock("advanced_automaton_body",
-            new AdvancedAutomatonBodyBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
+            new AdvancedAutomatonBodyBlock(Block.Settings.copy(net.minecraft.block.Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE)));
 
     public static final List<Block> SIMPLE_BLOCKS = Arrays.asList(
             DEEPSLATE_ALUMINIUM_ORE,
@@ -77,12 +68,12 @@ public class Blocks {
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
-        return Registry.register(Registries.BLOCK, new Identifier(SeasonalAdventures.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, Identifier.of(SeasonalAdventures.MOD_ID, name), block);
     }
 
     private static Item registerBlockItem(String name, Block block) {
-            return Registry.register(Registries.ITEM, new Identifier(SeasonalAdventures.MOD_ID, name),
-                    new BlockItem(block, new FabricItemSettings()) {
+            return Registry.register(Registries.ITEM, Identifier.of(SeasonalAdventures.MOD_ID, name),
+                    new BlockItem(block, new Item.Settings()) {
             });
     }
 

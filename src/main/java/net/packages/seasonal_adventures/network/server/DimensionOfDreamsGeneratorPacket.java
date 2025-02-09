@@ -19,7 +19,7 @@ import net.packages.seasonal_adventures.world.data.persistent_state.WorldDataPer
 import net.packages.seasonal_adventures.world.dimension.Dimensions;
 
 public class DimensionOfDreamsGeneratorPacket {
-    private static final Identifier ID = new Identifier(SeasonalAdventures.MOD_ID, "dimension_teleport_packet");
+    private static final Identifier ID = Identifier.of(SeasonalAdventures.MOD_ID, "dimension_teleport_packet");
     ;
 
     public static void teleportToDimensionOfDreams() {
@@ -44,7 +44,7 @@ public class DimensionOfDreamsGeneratorPacket {
                 FabricDimensions.teleport(player, world, target);
                 WorldDataPersistentState state = WorldDataPersistentState.getServerState(server);
                 if (!state.initializedDimensionOfDreams) {
-                    ServerUtils.placeStructure(world, new Identifier("seasonal_adventures:island_of_dreams"), new BlockPos(0, 0, 0));
+                    ServerUtils.placeStructure(world, Identifier.of("seasonal_adventures:island_of_dreams"), new BlockPos(0, 0, 0));
                     for (int x = -8; x <= 24; x++) {
                         for (int z = -8; z <= 24; z++) {
                             world.removeBlock(new BlockPos(x, -61, z), false);

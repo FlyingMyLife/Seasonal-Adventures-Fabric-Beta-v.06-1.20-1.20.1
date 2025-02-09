@@ -3,9 +3,10 @@ package net.packages.seasonal_adventures.entity.ai;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
-import net.packages.seasonal_adventures.entity.custom.DylanEntity;
 
+@Deprecated
 public class DylanAttackGoal extends MeleeAttackGoal {
     private final DylanEntity entity;
     private int attackDelay = 20;
@@ -24,9 +25,10 @@ public class DylanAttackGoal extends MeleeAttackGoal {
         attackDelay = 20;
         ticksUntilNextAttack = 20;
     }
+
     @Override
-    protected void attack(LivingEntity pEnemy, double pDistToEnemySqr) {
-        if (isEnemyWithinAttackDistance(pEnemy, pDistToEnemySqr)) {
+    protected void attack(LivingEntity target) {
+        if (isEnemyWithinAttackDistance(target)) {
             shouldCountTillNextAttack = true;
 
             if(isTimeToStartAttackAnimation()) {
@@ -34,8 +36,8 @@ public class DylanAttackGoal extends MeleeAttackGoal {
             }
 
             if(isTimeToAttack()) {
-                this.mob.getLookControl().lookAt(pEnemy.getX(), pEnemy.getEyeY(), pEnemy.getZ());
-                performAttack(pEnemy);
+                this.mob.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
+                performAttack(getServerWorld(this.entity), target);
             }
         } else {
             resetAttackCooldown();
@@ -44,7 +46,8 @@ public class DylanAttackGoal extends MeleeAttackGoal {
             entity.attackAnimationTimeout = 0;
         }
     }
-    private boolean isEnemyWithinAttackDistance(LivingEntity pEnemy, double pDistToEnemySqr) {
+
+    private boolean isEnemyWithinAttackDistance(LivingEntity pEnemy) {
         return this.entity.distanceTo(pEnemy) <= 2f;
     }
 
@@ -60,10 +63,10 @@ public class DylanAttackGoal extends MeleeAttackGoal {
         return this.ticksUntilNextAttack <= 0;
     }
 
-    protected void performAttack(LivingEntity pEnemy) {
+    protected void performAttack(ServerWorld world, LivingEntity pEnemy) {
         this.resetAttackCooldown();
         this.mob.swingHand(Hand.MAIN_HAND);
-        this.mob.tryAttack(pEnemy);
+        this.mob.tryAttack(world, pEnemy);
     }
     @Override
     public void tick() {

@@ -31,7 +31,7 @@ public class SkinthOfDreamsItem extends Item {
         if (user instanceof AnimatedPlayer && !user.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY)){
             var animationContainer = ((AnimatedPlayer) (user)).seasonalAdventuresGetModAnimation();
 
-            KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(new Identifier(SeasonalAdventures.MOD_ID, "used_skinth_of_dreams"));
+            KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(Identifier.of(SeasonalAdventures.MOD_ID, "used_skinth_of_dreams"));
 
             var builder = anim.mutableCopy();
 

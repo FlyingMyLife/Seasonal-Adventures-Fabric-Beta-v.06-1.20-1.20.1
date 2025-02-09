@@ -12,7 +12,7 @@ public class Sounds {
     public static final SoundEvent LOCKPICK_UNLOCK_SOUND = registerSoundEvent("lockpick_unlock");
 
     private static SoundEvent registerSoundEvent(String name) {
-        Identifier id = new Identifier(SeasonalAdventures.MOD_ID, name);
+        Identifier id = Identifier.of(SeasonalAdventures.MOD_ID, name);
         return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
     }
 
