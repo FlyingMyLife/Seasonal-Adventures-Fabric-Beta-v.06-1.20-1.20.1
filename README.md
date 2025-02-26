@@ -1,4 +1,4 @@
-## Version BETA 0.6.3
+## Version BETA 0.7.0
 
 > ### **Description:** 
 
