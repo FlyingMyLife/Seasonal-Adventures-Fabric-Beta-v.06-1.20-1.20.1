@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"id": "seasonal_adventures",
+	"version": "0.7.0-dev",
+	"name": "Seasonal Adventures",
+	"description": "Mod based on MrLololoska's seasons, currently in beta \nRefined Dylan mk1 update",
+	"icon": "assets/seasonal_adventures/icon.png",
+	"authors": [
+		"FlyingMyLife, brrrkuda"
+	],
+	"contact": {
+		"issues": "https://github.com/FlyingMyLife/Seasonal-Adventures-Fabric-Beta-v.06-1.20-1.20.1/issues",
+		"homepage": "https://shor.by/seasonal_adventures",
+		"sources": "https://github.com/FlyingMyLife/Seasonal-Adventures-Fabric-Beta-v.06-1.20-1.20.1"
+	},
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"dev.flyingmylife.seasonal_adventures.SA"
+		],
+		"client": [
+			"dev.flyingmylife.seasonal_adventures.SAClient"
+		],
+		"fabric-datagen": [
+			"dev.flyingmylife.seasonal_adventures.datagen.SADataGenerator"
+		],
+		"jade": [
+			"dev.flyingmylife.seasonal_adventures.api.jade.JadeAPI"
+		],
+		"modmenu": [
+			"dev.flyingmylife.seasonal_adventures.api.modmenu.ModMenuAPI"
+		]
+	},
+	"mixins": [
+		"seasonal_adventures.mixins.json"
+	],
+	"suggests": {
+		"jade": "*"
+	},
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "=1.21.4",
+		"java": ">=21",
+		"fabric-api": "*",
+		"geckolib": ">=4.4.9"
+	}
+}

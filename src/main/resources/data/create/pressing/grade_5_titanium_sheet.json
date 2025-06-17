@@ -1,0 +1,15 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "seasonal_adventures:refined_titanium
+_ingot"
+    }
+  ],
+  "results": [
+    {
+      "item": "seasonal_adventures:refined_titanium
+_sheet"
+    }
+  ]
+}
