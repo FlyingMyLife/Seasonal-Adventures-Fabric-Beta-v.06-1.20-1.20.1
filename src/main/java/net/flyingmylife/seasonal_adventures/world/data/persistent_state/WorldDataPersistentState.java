@@ -1,0 +1,113 @@
+package net.flyingmylife.seasonal_adventures.world.data.persistent_state;
+
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.PersistentState;
+import net.minecraft.world.PersistentStateManager;
+import net.flyingmylife.seasonal_adventures.SA;
+import net.flyingmylife.seasonal_adventures.world.data.PlayerLinkedData;
+
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
+
+public class WorldDataPersistentState extends PersistentState {
+
+    public HashMap<UUID, PlayerLinkedData> playerBankingData = new HashMap<>();
+
+    public boolean initializedDimensionOfDreams = false;
+
+    public static void addNewPlayerToBankingSystem(PlayerEntity player, String cardId, MinecraftServer server) {
+        WorldDataPersistentState serverState = getServerState(server);
+        UUID playerUuid = player.getUuid();
+        if (!serverState.playerBankingData.containsKey(playerUuid)) {
+            PlayerLinkedData newPlayerData = new PlayerLinkedData();
+
+            newPlayerData.nickname = player.getName().getString();
+
+            newPlayerData.balance = 0;
+            newPlayerData.cardId = cardId;
+
+            serverState.playerBankingData.put(playerUuid, newPlayerData);
+
+            serverState.markDirty();
+        }
+    }
+
+    public static PlayerLinkedData getPlayerState(LivingEntity player, MinecraftServer server) {
+        WorldDataPersistentState serverState = getServerState(server);
+
+        return serverState.playerBankingData.computeIfAbsent(player.getUuid(), uuid -> new PlayerLinkedData());
+    }
+
+    public static WorldDataPersistentState createFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
+        WorldDataPersistentState state = new WorldDataPersistentState();
+
+        NbtCompound playersNbt = tag.getCompound("players");
+        state.initializedDimensionOfDreams = tag.getBoolean("initialized_dimension_of_dreams");
+        playersNbt.getKeys().forEach(key -> {
+            PlayerLinkedData playerData = new PlayerLinkedData();
+            int currencyAmount = -1;
+            String cardId = null;
+            String nickname = null;
+
+            if (playersNbt.getCompound(key).contains("cardId")) {
+                cardId = playersNbt.getCompound(key).getString("cardId");
+            } else {
+                SA.LOGGER.info("Failed to find NBT <cardId> for player: {}, creating nbt...", key);
+            }
+            if (playersNbt.getCompound(key).contains("currencyAmount")) {
+                currencyAmount = playersNbt.getCompound(key).getInt("currencyAmount");
+            } else {
+                SA.LOGGER.info("Failed to find NBT <currencyAmount> for player: {}, creating nbt...", key);
+            }
+            if (playersNbt.getCompound(key).contains("nickname")) {
+                nickname = playersNbt.getCompound(key).getString("nickname");
+            }
+            playerData.balance = currencyAmount;
+            playerData.cardId = cardId;
+            playerData.nickname = nickname;
+
+            UUID uuid = UUID.fromString(key);
+            state.playerBankingData.put(uuid, playerData);
+        });
+
+        return state;
+    }
+    public static WorldDataPersistentState createNew() {
+        WorldDataPersistentState state = new WorldDataPersistentState();
+        state.playerBankingData.clear();
+        return state;
+    }
+    private static final Type<WorldDataPersistentState> type = new Type<>(
+            WorldDataPersistentState::createNew,
+            WorldDataPersistentState::createFromNbt,
+            null
+    );
+    public static WorldDataPersistentState getServerState(MinecraftServer server) {
+        PersistentStateManager persistentStateManager = Objects.requireNonNull(server.getWorld(ServerWorld.OVERWORLD)).getPersistentStateManager();
+        WorldDataPersistentState state = persistentStateManager.getOrCreate(type, "sa-world");
+        state.markDirty();
+        return state;
+    }
+
+    @Override
+    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup wrapperLookup) {
+        NbtCompound playersNbt = new NbtCompound();
+        playerBankingData.forEach((uuid, playerData) -> {
+            NbtCompound playerNbt = new NbtCompound();
+            playerNbt.putInt("currencyAmount", playerData.balance);
+            playerNbt.putString("cardId", Objects.requireNonNullElse(playerData.cardId, "null"));
+            playerNbt.putString("nickname", Objects.requireNonNullElse(playerData.cardId, "null"));
+            playersNbt.put(uuid.toString(), playerNbt);
+        });
+        nbt.putBoolean("initialized_dimension_of_dreams", initializedDimensionOfDreams);
+        nbt.put("players", playersNbt);
+
+        return nbt;
+    }
+}

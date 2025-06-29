@@ -1,0 +1,8 @@
+{
+  "feature_flags": [
+    {
+      "id": "seasonal_adventures:sa_dimensions",
+      "type": "custom"
+    }
+  ]
+}

@@ -17,19 +17,19 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"dev.flyingmylife.seasonal_adventures.SA"
+          "net.flyingmylife.seasonal_adventures.SA"
 		],
 		"client": [
-			"dev.flyingmylife.seasonal_adventures.SAClient"
+          "net.flyingmylife.seasonal_adventures.SAClient"
 		],
 		"fabric-datagen": [
-			"dev.flyingmylife.seasonal_adventures.datagen.SADataGenerator"
+          "net.flyingmylife.seasonal_adventures.datagen.SADataGenerator"
 		],
 		"jade": [
-			"dev.flyingmylife.seasonal_adventures.api.jade.JadeAPI"
+          "net.flyingmylife.seasonal_adventures.api.jade.JadeAPI"
 		],
 		"modmenu": [
-			"dev.flyingmylife.seasonal_adventures.api.modmenu.ModMenuAPI"
+          "net.flyingmylife.seasonal_adventures.api.modmenu.ModMenuAPI"
 		]
 	},
 	"mixins": [

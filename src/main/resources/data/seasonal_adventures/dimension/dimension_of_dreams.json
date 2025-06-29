@@ -1,5 +1,6 @@
 {
   "type": "seasonal_adventures:dimension_of_dreams_type",
+  "feature_flag": "seasonal_adventures:sa_dimensions",
   "generator": {
     "type": "minecraft:flat",
     "settings": {
