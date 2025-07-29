@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "seasonal_adventures:titanium_ingot"
+    "#": {
+      "item": "seasonal_adventures:titanium_ingot"
+    }
   },
   "pattern": [
     "###",

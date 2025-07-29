@@ -4,7 +4,9 @@
   "cookingtime": 200,
   "experience": 0.7,
   "group": "aluminium_ingot",
-  "ingredient": "seasonal_adventures:aluminium_ore",
+  "ingredient": {
+    "item": "seasonal_adventures:aluminium_ore"
+  },
   "result": {
     "id": "seasonal_adventures:aluminium_ingot"
   }

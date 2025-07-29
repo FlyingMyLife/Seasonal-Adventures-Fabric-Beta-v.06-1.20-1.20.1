@@ -1,12 +1,14 @@
 package net.flyingmylife.seasonal_adventures.gui.screen.ingame;
 
 import net.flyingmylife.seasonal_adventures.SA;
+import net.flyingmylife.seasonal_adventures.entity.SAEntities;
+import net.flyingmylife.seasonal_adventures.entity.custom.ATMEntity;
 import net.flyingmylife.seasonal_adventures.gui.handler.DuckerScreenHandler;
-import net.flyingmylife.seasonal_adventures.gui.widgets.DuckerDialogueWindowWidget;
+import net.flyingmylife.seasonal_adventures.gui.widget.DuckerDialogueWindowWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -19,11 +21,11 @@ import java.util.Random;
 public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
     private int x;
     private int y;
-    private static final String CURSED_CHARACTER_LIST = "ABCDEFᔑꙚƵͶӾɊԆƩ99301_<>'.,";
+    private static final String CURSED_CHARACTER_LIST = "ABCDEF99301_<>'.,";
     private static final int WIDTH = 52;
     private static final int MAX_LIFESPAN = 120;
     public static final int BASE_COLOR = 0x2fce6d;
-    private static final Identifier BASE_SCREEN_TEXTURES = Identifier.of(SA.MOD_ID, "ducker/ducker_base");
+    private static final Identifier BASE_SCREEN_TEXTURES = Identifier.of(SA.MOD_ID, "textures/gui/sprites/ducker/ducker_systems.png");
     private static final Random RANDOM = new Random();
     private final List<FallingCharacter> low_speed_characters = new ArrayList<>();
     private final List<FallingCharacter> high_speed_characters = new ArrayList<>();
@@ -110,15 +112,15 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
         super.renderBackground(context, mouseX, mouseY, delta);
-        context.drawGuiTexture(RenderLayer::getGuiTextured, BASE_SCREEN_TEXTURES, 384, 384, 0, 0, x, y, 384, 246);
+        context.drawGuiTexture(BASE_SCREEN_TEXTURES, 384, 384, 0, 0, x, y, 384, 246);
         for (FallingCharacter character : low_speed_characters) {
             context.drawText(MinecraftClient.getInstance().textRenderer, Character.toString(character.character), x + character.x + 299, character.y + 98, DuckerScreen.BASE_COLOR, true);
         }
         for (FallingCharacter character : high_speed_characters) {
             context.drawText(MinecraftClient.getInstance().textRenderer, Character.toString(character.character), x + character.x + 299, character.y + 98, DuckerScreen.BASE_COLOR, true);
         }
-        context.drawGuiTexture(RenderLayer::getGuiTextured, BASE_SCREEN_TEXTURES, 384, 384, 0, 247, x + 291, y + 24, 68, 74);
-        context.drawGuiTexture(RenderLayer::getGuiTextured, BASE_SCREEN_TEXTURES, 384, 384, 291, 247, x + 291, y + 224,68, 22);
+        context.drawGuiTexture(BASE_SCREEN_TEXTURES, 384, 384, 0, 247, x + 291, y + 24, 68, 74);
+        context.drawGuiTexture(BASE_SCREEN_TEXTURES, 384, 384, 291, 247, x + 291, y + 224,68, 22);
     }
 
     @Override

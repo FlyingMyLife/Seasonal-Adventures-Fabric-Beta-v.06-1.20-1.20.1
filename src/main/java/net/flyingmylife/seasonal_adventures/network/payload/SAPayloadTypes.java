@@ -4,6 +4,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.flyingmylife.seasonal_adventures.network.packet.c2s.*;
+import net.flyingmylife.seasonal_adventures.network.packet.s2c.InitializeClientDataPacket;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -11,29 +13,55 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.flyingmylife.seasonal_adventures.SA;
-import net.flyingmylife.seasonal_adventures.network.packet.s2c.SecretKeyUpdatePacket;
+
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import static net.flyingmylife.seasonal_adventures.network.payload.banking.BankingPayloads.*;
 
 public class SAPayloadTypes {
     public static class S2C {
-        public record SecretKeyUpdatePayload(String key) implements CustomPayload {
-            public static final CustomPayload.Id<SecretKeyUpdatePayload> ID = new CustomPayload.Id<>(Identifier.of(SA.MOD_ID, "sk_update_payload"));
-            public static final PacketCodec<RegistryByteBuf, SecretKeyUpdatePayload> CODEC = PacketCodec.tuple(
-                    PacketCodecs.STRING, SecretKeyUpdatePayload::key,
-                    SecretKeyUpdatePayload::new);
+        public record InitializeClientDataPayload(NbtCompound nbt) implements CustomPayload {
+            public static final CustomPayload.Id<InitializeClientDataPayload> ID = new CustomPayload.Id<>(Identifier.of(SA.MOD_ID, "initialize_client_data_payload"));
+            public static final PacketCodec<RegistryByteBuf, InitializeClientDataPayload> CODEC = PacketCodec.tuple(
+                    PacketCodecs.NBT_COMPOUND, InitializeClientDataPayload::nbt,
+                    InitializeClientDataPayload::new
+            );
 
             @Override
-            public CustomPayload.Id<? extends CustomPayload> getId() {
+            public Id<? extends CustomPayload> getId() {
                 return ID;
             }
-        }
+            public Optional<Long> getHashedSeed() {
+                if (nbt.contains("hashed_seed")) {
+                    return Optional.of(nbt.getLong("hashed_seed"));
+                } else {
+                    return Optional.empty();
+                }
+            }
+            public static InitializeClientDataPayload create(long serverSeed) {
+                NbtCompound nbt = new NbtCompound();
+                MessageDigest digest = null;
+                try {
+                    digest = MessageDigest.getInstance("SHA-256");
+                    byte[] hash = digest.digest(Long.toString(serverSeed).getBytes());
+                    ByteBuffer buffer = ByteBuffer.wrap(hash);
+                    nbt.putLong("hashed_seed", Math.abs(buffer.getLong()));
 
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
+
+                return new InitializeClientDataPayload(nbt);
+            }
+        }
         public static void registerPayloadTypes() {
-            PayloadTypeRegistry.playS2C().register(SecretKeyUpdatePayload.ID, SecretKeyUpdatePayload.CODEC);
+            PayloadTypeRegistry.playS2C().register(InitializeClientDataPayload.ID, InitializeClientDataPayload.CODEC);
         }
         public static void registerGlobalReceivers() {
-            ClientPlayNetworking.registerGlobalReceiver(SecretKeyUpdatePayload.ID, SecretKeyUpdatePacket::register);
+            ClientPlayNetworking.registerGlobalReceiver(InitializeClientDataPayload.ID, InitializeClientDataPacket::register);
         }
     }
     public static class C2S {

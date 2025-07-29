@@ -10,13 +10,13 @@ import net.flyingmylife.seasonal_adventures.SA;
 import net.flyingmylife.seasonal_adventures.config.SAClientConfig;
 import net.flyingmylife.seasonal_adventures.gui.data.ButtonRenderData;
 import net.flyingmylife.seasonal_adventures.gui.screen.SAConfigScreen;
-import net.flyingmylife.seasonal_adventures.gui.widgets.MultiTexturedButtonWidget;
+import net.flyingmylife.seasonal_adventures.gui.widget.MultiTexturedButtonWidget;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
 
@@ -26,8 +26,8 @@ public abstract class TitleScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(at = @At("RETURN"), method = "addNormalWidgets")
-    private void init(int y, int spacingY, CallbackInfoReturnable<Integer> cir) {
+    @Inject(at = @At("RETURN"), method = "initWidgetsNormal")
+    private void init(int y, int spacingY, CallbackInfo ci) {
         SAClientConfig.ClientConfigButtonPosition buttonPosition = Objects.requireNonNull(SAClientConfig.HANDLER.readConfig()).configButtonPos;
         MultiTexturedButtonWidget seasonalAdventuresConfigButton = getTexturedButtonWidget(y, spacingY, buttonPosition);
         addDrawableChild(seasonalAdventuresConfigButton);

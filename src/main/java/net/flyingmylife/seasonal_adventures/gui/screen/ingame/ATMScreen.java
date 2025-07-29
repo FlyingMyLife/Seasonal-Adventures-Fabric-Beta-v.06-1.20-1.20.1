@@ -4,7 +4,6 @@ import net.flyingmylife.seasonal_adventures.SA;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -15,8 +14,8 @@ import net.minecraft.util.Identifier;
 import net.flyingmylife.seasonal_adventures.gui.RenderingUtils;
 import net.flyingmylife.seasonal_adventures.gui.data.ButtonRenderData;
 import net.flyingmylife.seasonal_adventures.gui.handler.ATMScreenHandler;
-import net.flyingmylife.seasonal_adventures.gui.widgets.MultiTexturedButtonWidget;
-import net.flyingmylife.seasonal_adventures.gui.widgets.NumericTextFieldWidget;
+import net.flyingmylife.seasonal_adventures.gui.widget.MultiTexturedButtonWidget;
+import net.flyingmylife.seasonal_adventures.gui.widget.NumericTextFieldWidget;
 import net.flyingmylife.seasonal_adventures.item.SAItems;
 import net.flyingmylife.seasonal_adventures.item.custom.CardItem;
 import net.flyingmylife.seasonal_adventures.network.packet.c2s.BankingOperationsPacket;
@@ -37,15 +36,15 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     private int y;
     private static final int backgroundWidth = 256;
     private static final int backgroundHeight = 192;
-    private static final Identifier BACKGROUND_TEXTURE   = Identifier.of("seasonal_adventures", "atm/background");
-    private static final Identifier REPLENISH_BUTTON = Identifier.of("seasonal_adventures", "atm/replenish_button");
-    private static final Identifier WITHDRAW_BUTTON = Identifier.of("seasonal_adventures", "atm/withdraw_button");
-    private static final Identifier DEFAULT_BUTTON = Identifier.of("seasonal_adventures", "atm/default_button");
-    private static final Identifier UN_DEFAULT_BUTTON = Identifier.of("seasonal_adventures", "atm/un_default_button");
-    private static final Identifier UN_REPLENISH_BUTTON = Identifier.of("seasonal_adventures", "atm/un_replenish_button");
-    private static final Identifier UN_WITHDRAW_BUTTON = Identifier.of("seasonal_adventures", "atm/un_withdraw_button");
-    private static final Identifier UN_ENTER_BUTTON = Identifier.of("seasonal_adventures", "atm/un_enter_button");
-    private static final Identifier ENTER_BUTTON = Identifier.of("seasonal_adventures", "atm/enter_button");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/atm.png");
+    private static final Identifier REPLENISH_BUTTON = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/replenish_button.png");
+    private static final Identifier WITHDRAW_BUTTON = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/withdraw_button.png");
+    private static final Identifier DEFAULT_BUTTON = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/default_button.png");
+    private static final Identifier UN_DEFAULT_BUTTON = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/un_default_button.png");
+    private static final Identifier UN_REPLENISH_BUTTON = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/un_replenish_button.png");
+    private static final Identifier UN_WITHDRAW_BUTTON = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/un_withdraw_button.png");
+    private static final Identifier UN_ENTER_BUTTON = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/un_enter_button.png");
+    private static final Identifier ENTER_BUTTON = Identifier.of(SA.MOD_ID, "textures/gui/sprites/atm/enter_button.png");
 
     private int userInputValue = 0;
     private boolean replenishMode = true;
@@ -369,7 +368,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     @Override
     public void renderInGameBackground(DrawContext context) {
         super.renderInGameBackground(context);
-        context.drawGuiTexture(RenderLayer::getGuiTextured, BACKGROUND_TEXTURE, x, y, backgroundWidth, backgroundHeight);
+        context.drawGuiTexture(BACKGROUND_TEXTURE, x, y, backgroundWidth, backgroundHeight);
     }
 
     @Override

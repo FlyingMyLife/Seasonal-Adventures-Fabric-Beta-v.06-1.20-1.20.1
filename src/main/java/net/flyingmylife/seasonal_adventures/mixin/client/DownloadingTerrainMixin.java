@@ -43,7 +43,7 @@ public abstract class DownloadingTerrainMixin extends Screen {
         if (client.player != null && client.player.getWorld().getRegistryKey().equals(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY)) {
             ci.cancel();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, opacity);
-            context.drawTexture(RenderLayer::getGuiTextured, BACKGROUND_TEXTURE, 0, 0, 0, 0, width, height, width, height);
+            context.drawTexture(BACKGROUND_TEXTURE, 0, 0, 0, 0, width, height, width, height);
             int textX = 20;
             int textY = height - 55;
             context.fill(textX, textY + 10, textX + 110, textY + 35,0x40000000);
@@ -55,7 +55,7 @@ public abstract class DownloadingTerrainMixin extends Screen {
             int sparkX = (width - sparkSize) - 25;
             int sparkY = (height - sparkSize) - 25;
             RenderSystem.setShaderTexture(0, getSparkV((int) (System.currentTimeMillis() - loadStartTime)));
-            context.drawTexture(RenderLayer::getGuiTextured, SPARK_TEXTURE, sparkX, sparkY, 0, getSparkV((int) (System.currentTimeMillis() - loadStartTime)), sparkSize, sparkSize, 50, 200);
+            context.drawTexture(SPARK_TEXTURE, sparkX, sparkY, 0, getSparkV((int) (System.currentTimeMillis() - loadStartTime)), sparkSize, sparkSize, 50, 200);
         }
     }
     @Unique

@@ -11,20 +11,20 @@ import net.flyingmylife.seasonal_adventures.block.SABlocks;
 import net.flyingmylife.seasonal_adventures.block.entity.client.GuidingSkinthBlockRenderer;
 import net.flyingmylife.seasonal_adventures.block.entity.client.LockedChestLvLCopperBlockRenderer;
 import net.flyingmylife.seasonal_adventures.block.entity.client.LockedChestLvLIronBlockRenderer;
-import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
-import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
+import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.CopperLCBlockEntity;
+import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.IronLCBlockEntity;
 
 
 public class SABlockEntities {
-    public static BlockEntityType<LockedChestLvLCopperBlockEntity> LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY;
-    public static BlockEntityType<LockedChestLvLIronBlockEntity> LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY;
+    public static BlockEntityType<CopperLCBlockEntity> LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY;
+    public static BlockEntityType<IronLCBlockEntity> LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY;
     public static BlockEntityType<GuidingSkinthBlockEntity> GUIDING_SKINTH_BLOCK_ENTITY;
 
     public static void registerEntities() {
         LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"locked_chest_lvl_copper_block_entity"),
-                FabricBlockEntityTypeBuilder.create(LockedChestLvLCopperBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_COPPER).build());
+                FabricBlockEntityTypeBuilder.create(CopperLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_COPPER).build());
         LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"locked_chest_lvl_iron_block_entity"),
-                FabricBlockEntityTypeBuilder.create(LockedChestLvLIronBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_IRON).build());
+                FabricBlockEntityTypeBuilder.create(IronLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_IRON).build());
         GUIDING_SKINTH_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"guiding_skinth_block_entity"),
                 FabricBlockEntityTypeBuilder.create(GuidingSkinthBlockEntity::new, SABlocks.GUIDING_SKINTH).build());
     }

@@ -51,10 +51,10 @@ public class SABlocks {
 
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
         RegistryKey<Block> blockKey = keyOfBlock(name);
-        Block block = blockFactory.apply(settings.registryKey(blockKey));
+        Block block = blockFactory.apply(settings);
         if (shouldRegisterItem) {
             RegistryKey<Item> itemKey = keyOfItem(name);
-            BlockItem blockItem = new BlockItem(block, new Item.Settings().registryKey(itemKey));
+            BlockItem blockItem = new BlockItem(block, new Item.Settings());
             Registry.register(Registries.ITEM, itemKey, blockItem);
         }
         return Registry.register(Registries.BLOCK, blockKey, block);
@@ -111,7 +111,7 @@ public class SABlocks {
         public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
             VoxelShape[] buffer = new VoxelShape[] { shape, VoxelShapes.empty() };
 
-            int times = (to.getHorizontalQuarterTurns() - from.getHorizontalQuarterTurns() + 4) % 4;
+            int times = (to.getHorizontal() - from.getHorizontal() + 4) % 4;
 
             for (int i = 0; i < times; i++) {
                 buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> {

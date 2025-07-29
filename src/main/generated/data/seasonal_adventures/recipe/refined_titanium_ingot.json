@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    "seasonal_adventures:refined_titanium_block"
+    {
+      "item": "seasonal_adventures:refined_titanium_block"
+    }
   ],
   "result": {
     "count": 9,

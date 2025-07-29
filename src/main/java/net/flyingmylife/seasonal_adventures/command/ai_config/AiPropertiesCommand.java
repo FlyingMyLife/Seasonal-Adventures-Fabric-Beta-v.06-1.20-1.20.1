@@ -2,30 +2,34 @@ package net.flyingmylife.seasonal_adventures.command.ai_config;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.flyingmylife.seasonal_adventures.config.ai.AiPropertiesManager;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
-import net.flyingmylife.seasonal_adventures.SA;
-import net.flyingmylife.seasonal_adventures.network.packet.s2c.SecretKeyUpdatePacket;
+import net.minecraft.util.Formatting;
 
 public class AiPropertiesCommand {
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(((CommandManager.literal("ai").then(CommandManager.literal("setKey")
-                        .then(CommandManager.argument("configData", StringArgumentType.string())
-                                .executes(context -> {
-                                            String key = StringArgumentType.getString(context, "configData");
-                                            if (context.getSource().isExecutedByPlayer()) {
-                                                ServerPlayerEntity player = context.getSource().getPlayer();
-                                                assert player != null;
-                                                player.sendMessage(Text.literal("Установка ключа..."));
-                                                SecretKeyUpdatePacket.requestSecretKeyUpdate(player, key);
-                                            } else {
-                                                SA.LOGGER.info("Player not found, command ignored");
-                                            }
-                                            return 1;
+    public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
+        dispatcher.register((ClientCommandManager.literal("ai").then(ClientCommandManager.literal("setKey")
+                .then(ClientCommandManager.argument("key", StringArgumentType.string())
+                        .executes(context -> {
+                                    String key = StringArgumentType.getString(context, "key");
+                                    MinecraftClient client = context.getSource().getClient();
+                                    ClientPlayerEntity player = context.getSource().getPlayer();
+                                    player.sendMessage(Text.translatable("message.seasonal_adventures.ai.key.update", key), false);
+                                        int code = AiPropertiesManager.checkKey(key);
+                                        if (AiPropertiesManager.checkKey(key) == 0) {
+                                            client.player.sendMessage(Text.translatable("message.seasonal_adventures.ai.key.confirmed").formatted(Formatting.GREEN), false);
+                                            AiPropertiesManager.saveSecretKey(key);
+                                        } else if (code == -1){
+                                            player.sendMessage(Text.translatable("message.seasonal_adventures.ai.key.network_error").formatted(Formatting.RED), false);
+                                        } else {
+                                            player.sendMessage(Text.translatable("message.seasonal_adventures.ai.key.invalid", code).formatted(Formatting.RED), false);
                                         }
-                                )
+                                        return 1;
+                                }
                         )
                 )
         )));

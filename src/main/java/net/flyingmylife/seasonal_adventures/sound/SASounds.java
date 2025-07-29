@@ -15,4 +15,8 @@ public class SASounds {
         Identifier id = Identifier.of(SA.MOD_ID, name);
         return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
     }
+
+    public static void registerSoundEvents() {
+        SA.LOGGER.info("Registering Sound Events for " + SA.MOD_ID);
+    }
 }

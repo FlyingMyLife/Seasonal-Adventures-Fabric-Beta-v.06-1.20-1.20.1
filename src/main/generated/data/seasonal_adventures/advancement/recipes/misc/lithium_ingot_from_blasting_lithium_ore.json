@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:lithium_ingot_from_blasting_lithium_ore"
+        "recipe": "seasonal_adventures:lithium_ingot_from_blasting_lithium_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:lithium_ingot_from_blasting_lithium_ore"
+      "seasonal_adventures:lithium_ingot_from_blasting_lithium_ore"
     ]
   }
 }
