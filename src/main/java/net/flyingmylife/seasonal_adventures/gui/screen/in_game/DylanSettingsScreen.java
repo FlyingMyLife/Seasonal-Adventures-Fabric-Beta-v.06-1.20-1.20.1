@@ -1,4 +1,4 @@
-package net.flyingmylife.seasonal_adventures.gui.screen.ingame;
+package net.flyingmylife.seasonal_adventures.gui.screen.in_game;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;

@@ -42,7 +42,7 @@ public abstract class TitleScreenMixin extends Screen {
         if (buttonPosition == SAClientConfig.ClientConfigButtonPosition.LEFT_MULTIPLAYER) {
             x = this.width / 2 - 124;
         }
-        return new MultiTexturedButtonWidget(x, y - spacingY, ButtonRenderData.of(0, 0, 20, 20, 20, 32, 64, Identifier.of(SA.MOD_ID, "title_screen/sa_config_button")), Text.empty(), (button -> {
+        return new MultiTexturedButtonWidget(x, y - spacingY, ButtonRenderData.of(0, 0, 20, 20, 20, 32, 64, Identifier.of(SA.MOD_ID, "textures/gui/sprites/title_screen/config_button.png")), Text.empty(), (button -> {
             MinecraftClient.getInstance().setScreen(new SAConfigScreen(Text.empty()));
         }));
     }

@@ -1,10 +1,8 @@
 package net.flyingmylife.seasonal_adventures.gui;
 
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.flyingmylife.seasonal_adventures.SA;
-import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestBlockEntity;
 import net.flyingmylife.seasonal_adventures.gui.handler.DuckerScreenHandler;
-import net.flyingmylife.seasonal_adventures.gui.screen.ingame.DuckerScreen;
+import net.flyingmylife.seasonal_adventures.gui.screen.in_game.DuckerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -14,9 +12,9 @@ import net.minecraft.util.Identifier;
 import net.flyingmylife.seasonal_adventures.gui.handler.ATMScreenHandler;
 import net.flyingmylife.seasonal_adventures.gui.handler.DylanSettingsScreenHandler;
 import net.flyingmylife.seasonal_adventures.gui.handler.UnlockingScreenHandler;
-import net.flyingmylife.seasonal_adventures.gui.screen.ingame.ATMScreen;
-import net.flyingmylife.seasonal_adventures.gui.screen.ingame.DylanSettingsScreen;
-import net.flyingmylife.seasonal_adventures.gui.screen.ingame.UnlockingScreen;
+import net.flyingmylife.seasonal_adventures.gui.screen.in_game.ATMScreen;
+import net.flyingmylife.seasonal_adventures.gui.screen.in_game.DylanSettingsScreen;
+import net.flyingmylife.seasonal_adventures.gui.screen.in_game.UnlockingScreen;
 
 public class SAScreenHandlers {
     public static final ScreenHandlerType<UnlockingScreenHandler> UNLOCKING_SCREEN_HANDLER = Registry.register(

@@ -1,4 +1,6 @@
 package net.flyingmylife.seasonal_adventures;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.flyingmylife.seasonal_adventures.block.SABlocks;
 import net.flyingmylife.seasonal_adventures.entity.client.layer.SARenderLayers;
 import net.flyingmylife.seasonal_adventures.event.SAEvents;
 import net.flyingmylife.seasonal_adventures.world.generator.noise.TimeInfectionLevelTemperatureMap;
@@ -11,11 +13,13 @@ import net.flyingmylife.seasonal_adventures.entity.SAEntities;
 import net.flyingmylife.seasonal_adventures.gui.SAScreenHandlers;
 import net.flyingmylife.seasonal_adventures.network.payload.SAPayloadTypes;
 import net.flyingmylife.seasonal_adventures.particle.SAParticles;
+import net.minecraft.client.render.RenderLayer;
 
 @Environment(EnvType.CLIENT)
 public class SAClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        BlockRenderLayerMap.INSTANCE.putBlock(SABlocks.DUCKER_SYSTEM, RenderLayer.getCutout());
         SAScreenHandlers.registerHandledScreens();
         SAEntities.registerEntityAttributes();
         SABlockEntities.registerEntityRenderFactories();

@@ -1,11 +1,14 @@
 {
-	"credit": "Made by Seasonal Adventures",
-	"texture_size": [128, 128],
-	"textures": {
-		"0": "seasonal_adventures:block/ducker_system",
-		"particle": "seasonal_adventures:block/ducker_system"
-	},
-	"elements": [
+  "credit": "Made by Seasonal Adventures",
+  "texture_size": [
+    128, 128
+  ],
+  "textures": {
+    "0": "seasonal_adventures:block/ducker_system",
+    "particle": "seasonal_adventures:block/ducker_system"
+  },
+  "render_type": "translucent",
+  "elements": [
 		{
 			"from": [0, 0, 0],
 			"to": [9, 16, 10],

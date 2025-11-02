@@ -1,4 +1,4 @@
-package net.flyingmylife.seasonal_adventures.gui.screen.ingame;
+package net.flyingmylife.seasonal_adventures.gui.screen.in_game;
 
 import net.flyingmylife.seasonal_adventures.SA;
 import net.minecraft.client.gui.DrawContext;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.flyingmylife.seasonal_adventures.gui.RenderingUtils;
+import net.flyingmylife.seasonal_adventures.gui.utils.RenderingUtils;
 import net.flyingmylife.seasonal_adventures.gui.data.ButtonRenderData;
 import net.flyingmylife.seasonal_adventures.gui.handler.ATMScreenHandler;
 import net.flyingmylife.seasonal_adventures.gui.widget.MultiTexturedButtonWidget;
@@ -368,7 +368,7 @@ public class ATMScreen extends HandledScreen<ATMScreenHandler> {
     @Override
     public void renderInGameBackground(DrawContext context) {
         super.renderInGameBackground(context);
-        context.drawGuiTexture(BACKGROUND_TEXTURE, x, y, backgroundWidth, backgroundHeight);
+        context.drawTexture(BACKGROUND_TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, backgroundWidth, backgroundHeight);
     }
 
     @Override

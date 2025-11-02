@@ -1,4 +1,4 @@
-package net.flyingmylife.seasonal_adventures.gui;
+package net.flyingmylife.seasonal_adventures.gui.utils;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -26,4 +26,5 @@ public class RenderingUtils {
 
         return pointX >= (double)(x - 1) && pointX < (double)(x + width + 1) && pointY >= (double)(y - 1) && pointY < (double)(y + height + 1);
     }
+
 }

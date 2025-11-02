@@ -50,7 +50,6 @@ public class AiPropertiesManager {
 
             int statusCode = chatCompletion.statusCode();
             Headers headers = chatCompletion.headers();
-
             return 0;
         } catch (OpenAIException e) {
             e.printStackTrace();
@@ -75,8 +74,8 @@ public class AiPropertiesManager {
                     This file, "DO-NOT-SHARE.sk", contains your confidential OpenAI™ or DeepSeek™ (defined in settings) platform secret key.
                     This key is unique.
                     
-                    Please refrain from sharing, exposing, or transmitting this configData under any circumstances. Our team will never request that you
-                    forward this configData to any third party.
+                    Please refrain from sharing, exposing, or transmitting these files under any circumstances. Our team will never request to forward it
+                    to any third paries.
                     
                     RU:
                     -----------

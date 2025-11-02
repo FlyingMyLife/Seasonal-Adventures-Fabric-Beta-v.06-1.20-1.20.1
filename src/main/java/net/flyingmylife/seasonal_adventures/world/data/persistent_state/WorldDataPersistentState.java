@@ -18,7 +18,6 @@ import java.util.UUID;
 public class WorldDataPersistentState extends PersistentState {
 
     public HashMap<UUID, PlayerLinkedData> playerBankingData = new HashMap<>();
-
     public boolean initializedDimensionOfDreams = false;
 
     public static void addNewPlayerToBankingSystem(PlayerEntity player, String cardId, MinecraftServer server) {

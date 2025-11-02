@@ -1,8 +1,6 @@
 
 package net.flyingmylife.seasonal_adventures.gui.data;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.flyingmylife.seasonal_adventures.SA;
 import net.minecraft.util.math.BlockPos;
 
@@ -18,6 +16,7 @@ public class UnlockingData {
     }
 
     public void generate(BlockPos pos, int lockLevel) {
+        pinAngles.clear();
         int blockPosHash = pos.hashCode();
         long seed = blockPosHash + lockLevel;
 
@@ -30,19 +29,19 @@ public class UnlockingData {
             Random pinAngle = new Random(seed);
             if (lockLevel <= 2) {
                 for (int i = 0; i < pins; i++) {
-                    boolean broken_loop = false;
+                    int random;
+                    boolean valid;
                     do {
-                        int random = pinAngle.nextInt(10, 350);
-                        for (int j = 0; j < pins; j++) {
-                            if (Math.abs(random - pinAngles.get(j)) >= 25) {
-                                broken_loop = true;
+                        random = pinAngle.nextInt(10, 350);
+                        valid = true;
+                        for (int j = 0; j < i; j++) {
+                            if (Math.abs(random - pinAngles.get(j)) < 46) {
+                                valid = false;
                                 break;
                             }
                         }
-                        if (broken_loop) {
-                            pinAngles.set(i, random);
-                        }
-                    } while (!broken_loop);
+                    } while (!valid);
+                    pinAngles.set(i, random);
                 }
             } else if (lockLevel >= 3) {
                 pins = pinsByLevel[lockLevel];

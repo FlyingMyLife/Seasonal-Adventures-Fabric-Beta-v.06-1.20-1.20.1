@@ -1,14 +1,12 @@
 package net.flyingmylife.seasonal_adventures.gui.widget;
 
-import net.flyingmylife.seasonal_adventures.SA;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.text.Text;
 import net.minecraft.client.util.math.MatrixStack;
 import net.flyingmylife.seasonal_adventures.gui.data.ButtonRenderData;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.math.RotationAxis;
 
 public class LockpickWidget extends ButtonWidget {
     private float rotationAngle = 0.0f;
@@ -34,17 +32,32 @@ public class LockpickWidget extends ButtonWidget {
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         updateRotation(delta);
-//        MatrixStack matrixStack = context.getMatrices();
-//        matrixStack.push();
-//
-//        matrixStack.translate(-this.getX() - this.width / 2.0f, -this.getY() - this.height / 2.0f, 0.0f);
-//        matrixStack.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Z.rotationDegrees(rotationAngle));
-//        matrixStack.translate(-this.getX() - this.width / 2.0f, -this.getY() - this.height / 2.0f, 0.0f);
 
-        context.drawGuiTexture(renderData.getTexture(true), renderData.getTextureWidth(), renderData.getTextureHeight(), renderData.getU(), renderData.getV(hovered), getX(), getY(), renderData.getWidth(), renderData.getHeight());
+        MatrixStack matrices = context.getMatrices();
+        matrices.push();
 
-//        matrixStack.pop();
+        float pivotX = this.getX() + this.width / 2.0f;
+        float pivotY = this.getY() + this.height / 2.0f;
+        matrices.translate(pivotX, pivotY, 0.0f);
+
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotationAngle));
+
+        matrices.translate(-this.width / 2.0f, -this.height / 2.0f, 0.0f);
+
+        context.drawTexture(
+                renderData.getTexture(true),
+                0, 0,
+                renderData.getU(),
+                renderData.getV(true),
+                renderData.getWidth(),
+                getHeight(),
+                renderData.getWidth(),
+                renderData.getHeight()
+        );
+
+        matrices.pop();
     }
+
 
     private void updateRotation(float delta) {
         accumulatedTime += delta;

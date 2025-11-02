@@ -1,9 +1,8 @@
-package net.flyingmylife.seasonal_adventures.gui.screen.ingame;
+package net.flyingmylife.seasonal_adventures.gui.screen.in_game;
 
 import net.flyingmylife.seasonal_adventures.SA;
 import net.flyingmylife.seasonal_adventures.gui.data.UnlockingData;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -19,6 +18,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.RaycastContext;
 import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestBlockEntity;
 import net.flyingmylife.seasonal_adventures.gui.data.ButtonRenderData;
@@ -46,7 +46,7 @@ public class UnlockingScreen extends HandledScreen<UnlockingScreenHandler> {
     private static final Identifier LOCKPICK_TEXTURE = Identifier.of(SA.MOD_ID, "textures/gui/sprites/unlocking/lockpick.png");
     private static final Identifier PIN_DEFAULT = Identifier.of(SA.MOD_ID, "textures/gui/sprites/unlocking/pin_default.png");
     private static final Identifier PIN_TRIGGERED = Identifier.of(SA.MOD_ID, "textures/gui/sprites/unlocking/pin_triggered.png");
-    private static final Identifier BACKGROUND_TEXTURE = Identifier.of(SA.MOD_ID, "textures/gui/unlocking.png");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.of(SA.MOD_ID, "textures/gui/sprites/unlocking/unlocking.png");
 
     public UnlockingScreen(UnlockingScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -84,6 +84,7 @@ public class UnlockingScreen extends HandledScreen<UnlockingScreenHandler> {
         }
     }
 
+
     private void playSound(SoundEvent sound, float pitch) {
         assert this.client != null;
         assert this.client.player != null;
@@ -117,6 +118,14 @@ public class UnlockingScreen extends HandledScreen<UnlockingScreenHandler> {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderInGameBackground(context);
+        applyBlur(0);
+
+        int x = this.width / 2 - 96;
+        int y = this.height / 2 - 96;
+
+        context.drawTexture(BACKGROUND_TEXTURE, x, y, 0, 0, 192, 192, 192, 192);
+
         int pinsToRender = data.getPinCount();
         for (int i = 0; i < pinsToRender; i++) {
             renderRotatedLock(context, pinTriggerState[i], data.getPin(i));
@@ -124,6 +133,14 @@ public class UnlockingScreen extends HandledScreen<UnlockingScreenHandler> {
 
         super.render(context, mouseX, mouseY, delta);
         close();
+    }
+
+    @Override
+    protected void renderDarkening(DrawContext context) {
+    }
+
+    @Override
+    public void renderInGameBackground(DrawContext context) {
     }
 
     @Override
@@ -154,11 +171,12 @@ public class UnlockingScreen extends HandledScreen<UnlockingScreenHandler> {
 
         matrixStack.translate(centerX, centerY, 0.0f);
 
-        matrixStack.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Z.rotationDegrees(rotationAngle));
+        matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotationAngle));
 
-        matrixStack.translate(-99.0f, -99.0f, 0.0f);
+        matrixStack.translate(-192 / 2f, -192 / 2f, 0);
 
-        context.drawTexture(texture, x, y, 0, 0, 192, 192, 192, 192);
+        context.drawTexture(texture, 0, 0, 0, 0, 192, 192, 192, 192);
+
 
         matrixStack.pop();
     }
@@ -185,9 +203,6 @@ public class UnlockingScreen extends HandledScreen<UnlockingScreenHandler> {
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-        int x = this.width / 2 - 96;
-        int y = this.height / 2 - 96;
-        context.drawTexture(BACKGROUND_TEXTURE, x, y, 0, 0, 192, 192, 192, 192);
     }
 
     @Override

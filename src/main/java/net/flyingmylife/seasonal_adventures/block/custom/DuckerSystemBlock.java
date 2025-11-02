@@ -6,6 +6,7 @@ import net.flyingmylife.seasonal_adventures.gui.handler.DuckerScreenHandler;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
@@ -48,12 +49,15 @@ public class DuckerSystemBlock extends HorizontalFacingBlock {
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-         if (!world.isClient) {
-             createScreenHandlerFactory(state, world, pos);
-         }
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (!world.isClient) {
+            NamedScreenHandlerFactory factory = createScreenHandlerFactory(state, world, pos);
+            if (factory != null) {
+                player.openHandledScreen(factory);
+            }
+        }
 
-         return ActionResult.SUCCESS;
+        return ActionResult.SUCCESS;
     }
 
     @Override
@@ -74,10 +78,5 @@ public class DuckerSystemBlock extends HorizontalFacingBlock {
     @Nullable
     protected NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
         return new SimpleNamedScreenHandlerFactory((syncId, inventory, player) -> new DuckerScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos)), TITLE);
-    }
-
-    @Override
-    protected BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
     }
 }

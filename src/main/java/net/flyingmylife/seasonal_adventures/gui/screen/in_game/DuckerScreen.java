@@ -1,14 +1,11 @@
-package net.flyingmylife.seasonal_adventures.gui.screen.ingame;
+package net.flyingmylife.seasonal_adventures.gui.screen.in_game;
 
 import net.flyingmylife.seasonal_adventures.SA;
-import net.flyingmylife.seasonal_adventures.entity.SAEntities;
-import net.flyingmylife.seasonal_adventures.entity.custom.ATMEntity;
 import net.flyingmylife.seasonal_adventures.gui.handler.DuckerScreenHandler;
 import net.flyingmylife.seasonal_adventures.gui.widget.DuckerDialogueWindowWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -21,9 +18,9 @@ import java.util.Random;
 public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
     private int x;
     private int y;
-    private static final String CURSED_CHARACTER_LIST = "ABCDEF99301_<>'.,";
+    private static final String CURSED_CHARACTER_LIST = "ABCDEF99301_<>⚠�";
     private static final int WIDTH = 52;
-    private static final int MAX_LIFESPAN = 120;
+    private static final int MAX_LIFESPAN = 122;
     public static final int BASE_COLOR = 0x2fce6d;
     private static final Identifier BASE_SCREEN_TEXTURES = Identifier.of(SA.MOD_ID, "textures/gui/sprites/ducker/ducker_systems.png");
     private static final Random RANDOM = new Random();
@@ -49,31 +46,40 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
                 192,
                 textRenderer
         );
+        windowWidget.visible = true;
         addDrawableChild(windowWidget);
+    }
+    void tickElapsed() {
+    }
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackground(context, mouseX, mouseY, delta);
+
+        for (FallingCharacter character : low_speed_characters) {
+            context.drawText(textRenderer, Character.toString(character.character), x + character.x + 299, character.y + 98, BASE_COLOR, true);
+        }
+        for (FallingCharacter character : high_speed_characters) {
+            context.drawText(textRenderer, Character.toString(character.character), x + character.x + 299, character.y + 98, BASE_COLOR, true);
+        }
+
+        super.render(context, mouseX, mouseY, delta); // <-- отрисует windowWidget автоматически
+
+        context.drawTexture(BASE_SCREEN_TEXTURES, x + 291, y + 24, 0, 247, 68, 74, 384, 384);
+        context.drawTexture(BASE_SCREEN_TEXTURES, x + 291, y + 224, 291, 247, 68, 22, 384, 384);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        windowWidget.render(context, mouseX, mouseY, delta);
+    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+        context.drawTexture(BASE_SCREEN_TEXTURES, x, y, 0, 0, 384, 246, 384, 384);
     }
 
     @Override
     public boolean charTyped(char chr, int modifiers) {
-        windowWidget.typeChar(chr);
         return true;
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == 259) {
-            windowWidget.backspace();
-            return true;
-        } else if (keyCode == 257 || keyCode == 335) {
-            windowWidget.enter();
-            return true;
-        }
-
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
@@ -81,7 +87,6 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
     protected void handledScreenTick() {
         super.handledScreenTick();
         charFallUpdate();
-        windowWidget.tick();
     }
     private void charFallUpdate() {
         Iterator<FallingCharacter> low_speed_iterator = low_speed_characters.iterator();
@@ -106,21 +111,6 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
         if (RANDOM.nextInt(4) == 0) {
             high_speed_characters.add(new FallingCharacter(RANDOM.nextInt(WIDTH), y));
         }
-    }
-
-
-    @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.renderBackground(context, mouseX, mouseY, delta);
-        context.drawGuiTexture(BASE_SCREEN_TEXTURES, 384, 384, 0, 0, x, y, 384, 246);
-        for (FallingCharacter character : low_speed_characters) {
-            context.drawText(MinecraftClient.getInstance().textRenderer, Character.toString(character.character), x + character.x + 299, character.y + 98, DuckerScreen.BASE_COLOR, true);
-        }
-        for (FallingCharacter character : high_speed_characters) {
-            context.drawText(MinecraftClient.getInstance().textRenderer, Character.toString(character.character), x + character.x + 299, character.y + 98, DuckerScreen.BASE_COLOR, true);
-        }
-        context.drawGuiTexture(BASE_SCREEN_TEXTURES, 384, 384, 0, 247, x + 291, y + 24, 68, 74);
-        context.drawGuiTexture(BASE_SCREEN_TEXTURES, 384, 384, 291, 247, x + 291, y + 224,68, 22);
     }
 
     @Override
