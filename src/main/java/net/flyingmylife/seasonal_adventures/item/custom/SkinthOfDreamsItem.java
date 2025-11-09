@@ -12,8 +12,17 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtSizeTracker;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.resource.Resource;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.structure.StructurePlacementData;
+import net.minecraft.structure.StructureTemplate;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +33,10 @@ import net.flyingmylife.seasonal_adventures.network.packet.c2s.LoadChunkPacket;
 import net.flyingmylife.seasonal_adventures.util.game.AnimatedPlayer;
 import net.flyingmylife.seasonal_adventures.world.dimension.Dimensions;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class SkinthOfDreamsItem extends Item {
@@ -58,7 +70,7 @@ public class SkinthOfDreamsItem extends Item {
                         ServerWorld dodWorld = user.getServer().getWorld(Dimensions.DIMENSION_OF_DREAMS_LEVEL_KEY);
                         assert world != null;
 
-                        user.teleport(dodWorld, 8.5f, 21, 9.5f, Set.of(), user.getYaw(), user.getPitch());
+                        user.teleport(dodWorld, 8.5f, 26, 9.5f, Set.of(), user.getYaw(), user.getPitch());
                         StatusEffectInstance spawnProtection = new
                                 StatusEffectInstance(StatusEffects.RESISTANCE,
                                 10 * 20,
@@ -70,12 +82,31 @@ public class SkinthOfDreamsItem extends Item {
                         WorldDataPersistentState state = WorldDataPersistentState.getServerState(user.getServer());
                         if (!state.initializedDimensionOfDreams) {
                             assert dodWorld != null;
-                            ServerUtils.placeStructure(dodWorld, Identifier.of("seasonal_adventures:island_of_dreams"), new BlockPos(0, 0, 0));
+                            Identifier structurePath = Identifier.of(SA.MOD_ID, "structures/island_of_dreams.nbt");
+
+                            Optional<Resource> resourceOpt = user.getServer().getResourceManager().getResource(structurePath);
+
+                            Resource resource = resourceOpt.orElseThrow();
+                            try (InputStream stream = resource.getInputStream()) {
+                                NbtCompound structureNbt = NbtIo.readCompressed(stream, NbtSizeTracker.ofUnlimitedBytes());
+
+                                StructureTemplate template = new StructureTemplate();
+                                template.readNbt(world.getRegistryManager().getWrapperOrThrow(RegistryKeys.BLOCK), structureNbt);
+
+                                StructurePlacementData placementData = new StructurePlacementData();
+
+                                template.place(dodWorld, new BlockPos(0, 0, 0), new BlockPos(0, 0, 0), placementData, dodWorld.random, 2);
+
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
                             for (int x = -8; x <= 24; x++) {
                                 for (int z = -8; z <= 24; z++) {
                                     dodWorld.removeBlock(new BlockPos(x, -61, z), false);
                                 }
                             }
+
                             state.initializedDimensionOfDreams = true;
                             SA.LOGGER.info("Generated start island in dimension of dreams");
                         }

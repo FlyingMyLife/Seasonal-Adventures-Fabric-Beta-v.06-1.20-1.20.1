@@ -32,12 +32,10 @@ public class TimeInfectionLevelTemperatureMap {
         int noiseAdjustment = (int) ((noise - 0.5) * 6);
         int infectionLevel = baseLevel + noiseAdjustment;
 
-        // Ensure rare 8-16 in normal zone before 700
         if (distance < HARD_ZONE_START && random.nextDouble() < 0.05) {
             infectionLevel = Math.max(infectionLevel, 8 + random.nextInt(9));
         }
 
-        // Hard Zone (700+ chunks) - Black area
         if (distance >= HARD_ZONE_START) {
             infectionLevel = 16;
         }

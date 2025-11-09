@@ -3,6 +3,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.flyingmylife.seasonal_adventures.block.SABlocks;
 import net.flyingmylife.seasonal_adventures.entity.client.layer.SARenderLayers;
 import net.flyingmylife.seasonal_adventures.event.SAEvents;
+import net.flyingmylife.seasonal_adventures.gui.screen.in_game.DuckerScreen;
 import net.flyingmylife.seasonal_adventures.world.generator.noise.TimeInfectionLevelTemperatureMap;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -19,10 +20,10 @@ import net.minecraft.client.render.RenderLayer;
 public class SAClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        BlockRenderLayerMap.INSTANCE.putBlock(SABlocks.DUCKER_SYSTEM, RenderLayer.getCutout());
         SAScreenHandlers.registerHandledScreens();
         SAEntities.registerEntityAttributes();
         SABlockEntities.registerEntityRenderFactories();
+        SABlocks.registerBlockRenderLayers();
         SAParticles.registerParticleFactories();
         AiPropertiesManager.initialize();
         SAPayloadTypes.S2C.registerGlobalReceivers();

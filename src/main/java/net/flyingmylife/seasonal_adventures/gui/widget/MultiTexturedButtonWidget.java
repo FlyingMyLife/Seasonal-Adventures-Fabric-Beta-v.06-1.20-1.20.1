@@ -18,7 +18,17 @@ public class MultiTexturedButtonWidget extends ButtonWidget {
     @Override
     protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        context.drawTexture(renderData.getTexture(active), getX(), getY(), renderData.getU(), renderData.getV(hovered), renderData.getWidth(), renderData.getHeight(), renderData.getWidth(), renderData.getHeight());
+        context.drawTexture(
+                renderData.getTexture(active),
+                getX(),
+                getY(),
+                renderData.getU(),
+                renderData.getV(hovered),
+                renderData.getWidth(),
+                renderData.getHeight(),
+                renderData.getTextureWidth(),
+                renderData.getTextureHeight()
+        );
         int i = this.active ? 16777215 : 10526880;
         this.drawMessage(context, minecraftClient.textRenderer, i | MathHelper.ceil(this.alpha * 255.0F) << 24);
     }

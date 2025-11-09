@@ -96,7 +96,7 @@ public class SAItems {
         REFINED_TITANIUM_INGOT = register("refined_titanium_ingot", Item::new, new Item.Settings());
         REFINED_TITANIUM_SHEET = register("refined_titanium_sheet", Item::new, new Item.Settings());
         SOLID_AUTOMATON_CASING = register("solid_automaton_casing", Item::new, new Item.Settings());
-        SANCHEZ_GLASSES = register("sanchez_glasses", SanchezGlassesItem::new, new Item.Settings().maxCount(0).equipmentSlot((entity, stack) -> EquipmentSlot.HEAD).rarity(Rarity.EPIC));
+        SANCHEZ_GLASSES = register("sanchez_glasses", SanchezGlassesItem::new, new Item.Settings().maxCount(1).equipmentSlot((entity, stack) -> EquipmentSlot.HEAD).rarity(Rarity.EPIC));
         CARD = register("card", CardItem::new, new Item.Settings().rarity(Rarity.EPIC).maxCount(1).fireproof());
         TITANIUM_NUGGET = register("titanium_nugget", Item::new, new Item.Settings());
         TITANIUM_SHEET = register("titanium_sheet", Item::new, new Item.Settings());

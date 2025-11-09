@@ -26,7 +26,7 @@ public class SanchezGlassesItem extends Item {
                     .withColor(TextColor.fromFormatting(Formatting.DARK_PURPLE))
                     .withItalic(true);
             tooltip.add(Text.translatable("tooltip.seasonal_adventures.sanchez_glasses.detailed").setStyle(style));
-            tooltip.add(Text.translatable("tooltip.seasonal_adventures.sanchez_glasses.detailed_upper").setStyle(style));
+            tooltip.add(Text.translatable("tooltip.seasonal_adventures.sanchez_glasses.detailed.nl").setStyle(style));
         } else {
             tooltip.add(Text.translatable("tooltip.seasonal_adventures.sanchez_glasses.hint").formatted(Formatting.GRAY));
         }

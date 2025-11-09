@@ -2,13 +2,13 @@ package net.flyingmylife.seasonal_adventures.gui.screen.in_game;
 
 import net.flyingmylife.seasonal_adventures.SA;
 import net.flyingmylife.seasonal_adventures.gui.handler.DuckerScreenHandler;
-import net.flyingmylife.seasonal_adventures.gui.widget.DuckerDialogueWindowWidget;
-import net.minecraft.client.MinecraftClient;
+import net.flyingmylife.seasonal_adventures.gui.widget.DuckerConsoleWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,12 +22,20 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
     private static final int WIDTH = 52;
     private static final int MAX_LIFESPAN = 122;
     public static final int BASE_COLOR = 0x2fce6d;
-    private static final Identifier BASE_SCREEN_TEXTURES = Identifier.of(SA.MOD_ID, "textures/gui/sprites/ducker/ducker_systems.png");
+    public static final int MALFUNCTION_COLOR = 0xe76a5b;
+    private static final Identifier TEXTURE_ATLAS = Identifier.of(SA.MOD_ID, "textures/gui/sprites/ducker/ducker_systems.png");
     private static final Random RANDOM = new Random();
     private final List<FallingCharacter> low_speed_characters = new ArrayList<>();
     private final List<FallingCharacter> high_speed_characters = new ArrayList<>();
-    DuckerDialogueWindowWidget windowWidget;
+    private DuckerConsoleWidget console;
 
+    double deltaSeconds = 0.0D;
+    private long lastTimeNs = System.nanoTime();
+    private byte duckState = 0;
+    private double nextDuckDelay = 0.03 + Math.random() * 0.16;
+    private double duckTimer = 0;
+
+    public boolean isStable = true;
 
     public DuckerScreen(DuckerScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -39,20 +47,33 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
         super.init();
         x = this.width/2 - 192;
         y = this.height/2 - 123;
-        windowWidget = new DuckerDialogueWindowWidget(
+        console = new DuckerConsoleWidget(
                 x + 28,
                 y + 27,
                 257,
                 192,
                 textRenderer
         );
-        windowWidget.visible = true;
-        addDrawableChild(windowWidget);
+        console.visible = true;
+        addDrawableChild(console);
+        updateResponses();
     }
-    void tickElapsed() {
-    }
+
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        long now = System.nanoTime();
+        deltaSeconds = (now - lastTimeNs) / 1_000_000_000.0;
+        lastTimeNs = now;
+
+        duckTimer += deltaSeconds;
+
+        if (duckTimer > nextDuckDelay) {
+
+            duckTimer = 0.0D;
+            duckState = (byte) ((duckState == 1) ? 0 : 1);
+            nextDuckDelay = 0.03 + Math.random() * 0.16;
+        }
+
         renderBackground(context, mouseX, mouseY, delta);
 
         for (FallingCharacter character : low_speed_characters) {
@@ -62,25 +83,38 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
             context.drawText(textRenderer, Character.toString(character.character), x + character.x + 299, character.y + 98, BASE_COLOR, true);
         }
 
-        super.render(context, mouseX, mouseY, delta); // <-- отрисует windowWidget автоматически
+        super.render(context, mouseX, mouseY, delta);
+        if (duckState == 1 && console.isTyping) {
+            context.drawTexture(TEXTURE_ATLAS, x + 291, y + 24, 70, 247, 68, 74, 384, 384);
 
-        context.drawTexture(BASE_SCREEN_TEXTURES, x + 291, y + 24, 0, 247, 68, 74, 384, 384);
-        context.drawTexture(BASE_SCREEN_TEXTURES, x + 291, y + 224, 291, 247, 68, 22, 384, 384);
+        } else {
+            context.drawTexture(TEXTURE_ATLAS, x + 291, y + 24, 0, 247, 68, 74, 384, 384);
+        }
     }
 
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.drawTexture(BASE_SCREEN_TEXTURES, x, y, 0, 0, 384, 246, 384, 384);
+        context.drawTexture(TEXTURE_ATLAS, x, y, 0, 0, 384, 246, 384, 384);
+    }
+
+    @Override
+    public boolean shouldCloseOnEsc() {
+        return false;
     }
 
     @Override
     public boolean charTyped(char chr, int modifiers) {
+        console.charTyped(chr, modifiers);
         return true;
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        console.keyPressed(keyCode, scanCode, modifiers);
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            this.close();
+        }
+        return true;
     }
 
     @Override
@@ -112,13 +146,55 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
             high_speed_characters.add(new FallingCharacter(RANDOM.nextInt(WIDTH), y));
         }
     }
+    public static void updateResponses() {
+        DuckerConsoleWidget.ResponseHandler.addResponse(
+                "отключи выключи подсветку подсветка выруби мигающие лампочки бункер бункера УТКЭР УТКЭРА",
+                3,
+                List.of(
+                        "Модель вашего контрольного модуля не подразумевает отключения подсветки.",
+                        "Если хотите сделать кнопки настраиваемыми, обратитесь в службу поддержки."
+                )
+        );
+        DuckerConsoleWidget.ResponseHandler.addResponse(
+                "отключи выключи очистку воздуха фильтры вентиляцию фильтр вентилятор воздух систему вентиляции бункера УТКЭР УТКЭРА",
+                3,
+                List.of(
+                        "Отключение системы очистки воздуха невозможно: центральный модуль защищён от ручного и программного вмешательства.",
+                        "Для получения расширенных возможностей обслуживания свяжитесь сo службой поддержки У.Т.К.Э.Р."
+                )
+        );
 
+        DuckerConsoleWidget.ResponseHandler.addResponse(
+                "отключи выключи воду подачу воду водоснабжение водоснабжения водопровод насос система систему воды бункера УТКЭР УТКЭРА",
+                3,
+                List.of(
+                        "Полное отключение системы водоснабжения невозможно: насосы задействованы в охлаждении реактора.",
+                        "Для временного аварийного прекращения подачи воды в жилые модули используйте ручной вентиль в техническом помещении.",
+                        "Для получения инструкции по эксплуатации обратитесь в службу поддержки"
+                )
+        );
+        DuckerConsoleWidget.ResponseHandler.addResponse(
+                "отключи выключи генератор питание энергию электричество электропитание бункера УТКЭР УТКЭРА реактор энергия подача электричества ток питание генераторы",
+                3,
+                List.of(
+                        "Отключение энергосистемы невозможно: реактор поддерживает критические подсистемы жизнеобеспечения.",
+                        "Состояние реактора - [В НОРМЕ]. Замена топливных стержней не требуется.",
+                        "Для подробной инструкции по техобслуживанию обратитесь в службу поддержки"
+                )
+        );
+    }
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        if (windowWidget.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)) {
+        if (console.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)) {
             return true;
         }
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        console.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
     @Override
@@ -141,6 +217,10 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
             this.x = x;
             this.y = y;
             this.startY = y;
+        }
+
+        public enum Group {
+
         }
     }
 }

@@ -1,8 +1,10 @@
 package net.flyingmylife.seasonal_adventures.block;
 
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.flyingmylife.seasonal_adventures.SA;
 import net.flyingmylife.seasonal_adventures.block.custom.*;
 import net.minecraft.block.*;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -81,7 +83,9 @@ public class SABlocks {
     private static RegistryKey<Item> keyOfItem(String name) {
         return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(SA.MOD_ID, name));
     }
-
+    public static void registerBlockRenderLayers() {
+        BlockRenderLayerMap.INSTANCE.putBlock(SABlocks.DUCKER_SYSTEM, RenderLayer.getCutout());
+    }
     static {
         LOCKED_CHEST_LVL_COPPER = registerModeledBlock("locked_chest_lvl_copper", LockedChestBlock::new, Block.Settings.copy(Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD));
         LOCKED_CHEST_LVL_IRON = registerModeledBlock("locked_chest_lvl_iron", LockedChestBlock::new, Block.Settings.copy(Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD));
@@ -92,16 +96,16 @@ public class SABlocks {
         GUIDING_SKINTH = registerModeledBlock("guiding_skinth", GuidingSkinthBlock::new, Block.Settings.copy(Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.AMETHYST_BLOCK));
         DUCKER_SYSTEM = registerModeledBlock("ducker_system", DuckerSystemBlock::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).nonOpaque().sounds(BlockSoundGroup.NETHERITE));
 
-        REFINED_TITANIUM_BLOCK = register("refined_titanium_block", Block::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).sounds(BlockSoundGroup.COPPER));
-        TITANIUM_BLOCK = register("titanium_block", Block::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).sounds(BlockSoundGroup.NETHERITE));
+        REFINED_TITANIUM_BLOCK = register("refined_titanium_block", Block::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).requiresTool().sounds(BlockSoundGroup.COPPER));
+        TITANIUM_BLOCK = register("titanium_block", Block::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).requiresTool().sounds(BlockSoundGroup.NETHERITE));
 
-        ALUMINIUM_ORE = register("aluminium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).strength(2f));
-        TITANIUM_ORE = register("titanium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).strength(2f));
-        LITHIUM_ORE = register("lithium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).strength(2f));
+        ALUMINIUM_ORE = register("aluminium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).requiresTool().strength(2f));
+        TITANIUM_ORE = register("titanium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).requiresTool().strength(2f));
+        LITHIUM_ORE = register("lithium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).requiresTool().strength(2f));
 
-        DEEPSLATE_TITANIUM_ORE = register("deepslate_titanium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.DEEPSLATE).strength(4f));
-        DEEPSLATE_LITHIUM_ORE = register("deepslate_lithium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).strength(4f));
-        DEEPSLATE_ALUMINIUM_ORE = register("deepslate_aluminium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).strength(4f));
+        DEEPSLATE_TITANIUM_ORE = register("deepslate_titanium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.DEEPSLATE).requiresTool().strength(4f));
+        DEEPSLATE_LITHIUM_ORE = register("deepslate_lithium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).requiresTool().strength(4f));
+        DEEPSLATE_ALUMINIUM_ORE = register("deepslate_aluminium_ore", settings -> new ExperienceDroppingBlock(UniformIntProvider.create(2, 5), settings), Block.Settings.copy(Blocks.STONE).requiresTool().strength(4f));
 
         LAPTOP = registerModeledBlock("laptop", LaptopBlock::new, Block.Settings.copy(Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE));
         ADVANCED_AUTOMATON_BODY = registerModeledBlock("advanced_automaton_body", AdvancedAutomatonBodyBlock::new, Block.Settings.copy(Blocks.CRAFTING_TABLE).strength(0.2f).nonOpaque().sounds(BlockSoundGroup.STONE));

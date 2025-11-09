@@ -1,7 +1,9 @@
 package net.flyingmylife.seasonal_adventures.event;
 
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.flyingmylife.seasonal_adventures.event.custom.HudRenderCallbackHandler;
 import net.flyingmylife.seasonal_adventures.event.custom.SAClientLifeCycleEvents;
 import net.flyingmylife.seasonal_adventures.network.payload.SAPayloadTypes;
 import net.minecraft.world.World;
@@ -18,5 +20,6 @@ public class SAEvents {
     public static void registerClientEvents() {
         SAClientLifeCycleEvents.registerClientStartUpEvents();
         SAClientLifeCycleEvents.registerServerConnectionEvents();
+        HudRenderCallback.EVENT.register(new HudRenderCallbackHandler());
     }
 }

@@ -1,6 +1,5 @@
 {
 	"credit": "Made by Seasonal Adventures",
-	"parent": "seasonal_adventures:item/sanchez_glasses",
 	"textures": {
 		"1": "seasonal_adventures:item/sanchez_glasses"
 	},

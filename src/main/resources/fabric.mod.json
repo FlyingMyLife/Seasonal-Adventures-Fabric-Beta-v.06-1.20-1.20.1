@@ -4,7 +4,7 @@
 	"version": "0.7.0-dev",
 	"name": "Seasonal Adventures",
 	"description": "Mod based on MrLololoska's seasons, currently in beta \n update",
-	"icon": "assets/seasonal_adventures/icon.png",
+	"icon": "assets/seasonal_adventures/icon",
 	"authors": [
 		"FlyingMyLife, brrrkuda"
 	],
