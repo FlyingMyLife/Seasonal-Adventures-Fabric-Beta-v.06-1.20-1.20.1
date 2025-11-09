@@ -4,8 +4,8 @@ import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.IronLCBloc
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class LockedChestLvLIronBlockRenderer extends GeoBlockRenderer<IronLCBlockEntity> {
-    public LockedChestLvLIronBlockRenderer(BlockEntityRendererFactory.Context context) {
-        super(new LockedChestLvLIronBlockModel());
+public class IronLCBlockRenderer extends GeoBlockRenderer<IronLCBlockEntity> {
+    public IronLCBlockRenderer(BlockEntityRendererFactory.Context context) {
+        super(new IronLCBlockModel());
     }
 }

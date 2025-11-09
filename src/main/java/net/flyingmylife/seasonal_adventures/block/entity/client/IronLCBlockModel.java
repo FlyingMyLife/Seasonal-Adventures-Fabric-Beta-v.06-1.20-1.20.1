@@ -3,11 +3,9 @@ package net.flyingmylife.seasonal_adventures.block.entity.client;
 import net.flyingmylife.seasonal_adventures.SA;
 import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.IronLCBlockEntity;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
 
-public class LockedChestLvLIronBlockModel extends GeoModel<IronLCBlockEntity> {
+public class IronLCBlockModel extends GeoModel<IronLCBlockEntity> {
 
     @Override
     public Identifier getModelResource(IronLCBlockEntity lockedChestLvLIronBlockEntity) {

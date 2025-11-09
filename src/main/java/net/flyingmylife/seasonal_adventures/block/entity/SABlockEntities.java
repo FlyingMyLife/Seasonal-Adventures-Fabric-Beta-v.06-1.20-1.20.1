@@ -1,6 +1,5 @@
 package net.flyingmylife.seasonal_adventures.block.entity;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.registry.Registries;
@@ -9,8 +8,8 @@ import net.minecraft.util.Identifier;
 import net.flyingmylife.seasonal_adventures.SA;
 import net.flyingmylife.seasonal_adventures.block.SABlocks;
 import net.flyingmylife.seasonal_adventures.block.entity.client.GuidingSkinthBlockRenderer;
-import net.flyingmylife.seasonal_adventures.block.entity.client.LockedChestLvLCopperBlockRenderer;
-import net.flyingmylife.seasonal_adventures.block.entity.client.LockedChestLvLIronBlockRenderer;
+import net.flyingmylife.seasonal_adventures.block.entity.client.CopperLCBlockRenderer;
+import net.flyingmylife.seasonal_adventures.block.entity.client.IronLCBlockRenderer;
 import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.CopperLCBlockEntity;
 import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.IronLCBlockEntity;
 
@@ -22,16 +21,17 @@ public class SABlockEntities {
 
     public static void registerEntities() {
         LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"locked_chest_lvl_copper_block_entity"),
-                FabricBlockEntityTypeBuilder.create(CopperLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_COPPER).build());
+                BlockEntityType.Builder.create(CopperLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_COPPER).build());
+
         LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"locked_chest_lvl_iron_block_entity"),
-                FabricBlockEntityTypeBuilder.create(IronLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_IRON).build());
+                BlockEntityType.Builder.create(IronLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_IRON).build());
         GUIDING_SKINTH_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"guiding_skinth_block_entity"),
-                FabricBlockEntityTypeBuilder.create(GuidingSkinthBlockEntity::new, SABlocks.GUIDING_SKINTH).build());
+                BlockEntityType.Builder.create(GuidingSkinthBlockEntity::new, SABlocks.GUIDING_SKINTH).build());
     }
 
     public static void registerEntityRenderFactories() {
-        BlockEntityRendererFactories.register(SABlockEntities.LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY, LockedChestLvLCopperBlockRenderer::new);
-        BlockEntityRendererFactories.register(SABlockEntities.LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY, LockedChestLvLIronBlockRenderer::new);
+        BlockEntityRendererFactories.register(SABlockEntities.LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY, CopperLCBlockRenderer::new);
+        BlockEntityRendererFactories.register(SABlockEntities.LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY, IronLCBlockRenderer::new);
         BlockEntityRendererFactories.register(SABlockEntities.GUIDING_SKINTH_BLOCK_ENTITY, GuidingSkinthBlockRenderer::new);
     }
 }

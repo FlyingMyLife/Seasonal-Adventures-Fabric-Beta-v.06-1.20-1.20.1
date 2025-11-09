@@ -94,7 +94,7 @@ public class SABlocks {
         LOCKED_CHEST_LVL_NETHERITE = registerModeledBlock("locked_chest_lvl_netherite", LockedChestBlock::new, Block.Settings.copy(Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.WOOD));
 
         GUIDING_SKINTH = registerModeledBlock("guiding_skinth", GuidingSkinthBlock::new, Block.Settings.copy(Blocks.CHEST).strength(-1f).nonOpaque().sounds(BlockSoundGroup.AMETHYST_BLOCK));
-        DUCKER_SYSTEM = registerModeledBlock("ducker_system", DuckerSystemBlock::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).nonOpaque().sounds(BlockSoundGroup.NETHERITE));
+        DUCKER_SYSTEM = registerModeledBlock("ducker_system", DuckerControlSystemBlock::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).nonOpaque().sounds(BlockSoundGroup.NETHERITE));
 
         REFINED_TITANIUM_BLOCK = register("refined_titanium_block", Block::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).requiresTool().sounds(BlockSoundGroup.COPPER));
         TITANIUM_BLOCK = register("titanium_block", Block::new, Block.Settings.copy(Blocks.NETHERITE_BLOCK).requiresTool().sounds(BlockSoundGroup.NETHERITE));

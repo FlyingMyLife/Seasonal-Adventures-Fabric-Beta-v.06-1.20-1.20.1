@@ -6,7 +6,6 @@ import net.flyingmylife.seasonal_adventures.gui.handler.DuckerScreenHandler;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
@@ -25,8 +24,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
-public class DuckerSystemBlock extends HorizontalFacingBlock {
-    public static final MapCodec<DuckerSystemBlock> CODEC = createCodec(DuckerSystemBlock::new);
+public class DuckerControlSystemBlock extends HorizontalFacingBlock {
+    public static final MapCodec<DuckerControlSystemBlock> CODEC = createCodec(DuckerControlSystemBlock::new);
 
     private static final VoxelShape VOXEL_SHAPE = Stream.of(
             Block.createCuboidShape(0, 0, 0, 32, 16, 16),
@@ -38,7 +37,7 @@ public class DuckerSystemBlock extends HorizontalFacingBlock {
 
     private static final Text TITLE = Text.translatable("block.seasonal_adventures.ducker_system").styled((style -> style.withColor(0x2)));
 
-    public DuckerSystemBlock(Settings settings) {
+    public DuckerControlSystemBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
