@@ -4,14 +4,14 @@
 	"version": "0.7.0-dev",
 	"name": "Seasonal Adventures",
 	"description": "Mod based on MrLololoska's seasons, currently in beta \n update",
-	"icon": "assets/seasonal_adventures/icon",
+	"icon": "assets/seasonal_adventures/icon.png",
 	"authors": [
 		"FlyingMyLife, brrrkuda"
 	],
 	"contact": {
-		"issues": "https://github.com/FlyingMyLife/Seasonal-Adventures-Fabric-Beta-v.06-1.20-1.20.1/issues",
+		"issues": "https://github.com/FlyingMyLife/Seasonal-Adventures/issues",
 		"homepage": "https://shor.by/seasonal_adventures",
-		"sources": "https://github.com/FlyingMyLife/Seasonal-Adventures-Fabric-Beta-v.06-1.20-1.20.1"
+		"sources": "https://github.com/FlyingMyLife/Seasonal-Adventures"
 	},
 	"license": "MIT",
 	"environment": "*",

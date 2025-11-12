@@ -21,7 +21,6 @@ public class ATMRenderer extends LivingEntityRenderer<ATMEntity, ATMModel<ATMEnt
     @Override
     public void render(ATMEntity livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         super.render(livingEntity, f, g, matrixStack, vertexConsumerProvider, i);
-
     }
 
 

@@ -22,7 +22,6 @@ public class SABlockEntities {
     public static void registerEntities() {
         LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"locked_chest_lvl_copper_block_entity"),
                 BlockEntityType.Builder.create(CopperLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_COPPER).build());
-
         LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"locked_chest_lvl_iron_block_entity"),
                 BlockEntityType.Builder.create(IronLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_IRON).build());
         GUIDING_SKINTH_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"guiding_skinth_block_entity"),

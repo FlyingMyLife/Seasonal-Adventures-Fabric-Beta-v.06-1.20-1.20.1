@@ -29,6 +29,7 @@ public class ATMModel<T extends ATMEntity> extends EntityModel<ATMEntity> {
         ModelPartData atmpart_r1 = atm.addChild("atmpart_r1", ModelPartBuilder.create().uv(56, 48).cuboid(0.0F, -15.0F, 7.0F, 10.0F, 15.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(-5.0F, -15.0F, -9.0F, -0.2182F, 0.0F, 0.0F));
         return TexturedModelData.of(modelData, 128, 128);
     }
+
     @Override
     public void setAngles(ATMEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
     }

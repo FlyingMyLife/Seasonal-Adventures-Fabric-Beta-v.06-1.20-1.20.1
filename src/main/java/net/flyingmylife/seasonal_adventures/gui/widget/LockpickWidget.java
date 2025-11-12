@@ -44,7 +44,7 @@ public class LockpickWidget extends ButtonWidget {
 
         matrices.translate(-this.width / 2.0f, -this.height / 2.0f, 0.0f);
 
-        context.drawGuiTexture(
+        context.drawTexture(
                 renderData.getTexture(true),
                 0, 0,
                 renderData.getU(),

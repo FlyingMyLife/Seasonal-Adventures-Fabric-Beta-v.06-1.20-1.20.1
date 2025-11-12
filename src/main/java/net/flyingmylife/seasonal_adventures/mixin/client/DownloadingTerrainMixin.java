@@ -53,7 +53,7 @@ public abstract class DownloadingTerrainMixin extends Screen {
 
             context.fill(0, 0, width, height, ColorHelper.Argb.getArgb(255, 0, 0, 0));
 
-            context.drawGuiTexture(BACKGROUND_TEXTURE, offsetX, offsetY, 0, 0, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
+            context.drawTexture(BACKGROUND_TEXTURE, offsetX, offsetY, 0, 0, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
 
             long elapsed = System.currentTimeMillis() - animStartTime;
             double fadeInDuration = 1200;
@@ -87,7 +87,7 @@ public abstract class DownloadingTerrainMixin extends Screen {
             int sparkSize = 50;
             int sparkX = (width - sparkSize) - 25;
             int sparkY = (height - sparkSize) - 25;
-            context.drawGuiTexture(SPARK_TEXTURE, sparkX, sparkY, 0,
+            context.drawTexture(SPARK_TEXTURE, sparkX, sparkY, 0,
                     getSparkV((int) (System.currentTimeMillis() - animStartTime)),
                     sparkSize, sparkSize, 50, 200);
 
