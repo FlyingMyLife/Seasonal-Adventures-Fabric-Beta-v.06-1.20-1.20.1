@@ -1,24 +1,29 @@
 package net.flyingmylife.seasonal_adventures.gui.screen.in_game;
 
+import jdk.jfr.Description;
 import net.flyingmylife.seasonal_adventures.SA;
+import net.flyingmylife.seasonal_adventures.gui.data.ducker.ShelterData;
 import net.flyingmylife.seasonal_adventures.gui.handler.DuckerScreenHandler;
-import net.flyingmylife.seasonal_adventures.gui.widget.DuckerConsoleWidget;
+import net.flyingmylife.seasonal_adventures.gui.widget.DuckerIOWidget;
+import net.flyingmylife.seasonal_adventures.network.service.ServerDataQueryService;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.TestOnly;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.lang.annotation.Documented;
+import java.util.*;
+import java.util.concurrent.Future;
 
-public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
+public class DuckerScreen extends HandledScreen<DuckerScreenHandler> {
     private int x;
     private int y;
-    private static final String CURSED_CHARACTER_LIST = "ABCDEF99301_<>⚠�";
+    private static final String ANIM_CHARS = "ABCDEF99301_<>⚠�";
     private static final int WIDTH = 52;
     private static final int MAX_LIFESPAN = 122;
     public static final int BASE_COLOR = 0x2fce6d;
@@ -27,10 +32,11 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
     private static final Random RANDOM = new Random();
     private final List<FallingCharacter> low_speed_characters = new ArrayList<>();
     private final List<FallingCharacter> high_speed_characters = new ArrayList<>();
-    private DuckerConsoleWidget console;
+    private DuckerIOWidget console;
+    private Future<ShelterData> dataFuture;
 
     double deltaSeconds = 0.0D;
-    private long lastTimeNs = System.nanoTime();
+    private long lastTime = System.currentTimeMillis();
     private byte duckState = 0;
     private double nextDuckDelay = 0.03 + Math.random() * 0.16;
     private double duckTimer = 0;
@@ -45,9 +51,15 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
     @Override
     protected void init() {
         super.init();
-        x = this.width/2 - 192;
-        y = this.height/2 - 123;
-        console = new DuckerConsoleWidget(
+        BlockPos pos = handler.getPos();
+        NbtCompound nbt = new NbtCompound();
+        nbt.putLong("pos", pos.asLong());
+
+        dataFuture = ServerDataQueryService.Manager.requestData(Identifier.of(SA.MOD_ID, "shelter_data"), nbt);
+
+        x = this.width / 2 - 192;
+        y = this.height / 2 - 123;
+        console = new DuckerIOWidget(
                 x + 28,
                 y + 27,
                 257,
@@ -61,14 +73,16 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        long now = System.nanoTime();
-        deltaSeconds = (now - lastTimeNs) / 1_000_000_000.0;
-        lastTimeNs = now;
+        if (!dataFuture.isDone()) {
+            return;
+        }
+        long now = System.currentTimeMillis();
+        deltaSeconds = (double) (now - lastTime) / 1000;
+        lastTime = now;
 
         duckTimer += deltaSeconds;
 
         if (duckTimer > nextDuckDelay) {
-
             duckTimer = 0.0D;
             duckState = (byte) ((duckState == 1) ? 0 : 1);
             nextDuckDelay = 0.03 + Math.random() * 0.16;
@@ -122,6 +136,7 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
         super.handledScreenTick();
         charFallUpdate();
     }
+
     private void charFallUpdate() {
         Iterator<FallingCharacter> low_speed_iterator = low_speed_characters.iterator();
         while (low_speed_iterator.hasNext()) {
@@ -146,8 +161,11 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
             high_speed_characters.add(new FallingCharacter(RANDOM.nextInt(WIDTH), y));
         }
     }
+    @TestOnly
+    //TODO: Responses should be registered only server-side with data resources
     public static void updateResponses() {
-        DuckerConsoleWidget.ResponseHandler.addResponse(
+        DuckerIOWidget.ResponseHandler.reset();
+        DuckerIOWidget.ResponseHandler.addResponse(
                 "отключи выключи подсветку подсветка выруби мигающие лампочки бункер бункера УТКЭР УТКЭРА",
                 3,
                 List.of(
@@ -155,7 +173,7 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
                         "Если хотите сделать кнопки настраиваемыми, обратитесь в службу поддержки."
                 )
         );
-        DuckerConsoleWidget.ResponseHandler.addResponse(
+        DuckerIOWidget.ResponseHandler.addResponse(
                 "отключи выключи очистку воздуха фильтры вентиляцию фильтр вентилятор воздух систему вентиляции бункера УТКЭР УТКЭРА",
                 3,
                 List.of(
@@ -164,7 +182,7 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
                 )
         );
 
-        DuckerConsoleWidget.ResponseHandler.addResponse(
+        DuckerIOWidget.ResponseHandler.addResponse(
                 "отключи выключи воду подачу воду водоснабжение водоснабжения водопровод насос система систему воды бункера УТКЭР УТКЭРА",
                 3,
                 List.of(
@@ -173,15 +191,47 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
                         "Для получения инструкции по эксплуатации обратитесь в службу поддержки"
                 )
         );
-        DuckerConsoleWidget.ResponseHandler.addResponse(
+        DuckerIOWidget.ResponseHandler.addResponse(
                 "отключи выключи генератор питание энергию электричество электропитание бункера УТКЭР УТКЭРА реактор энергия подача электричества ток питание генераторы",
                 3,
                 List.of(
-                        "Отключение энергосистемы невозможно: реактор поддерживает критические подсистемы жизнеобеспечения.",
-                        "Состояние реактора - [В НОРМЕ]. Замена топливных стержней не требуется.",
+                        "§rОтключение энергосистемы невозможно:§d реактор поддерживает критические подсистемы жизнеобеспечения.",
+                        "Состояние реактора - §b[В НОРМЕ]§d. Замена топливных стержней не требуется.",
                         "Для подробной инструкции по техобслуживанию обратитесь в службу поддержки"
                 )
         );
+        DuckerIOWidget.ResponseHandler.addResponse(
+                "кто твой создатель создал тебя УТКЭР УТКА бункер",
+                3,
+                List.of(
+                        "Меня создала небольшая команда энтузиастов:",
+                        "- §#AsynchroDev",
+                        "- §#ModernDel (большинство текстур)",
+                        "- §#brrrkuda",
+                        "§iБольше о проекте: §it.me/seasonal_adventures"
+                )
+        );
+
+        if (SA.DEV_ENVIRONMENT) {
+            List<String> scrollList = new ArrayList<>();
+            for (int i = 0; i < 60; i++) {
+                scrollList.add("Line: " + i);
+            }
+            DuckerIOWidget.ResponseHandler.addResponse(
+                    "devscroll",
+                    1,
+                    scrollList
+            );
+            DuckerIOWidget.ResponseHandler.addResponse(
+                    "devform",
+                    1,
+                    List.of(
+                            "§dDefault §rRed §#RGB",
+                            "§dDefault §iItalic §bBold",
+                            "Obfuscated: §oMclovin"
+                    )
+            );
+        }
     }
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
@@ -213,7 +263,7 @@ public class DuckerScreen extends HandledScreen<DuckerScreenHandler>{
         final int startY;
 
         FallingCharacter(int x, int y) {
-            this.character = CURSED_CHARACTER_LIST.charAt(RANDOM.nextInt(CURSED_CHARACTER_LIST.length()));
+            this.character = ANIM_CHARS.charAt(RANDOM.nextInt(ANIM_CHARS.length()));
             this.x = x;
             this.y = y;
             this.startY = y;

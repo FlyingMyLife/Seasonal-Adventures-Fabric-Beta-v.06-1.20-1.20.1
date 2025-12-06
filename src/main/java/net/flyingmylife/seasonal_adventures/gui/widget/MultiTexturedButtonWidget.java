@@ -11,7 +11,7 @@ public class MultiTexturedButtonWidget extends ButtonWidget {
     private final ButtonRenderData renderData;
 
     public MultiTexturedButtonWidget(int x, int y, ButtonRenderData renderData, Text message, PressAction onPress) {
-        super(x, y, renderData.getWidth(), renderData.getHeight(), message, onPress, textSupplier -> Text.empty());
+        super(x, y, renderData.width(), renderData.height(), message, onPress, textSupplier -> Text.empty());
         this.renderData = renderData;
     }
 
@@ -22,12 +22,12 @@ public class MultiTexturedButtonWidget extends ButtonWidget {
                 renderData.getTexture(active),
                 getX(),
                 getY(),
-                renderData.getU(),
+                renderData.u(),
                 renderData.getV(hovered),
-                renderData.getWidth(),
-                renderData.getHeight(),
-                renderData.getTextureWidth(),
-                renderData.getTextureHeight()
+                renderData.width(),
+                renderData.height(),
+                renderData.textureWidth(),
+                renderData.textureHeight()
         );
         int i = this.active ? 16777215 : 10526880;
         this.drawMessage(context, minecraftClient.textRenderer, i | MathHelper.ceil(this.alpha * 255.0F) << 24);

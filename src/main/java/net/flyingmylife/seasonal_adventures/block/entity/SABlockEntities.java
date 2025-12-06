@@ -18,6 +18,7 @@ public class SABlockEntities {
     public static BlockEntityType<CopperLCBlockEntity> LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY;
     public static BlockEntityType<IronLCBlockEntity> LOCKED_CHEST_LVL_IRON_BLOCK_ENTITY;
     public static BlockEntityType<GuidingSkinthBlockEntity> GUIDING_SKINTH_BLOCK_ENTITY;
+    public static BlockEntityType<DuckerControlSystemBlockEntity> DUCKER_CONTROL_SYSTEM_BLOCK_ENTITY;
 
     public static void registerEntities() {
         LOCKED_CHEST_LVL_COPPER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"locked_chest_lvl_copper_block_entity"),
@@ -26,6 +27,8 @@ public class SABlockEntities {
                 BlockEntityType.Builder.create(IronLCBlockEntity::new, SABlocks.LOCKED_CHEST_LVL_IRON).build());
         GUIDING_SKINTH_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"guiding_skinth_block_entity"),
                 BlockEntityType.Builder.create(GuidingSkinthBlockEntity::new, SABlocks.GUIDING_SKINTH).build());
+        DUCKER_CONTROL_SYSTEM_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(SA.MOD_ID,"ducker_control_system_block_entity"),
+                BlockEntityType.Builder.create(DuckerControlSystemBlockEntity::new, SABlocks.DUCKER_SYSTEM).build());
     }
 
     public static void registerEntityRenderFactories() {

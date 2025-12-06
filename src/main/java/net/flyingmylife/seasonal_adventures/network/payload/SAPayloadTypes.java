@@ -3,6 +3,7 @@ package net.flyingmylife.seasonal_adventures.network.payload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.flyingmylife.seasonal_adventures.network.service.ServerDataQueryService;
 import net.flyingmylife.seasonal_adventures.network.packet.c2s.*;
 import net.flyingmylife.seasonal_adventures.network.packet.s2c.InitializeClientDataPacket;
 import net.minecraft.nbt.NbtCompound;
@@ -59,9 +60,13 @@ public class SAPayloadTypes {
         }
         public static void registerPayloadTypes() {
             PayloadTypeRegistry.playS2C().register(InitializeClientDataPayload.ID, InitializeClientDataPayload.CODEC);
+
+            PayloadTypeRegistry.playS2C().register(ServerDataQueryService.Payload.ID, ServerDataQueryService.Payload.CODEC);
         }
         public static void registerGlobalReceivers() {
             ClientPlayNetworking.registerGlobalReceiver(InitializeClientDataPayload.ID, InitializeClientDataPacket::register);
+
+            ClientPlayNetworking.registerGlobalReceiver(ServerDataQueryService.Payload.ID, ServerDataQueryService::registerClientGlobalReceiver);
         }
     }
     public static class C2S {
@@ -125,24 +130,26 @@ public class SAPayloadTypes {
             PayloadTypeRegistry.playC2S().register(RequestCardOperationPayload.ID, RequestCardOperationPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(WarningOperationPayload.ID, WarningOperationPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(FineOperationPayload.ID, FineOperationPayload.CODEC);
-
             PayloadTypeRegistry.playC2S().register(DODGeneratorPayload.ID, DODGeneratorPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(RestoreChestPayload.ID, RestoreChestPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(LoadChunkPayload.ID, LoadChunkPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(InsertItemStackPayload.ID, InsertItemStackPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(RemoveItemPayload.ID, RemoveItemPayload.CODEC);
+
+            PayloadTypeRegistry.playC2S().register(ServerDataQueryService.Payload.ID, ServerDataQueryService.Payload.CODEC);
         }
         public static void registerGlobalReceivers () {
             ServerPlayNetworking.registerGlobalReceiver(BasicOperationPayload.ID, BankingOperationsPacket::registerBasicOperation);
             ServerPlayNetworking.registerGlobalReceiver(RequestCardOperationPayload.ID, BankingOperationsPacket::registerRequestCardOperation);
             ServerPlayNetworking.registerGlobalReceiver(WarningOperationPayload.ID, BankingOperationsPacket::registerWarningOperation);
             ServerPlayNetworking.registerGlobalReceiver(FineOperationPayload.ID, BankingOperationsPacket::registerFineOperation);
-
             ServerPlayNetworking.registerGlobalReceiver(DODGeneratorPayload.ID, TransportToDODPacket::register);
             ServerPlayNetworking.registerGlobalReceiver(RestoreChestPayload.ID, RestoreChestPacket::register);
             ServerPlayNetworking.registerGlobalReceiver(LoadChunkPayload.ID, LoadChunkPacket::register);
             ServerPlayNetworking.registerGlobalReceiver(InsertItemStackPayload.ID, InsertItemStackPacket::register);
             ServerPlayNetworking.registerGlobalReceiver(RemoveItemPayload.ID, RemoveItemPacket::register);
+
+            ServerPlayNetworking.registerGlobalReceiver(ServerDataQueryService.Payload.ID, ServerDataQueryService::registerServerGlobalReceiver);
         }
     }
 }

@@ -16,7 +16,7 @@ public class LockpickWidget extends ButtonWidget {
     private final ButtonRenderData renderData;
 
     public LockpickWidget(int x, int y, ButtonRenderData renderData, float speedMultiplier, PressAction onPress) {
-        super(x, y, renderData.getWidth(), renderData.getHeight(), Text.empty(), onPress, textSupplier -> Text.empty());
+        super(x, y, renderData.width(), renderData.height(), Text.empty(), onPress, textSupplier -> Text.empty());
         this.speedMultiplier = speedMultiplier;
         this.renderData = renderData;
     }
@@ -47,12 +47,12 @@ public class LockpickWidget extends ButtonWidget {
         context.drawTexture(
                 renderData.getTexture(true),
                 0, 0,
-                renderData.getU(),
+                renderData.u(),
                 renderData.getV(true),
-                renderData.getWidth(),
+                renderData.width(),
                 getHeight(),
-                renderData.getWidth(),
-                renderData.getHeight()
+                renderData.width(),
+                renderData.height()
         );
 
         matrices.pop();

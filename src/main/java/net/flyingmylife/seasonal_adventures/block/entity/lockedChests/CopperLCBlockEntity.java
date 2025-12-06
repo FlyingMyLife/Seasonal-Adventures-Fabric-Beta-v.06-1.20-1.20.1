@@ -27,11 +27,6 @@ public class CopperLCBlockEntity extends LockedChestBlockEntity implements GeoBl
     }
 
     @Override
-    public double getTick(Object blockEntity) {
-        return RenderUtil.getCurrentTick();
-    }
-
-    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }

@@ -3,6 +3,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.flyingmylife.seasonal_adventures.block.SABlocks;
 import net.flyingmylife.seasonal_adventures.entity.client.layer.SARenderLayers;
 import net.flyingmylife.seasonal_adventures.event.SAEvents;
+import net.flyingmylife.seasonal_adventures.gui.data.EntityTrackingPool;
 import net.flyingmylife.seasonal_adventures.gui.screen.in_game.DuckerScreen;
 import net.flyingmylife.seasonal_adventures.world.generator.noise.TimeInfectionLevelTemperatureMap;
 import net.fabricmc.api.ClientModInitializer;
@@ -30,8 +31,7 @@ public class SAClient implements ClientModInitializer {
         SAEvents.registerClientEvents();
         SARenderLayers.registerLayers();
         SAEntities.registerEntityRenderers();
-        TimeInfectionLevelTemperatureMap map = new TimeInfectionLevelTemperatureMap(132112421323321200L);
-        map.generateTemperatureMap();
+        EntityTrackingPool.init();
     }
 
 }

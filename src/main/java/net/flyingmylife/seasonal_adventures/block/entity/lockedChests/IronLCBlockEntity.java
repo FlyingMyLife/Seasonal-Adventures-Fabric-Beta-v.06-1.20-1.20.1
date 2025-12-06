@@ -27,11 +27,6 @@ public class IronLCBlockEntity extends LockedChestBlockEntity implements GeoBloc
     }
 
     @Override
-    public double getTick(Object blockEntity) {
-        return RenderUtil.getCurrentTick();
-    }
-
-    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }

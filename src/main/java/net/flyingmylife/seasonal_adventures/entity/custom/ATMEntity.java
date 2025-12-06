@@ -1,9 +1,12 @@
 package net.flyingmylife.seasonal_adventures.entity.custom;
 
+import net.flyingmylife.seasonal_adventures.gui.data.EntityTrackingPool;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -36,8 +39,6 @@ public class ATMEntity extends LivingEntity {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.0D)
                 .build();
     }
-
-
     @Override
     public void tick() {
         super.tick();

@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class SAClientLifeCycleEvents {
     private static final File locationSupplierDir = new File(FabricLoader.getInstance().getGameDir().toString() + "/teleportLocations");
+    //@ Fix this
     public static void registerServerConnectionEvents() {
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
             if (!Objects.requireNonNull(client.getServer()).isSingleplayer()) {

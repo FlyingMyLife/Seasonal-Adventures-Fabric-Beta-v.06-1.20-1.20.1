@@ -71,13 +71,13 @@ public abstract class LockedChestBlockEntity extends BlockEntity {
                 itemList.add(itemTag);
             }
         }
-        nbt.put("saved_inventory", itemList);
+        nbt.put("savedInventory", itemList);
     }
 
     private void loadInventoryFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup wrapperLookup) {
         savedInventory.clear();
-        if (nbt.contains("saved_inventory", 9)) {
-            NbtList itemList = nbt.getList("saved_inventory", 10);
+        if (nbt.contains("savedInventory", 9)) {
+            NbtList itemList = nbt.getList("savedInventory", 10);
             for (int i = 0; i < itemList.size(); i++) {
                 NbtCompound itemTag = itemList.getCompound(i);
                 int slot = itemTag.getInt("slot");
