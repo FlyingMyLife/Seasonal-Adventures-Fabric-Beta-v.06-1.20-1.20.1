@@ -38,7 +38,7 @@ public class AtmItem extends Item {
         }
     }
     private void spawnEntityAt(World world, PlayerEntity player, BlockPos pos) {
-        LivingEntity entity = entityType.create(world, SpawnReason.MOB_SUMMONED);
+        LivingEntity entity = entityType.create(world);
         if (entity != null) {
             entity.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             float[] angles = getEntityRotationToPlayer(entity, player);

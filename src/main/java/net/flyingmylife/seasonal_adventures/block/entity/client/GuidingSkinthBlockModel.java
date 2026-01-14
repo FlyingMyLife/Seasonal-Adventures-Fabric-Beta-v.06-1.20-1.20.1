@@ -9,12 +9,12 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 
 public class GuidingSkinthBlockModel extends GeoModel<GuidingSkinthBlockEntity> {
     @Override
-    public Identifier getModelResource(GuidingSkinthBlockEntity guidingSkinthBlockEntity, @Nullable GeoRenderer<GuidingSkinthBlockEntity> geoRenderer) {
+    public Identifier getModelResource(GuidingSkinthBlockEntity guidingSkinthBlockEntity) {
         return Identifier.of(SA.MOD_ID, "geo/guiding_skinth.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(GuidingSkinthBlockEntity guidingSkinthBlockEntity, @Nullable GeoRenderer<GuidingSkinthBlockEntity> geoRenderer) {
+    public Identifier getTextureResource(GuidingSkinthBlockEntity guidingSkinthBlockEntity) {
         return Identifier.of(SA.MOD_ID, "textures/block/guiding_skinth.png");
     }
 

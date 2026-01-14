@@ -1,16 +1,19 @@
 package net.flyingmylife.seasonal_adventures.entity.client.model;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.*;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.flyingmylife.seasonal_adventures.entity.custom.ATMEntity;
+import net.minecraft.client.util.math.MatrixStack;
+
 import java.util.Optional;
 
-public class ATMModel<T extends ATMEntity> extends EntityModel<LivingEntityRenderState> {
+public class ATMModel<T extends ATMEntity> extends EntityModel<ATMEntity> {
     public final ModelPart atm;
 
     public ATMModel(ModelPart atm) {
-        super(atm);
+        super();
         this.atm = atm;
     }
 
@@ -28,7 +31,13 @@ public class ATMModel<T extends ATMEntity> extends EntityModel<LivingEntityRende
     }
 
     @Override
-    public Optional<ModelPart> getPart(String name) {
-        return Optional.of(atm);
+    public void setAngles(ATMEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+    }
+
+    @Override
+    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
+        ImmutableList.of(this.atm).forEach((modelRenderer) -> {
+            modelRenderer.render(matrices, vertices, light, overlay, color);
+        });
     }
 }

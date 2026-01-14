@@ -3,7 +3,10 @@ package net.flyingmylife.seasonal_adventures.network.payload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.flyingmylife.seasonal_adventures.network.service.ServerDataQueryService;
 import net.flyingmylife.seasonal_adventures.network.packet.c2s.*;
+import net.flyingmylife.seasonal_adventures.network.packet.s2c.InitializeClientDataPacket;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -11,29 +14,59 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.flyingmylife.seasonal_adventures.SA;
-import net.flyingmylife.seasonal_adventures.network.packet.s2c.SecretKeyUpdatePacket;
+
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import static net.flyingmylife.seasonal_adventures.network.payload.banking.BankingPayloads.*;
 
 public class SAPayloadTypes {
     public static class S2C {
-        public record SecretKeyUpdatePayload(String key) implements CustomPayload {
-            public static final CustomPayload.Id<SecretKeyUpdatePayload> ID = new CustomPayload.Id<>(Identifier.of(SA.MOD_ID, "sk_update_payload"));
-            public static final PacketCodec<RegistryByteBuf, SecretKeyUpdatePayload> CODEC = PacketCodec.tuple(
-                    PacketCodecs.STRING, SecretKeyUpdatePayload::key,
-                    SecretKeyUpdatePayload::new);
+        public record InitializeClientDataPayload(NbtCompound nbt) implements CustomPayload {
+            public static final CustomPayload.Id<InitializeClientDataPayload> ID = new CustomPayload.Id<>(Identifier.of(SA.MOD_ID, "initialize_client_data_payload"));
+            public static final PacketCodec<RegistryByteBuf, InitializeClientDataPayload> CODEC = PacketCodec.tuple(
+                    PacketCodecs.NBT_COMPOUND, InitializeClientDataPayload::nbt,
+                    InitializeClientDataPayload::new
+            );
 
             @Override
-            public CustomPayload.Id<? extends CustomPayload> getId() {
+            public Id<? extends CustomPayload> getId() {
                 return ID;
             }
-        }
+            public Optional<Long> getHashedSeed() {
+                if (nbt.contains("hashed_seed")) {
+                    return Optional.of(nbt.getLong("hashed_seed"));
+                } else {
+                    return Optional.empty();
+                }
+            }
+            public static InitializeClientDataPayload create(long serverSeed) {
+                NbtCompound nbt = new NbtCompound();
+                MessageDigest digest = null;
+                try {
+                    digest = MessageDigest.getInstance("SHA-256");
+                    byte[] hash = digest.digest(Long.toString(serverSeed).getBytes());
+                    ByteBuffer buffer = ByteBuffer.wrap(hash);
+                    nbt.putLong("hashed_seed", Math.abs(buffer.getLong()));
 
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
+
+                return new InitializeClientDataPayload(nbt);
+            }
+        }
         public static void registerPayloadTypes() {
-            PayloadTypeRegistry.playS2C().register(SecretKeyUpdatePayload.ID, SecretKeyUpdatePayload.CODEC);
+            PayloadTypeRegistry.playS2C().register(InitializeClientDataPayload.ID, InitializeClientDataPayload.CODEC);
+
+            PayloadTypeRegistry.playS2C().register(ServerDataQueryService.Payload.ID, ServerDataQueryService.Payload.CODEC);
         }
         public static void registerGlobalReceivers() {
-            ClientPlayNetworking.registerGlobalReceiver(SecretKeyUpdatePayload.ID, SecretKeyUpdatePacket::register);
+            ClientPlayNetworking.registerGlobalReceiver(InitializeClientDataPayload.ID, InitializeClientDataPacket::register);
+
+            ClientPlayNetworking.registerGlobalReceiver(ServerDataQueryService.Payload.ID, ServerDataQueryService::registerClientGlobalReceiver);
         }
     }
     public static class C2S {
@@ -97,24 +130,26 @@ public class SAPayloadTypes {
             PayloadTypeRegistry.playC2S().register(RequestCardOperationPayload.ID, RequestCardOperationPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(WarningOperationPayload.ID, WarningOperationPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(FineOperationPayload.ID, FineOperationPayload.CODEC);
-
             PayloadTypeRegistry.playC2S().register(DODGeneratorPayload.ID, DODGeneratorPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(RestoreChestPayload.ID, RestoreChestPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(LoadChunkPayload.ID, LoadChunkPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(InsertItemStackPayload.ID, InsertItemStackPayload.CODEC);
             PayloadTypeRegistry.playC2S().register(RemoveItemPayload.ID, RemoveItemPayload.CODEC);
+
+            PayloadTypeRegistry.playC2S().register(ServerDataQueryService.Payload.ID, ServerDataQueryService.Payload.CODEC);
         }
         public static void registerGlobalReceivers () {
             ServerPlayNetworking.registerGlobalReceiver(BasicOperationPayload.ID, BankingOperationsPacket::registerBasicOperation);
             ServerPlayNetworking.registerGlobalReceiver(RequestCardOperationPayload.ID, BankingOperationsPacket::registerRequestCardOperation);
             ServerPlayNetworking.registerGlobalReceiver(WarningOperationPayload.ID, BankingOperationsPacket::registerWarningOperation);
             ServerPlayNetworking.registerGlobalReceiver(FineOperationPayload.ID, BankingOperationsPacket::registerFineOperation);
-
             ServerPlayNetworking.registerGlobalReceiver(DODGeneratorPayload.ID, TransportToDODPacket::register);
             ServerPlayNetworking.registerGlobalReceiver(RestoreChestPayload.ID, RestoreChestPacket::register);
             ServerPlayNetworking.registerGlobalReceiver(LoadChunkPayload.ID, LoadChunkPacket::register);
             ServerPlayNetworking.registerGlobalReceiver(InsertItemStackPayload.ID, InsertItemStackPacket::register);
             ServerPlayNetworking.registerGlobalReceiver(RemoveItemPayload.ID, RemoveItemPacket::register);
+
+            ServerPlayNetworking.registerGlobalReceiver(ServerDataQueryService.Payload.ID, ServerDataQueryService::registerServerGlobalReceiver);
         }
     }
 }

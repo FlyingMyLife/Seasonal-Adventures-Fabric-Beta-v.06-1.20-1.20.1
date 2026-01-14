@@ -13,7 +13,7 @@ public class GuidingSkinthBlockEntity extends BlockEntity implements GeoBlockEnt
     public GuidingSkinthBlockEntity(BlockPos pos, BlockState state) {
         super(SABlockEntities.GUIDING_SKINTH_BLOCK_ENTITY,pos, state);
     }
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));

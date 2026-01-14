@@ -11,8 +11,8 @@
     ]
   },
   "lockpick_unlock": {
-  "sounds": [
-    "seasonal_adventures:lockpick_unlock_0"
-  ]
-}
+    "sounds": [
+      "seasonal_adventures:unlocked_0"
+    ]
+  }
 }

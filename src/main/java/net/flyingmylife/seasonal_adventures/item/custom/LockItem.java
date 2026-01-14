@@ -1,5 +1,6 @@
 package net.flyingmylife.seasonal_adventures.item.custom;
 
+import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.IronLCBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,8 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.flyingmylife.seasonal_adventures.block.SABlocks;
-import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
-import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
+import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.CopperLCBlockEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,20 +75,20 @@ public class LockItem extends Item {
                     world.setBlockState(pos, lockedChestBlockState);
 
                     BlockEntity lockedChestBlockEntity = world.getBlockEntity(pos);
-                    if (lockedChestBlockEntity instanceof LockedChestLvLCopperBlockEntity && lockLevel == 0) {
-                        ((LockedChestLvLCopperBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
+                    if (lockedChestBlockEntity instanceof CopperLCBlockEntity && lockLevel == 0) {
+                        ((CopperLCBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
                     }
-                    if (lockedChestBlockEntity instanceof LockedChestLvLIronBlockEntity && lockLevel == 1) {
-                        ((LockedChestLvLIronBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
+                    if (lockedChestBlockEntity instanceof IronLCBlockEntity && lockLevel == 1) {
+                        ((IronLCBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
                     }
-                    if (lockedChestBlockEntity instanceof LockedChestLvLCopperBlockEntity && lockLevel == 2) {
-                        ((LockedChestLvLCopperBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
+                    if (lockedChestBlockEntity instanceof CopperLCBlockEntity && lockLevel == 2) {
+                        ((CopperLCBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
                     }
-                    if (lockedChestBlockEntity instanceof LockedChestLvLCopperBlockEntity && lockLevel == 3) {
-                        ((LockedChestLvLCopperBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
+                    if (lockedChestBlockEntity instanceof CopperLCBlockEntity && lockLevel == 3) {
+                        ((CopperLCBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
                     }
-                    if (lockedChestBlockEntity instanceof LockedChestLvLCopperBlockEntity && lockLevel == 4) {
-                        ((LockedChestLvLCopperBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
+                    if (lockedChestBlockEntity instanceof CopperLCBlockEntity && lockLevel == 4) {
+                        ((CopperLCBlockEntity) lockedChestBlockEntity).saveInventory(inventory);
                     }
                     return ActionResult.SUCCESS;
                 }

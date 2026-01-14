@@ -1,6 +1,5 @@
 {
 	"credit": "Made by Seasonal Adventures",
-	"parent": "seasonal_adventures:item/solid_automaton_casing",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "seasonal_adventures:item/solid_automaton_casing",

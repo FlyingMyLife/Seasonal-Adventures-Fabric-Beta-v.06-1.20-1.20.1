@@ -1,9 +1,12 @@
 package net.flyingmylife.seasonal_adventures.entity.custom;
 
+import net.flyingmylife.seasonal_adventures.gui.data.EntityTrackingPool;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -14,6 +17,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.flyingmylife.seasonal_adventures.gui.handler.ATMScreenHandler;
@@ -23,19 +27,18 @@ import java.util.Collections;
 
 public class ATMEntity extends LivingEntity {
     private boolean isAtmBreakable(PlayerEntity player) {
-        return player.hasPermissionLevel(4);
+        return player.isCreative();
     }
     public ATMEntity(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);
     }
+
     public static DefaultAttributeContainer createATMAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(EntityAttributes.MAX_HEALTH, 0.0)
-                .add(EntityAttributes.MOVEMENT_SPEED, 0.0D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 0.5)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.0D)
                 .build();
     }
-
-
     @Override
     public void tick() {
         super.tick();
@@ -79,7 +82,10 @@ public class ATMEntity extends LivingEntity {
 
 
     @Override
-    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+    public boolean damage(DamageSource source, float amount) {
+        if (source.getAttacker() instanceof PlayerEntity player && player.isCreative()) {
+            player.sendMessage(Text.translatable("message.seasonal_adventures.atm.break_tip").formatted(Formatting.RED), true);
+        }
         return false;
     }
 
@@ -109,7 +115,7 @@ public class ATMEntity extends LivingEntity {
             if (player.isSneaking() && !player.isCreative() && isAtmBreakable(player)) {
                 this.setHealth(0);
                 this.setRemoved(RemovalReason.KILLED);
-                dropStack((ServerWorld) this.getWorld(), new ItemStack(SAItems.ATM));
+                dropStack(new ItemStack(SAItems.ATM));
                 return ActionResult.SUCCESS;
             } else if (player.isSneaking() && player.isCreative() && isAtmBreakable(player)) {
                 this.setHealth(0);

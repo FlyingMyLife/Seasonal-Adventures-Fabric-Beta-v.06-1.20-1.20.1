@@ -28,7 +28,7 @@ public class TransportToDODPacket {
         assert world != null;
 
         BlockPos targetPos = new BlockPos(8, 21, 9);
-        context.player().teleport(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), EnumSet.noneOf(PositionFlag.class), context.player().getYaw(), context.player().getPitch(), false);
+        context.player().teleport(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), context.player().getYaw(), context.player().getPitch());
         StatusEffectInstance spawnProtection = new
                 StatusEffectInstance(StatusEffects.RESISTANCE,
                 10 * 20,

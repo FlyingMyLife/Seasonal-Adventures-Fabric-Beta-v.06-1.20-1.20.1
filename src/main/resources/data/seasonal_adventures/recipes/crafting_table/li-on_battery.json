@@ -2,12 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    " I ",
+    " A ",
     "L L",
-    " I "
+    " A "
   ],
   "key": {
-    "I": {
+    "A": {
       "item": "seasonal_adventures:aluminium_ingot"
     },
     "L": {

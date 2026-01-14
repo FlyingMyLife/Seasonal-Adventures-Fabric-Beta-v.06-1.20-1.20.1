@@ -24,7 +24,7 @@ public class SAEntities {
             EntityType.Builder.create(ATMEntity::new, SpawnGroup.MISC)
                     .dimensions(1f, 2.0625f)
                     .makeFireImmune()
-                    .build(ATM_ENTITY_TYPE)
+                    .build("atm")
     );
 
     public static void registerEntityAttributes() {

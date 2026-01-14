@@ -14,7 +14,7 @@ import static net.flyingmylife.seasonal_adventures.network.payload.SAPayloadType
 
 public class LoadChunkPacket {
 
-    public static void loadChunkInDimensionOfDreams(Identifier worldLevelKey, int chunkX, int chunkZ) {
+    public static void loadChunk(Identifier worldLevelKey, int chunkX, int chunkZ) {
         ClientPlayNetworking.send(new LoadChunkPayload(worldLevelKey, chunkX, chunkZ));
     }
 

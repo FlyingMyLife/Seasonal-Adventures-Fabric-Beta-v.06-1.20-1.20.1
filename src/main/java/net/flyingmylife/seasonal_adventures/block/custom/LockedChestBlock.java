@@ -1,7 +1,9 @@
 package net.flyingmylife.seasonal_adventures.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.IronLCBlockEntity;
 import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestBlockEntity;
+import net.flyingmylife.seasonal_adventures.gui.handler.UnlockingScreenHandler;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.gui.screen.Screen;
@@ -27,8 +29,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.flyingmylife.seasonal_adventures.block.SABlocks;
-import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestLvLCopperBlockEntity;
-import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.LockedChestLvLIronBlockEntity;
+import net.flyingmylife.seasonal_adventures.block.entity.lockedChests.CopperLCBlockEntity;
 import net.flyingmylife.seasonal_adventures.item.SAItems;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,8 +60,8 @@ public class LockedChestBlock extends BlockWithEntity {
             if (player.getInventory().getMainHandStack().isOf(SAItems.LOCKPICK)) {
                 player.openHandledScreen(new NamedScreenHandlerFactory() {
                     @Override
-                    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                        return lockedChestBlockEntity.createMenu(syncId, inv, player);
+                    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+                        return new UnlockingScreenHandler(syncId, playerInventory, lockedChestBlockEntity.getLockLevel());
                     }
 
                     @Override
@@ -69,7 +70,7 @@ public class LockedChestBlock extends BlockWithEntity {
                     }
                 });
                 return ActionResult.SUCCESS;
-            } else if ((player.getInventory().getMainHandStack().isOf(SAItems.KEY))) {
+            } else if (player.getInventory().getMainHandStack().isOf(SAItems.KEY)) {
 
             } else {
                 player.sendMessage(Text.translatable("message.seasonal_adventures.lock.fail.lockpick_required").formatted(Formatting.DARK_RED), true);
@@ -92,8 +93,8 @@ public class LockedChestBlock extends BlockWithEntity {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        if (state.getBlock().equals(SABlocks.LOCKED_CHEST_LVL_COPPER)) return new LockedChestLvLCopperBlockEntity(pos, state);
-        if (state.getBlock().equals(SABlocks.LOCKED_CHEST_LVL_IRON)) return new LockedChestLvLIronBlockEntity(pos, state);
+        if (state.getBlock().equals(SABlocks.LOCKED_CHEST_LVL_COPPER)) return new CopperLCBlockEntity(pos, state);
+        if (state.getBlock().equals(SABlocks.LOCKED_CHEST_LVL_IRON)) return new IronLCBlockEntity(pos, state);
         else return null;
     }
 
